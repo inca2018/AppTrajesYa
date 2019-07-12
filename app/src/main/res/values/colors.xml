@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorAccent2">#FF9100</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="negro">#000000</color>
+    <color name="SinCheck">#8F8F8F</color>
+    <color name="morado">#673AB7</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="rojo">#D50000</color>
+    <color name="fb">#3f51b5</color>
+    <color name="google"> #f44336</color>
+    <color name="verde"> #8BC34A</color>
+    <color name="amarillo"> #FFFF00</color>
+    <color name="noFocus">  #1565C0</color>
+    <color name="deseo">#cc0066</color>
+    <color name="celeste_bjo"> #e3f2fd</color>
+</resources>
