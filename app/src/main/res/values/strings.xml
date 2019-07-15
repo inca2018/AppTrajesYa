@@ -3,4 +3,40 @@
     <string name="facebook_app_id">130078957569126</string>
     <string name="fb_login_protocol_scheme">fb130078957569126</string>
     <string name="cargando">Cargando...</string>
+    <string name="todo">TODO</string>
+    <string name="email">Email</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="continuar_con_google">Continuar con Google +</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Recomendaciones">Recomendaciones</string>
+    <string name="Categorias">Categorias</string>
+    <string name="Destacados">Destacados</string>
+    <string name="Lo_nuevo">Lo nuevo</string>
+    <string name="lo_mejor">Ofertas del Dia</string>
+    <string name="inicio_sesion">Iniciar Sesión</string>
+    <string name="crear_cuenta">Crear Cuenta</string>
+
+
+    <string name="text_subrayado"><u>Más información</u></string>
+    <string name="title_activity_item_detalle">ItemDetalle</string>
+
+
+
+    <string name="welcome">Bienvenido</string>
+    <string name="cancel_login">Se canceló la operación</string>
+    <string name="error_login">Ocurrió un error al ingresar</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="videos">videos</string>
+
+
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    <string name="title_activity_prueba_menu">PruebaMenu</string>
+
+    <string name="crear_cuenta_2"><u>Crear Cuenta</u></string>
+    <string name="ingres_sin_cuenta"><u>Ingresar Sin Cuenta</u></string>
+    <string name="nueva_cuenta"><u>Nueva Cuenta:</u></string>
+
 </resources>
