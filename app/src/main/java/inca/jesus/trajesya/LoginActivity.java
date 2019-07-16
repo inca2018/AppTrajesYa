@@ -20,9 +20,11 @@ import com.facebook.login.widget.LoginButton;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import inca.jesus.trajesya.Sesion.SesionGoogleLogin;
+
 public class LoginActivity extends AppCompatActivity {
 
-    ImageView ima;
+
     TextView crear_cuenta;
     TextView sin_cuenta;
     Button loginGoo;
@@ -74,19 +76,15 @@ public class LoginActivity extends AppCompatActivity {
         login_google();
     }
     private void login_facebook() {
-
-
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 goMainScreen();
             }
-
             @Override
             public void onCancel() {
                 Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onError(FacebookException error) {
                 Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
@@ -97,9 +95,9 @@ public class LoginActivity extends AppCompatActivity {
         loginGoo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent=new Intent(LoginActivity.this,SesionGoogleLogin.class);*/
+                Intent intent=new Intent(LoginActivity.this, SesionGoogleLogin.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-               /* startActivity(intent);*/
+                startActivity(intent);
             }
         });
     }
