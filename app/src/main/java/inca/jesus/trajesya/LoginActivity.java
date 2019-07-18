@@ -2,12 +2,18 @@ package inca.jesus.trajesya;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,35 +23,41 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import inca.jesus.trajesya.Sesion.SesionGoogleLogin;
 
-public class LoginActivity extends AppCompatActivity {
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
+
+public class LoginActivity extends AppCompatActivity {
 
     TextView crear_cuenta;
     TextView sin_cuenta;
-    Button loginGoo;
     private CallbackManager callbackManager;
     LoginButton loginButton;
     Button inicio_sesion;
-    EditText e1,e2;
+    EditText e1, e2;
     Boolean encontrado;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        /*crear_cuenta=(TextView)findViewById(R.id.boton_crear_cuenta);
-        sin_cuenta=(TextView)findViewById(R.id.ingresar_sin_cuenta);*/
-        loginGoo=(Button)findViewById(R.id.loginGoo) ;
-        inicio_sesion=(Button)findViewById(R.id.inicio_sesion);
-        e1=(EditText)findViewById(R.id.email_login);
-        e2=(EditText)findViewById(R.id.pass_login);
+
+        crear_cuenta=findViewById(R.id.btnNuevoUsuario);
+        sin_cuenta=findViewById(R.id.btnSinCuenta);
+
+        inicio_sesion = findViewById(R.id.inicio_sesion);
+        e1 = findViewById(R.id.etUsuario);
+        e2 = findViewById(R.id.etPassword);
         callbackManager = CallbackManager.Factory.create();
-        loginButton=(LoginButton)findViewById(R.id.loginFb);
+        loginButton = findViewById(R.id.loginFb);
         loginButton.setReadPermissions("email");
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("Iniciando Sesión:");
@@ -55,14 +67,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressDialog.show();
                 BuscarUsuario();
-                if(encontrado==true){
+                if (encontrado == true) {
                     progressDialog.dismiss();
-                   /* Toast.makeText(LoginActivity.this, "Bienvenido:"+Sesion.USUARIO.getNombre() , Toast.LENGTH_SHORT).show();*/
+                    /* Toast.makeText(LoginActivity.this, "Bienvenido:"+Sesion.USUARIO.getNombre() , Toast.LENGTH_SHORT).show();*/
                     /*Intent intent=new Intent(LoginActivity.this,Activity_Principal.class);
                     intent.putExtra("o","o1");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);*/
-                }else{
+                } else {
                     progressDialog.dismiss();
                     Toast.makeText(LoginActivity.this, "Usuario no existe", Toast.LENGTH_SHORT).show();
                     e1.setText("");
@@ -72,64 +84,65 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         opciones();
-        login_facebook();
-        login_google();
+
+        SesionFacebook();
+
+
     }
-    private void login_facebook() {
+
+    private void SesionFacebook() {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                // Ir a Menu Principal
                 goMainScreen();
             }
+
             @Override
             public void onCancel() {
                 Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(FacebookException error) {
+                Log.e("INCA", String.valueOf(error));
                 Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private void login_google() {
-        loginGoo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, SesionGoogleLogin.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });
-    }
+
     private void opciones() {
-       /* crear_cuenta.setOnClickListener(new View.OnClickListener() {
+       crear_cuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                *//*Intent intent=new Intent(LoginActivity.this,CrearCuentaGeneral.class);
-                startActivity(intent);*//*
+               /* Intent intent=new Intent(LoginActivity.this,CrearCuentaGeneral.class);
+                startActivity(intent);*/
             }
         });
         sin_cuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                *//*Intent intent=new Intent(LoginActivity.this,Activity_Principal.class);
-                startActivity(intent);*//*
+               Intent intent=new Intent(LoginActivity.this,ActivityPrincipal.class);
+                startActivity(intent);
             }
-        });*/
+        });
     }
+
     private void goMainScreen() {
-        /*Intent intent = new Intent(LoginActivity.this, Activity_Principal.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(LoginActivity.this, ActivityPrincipal.class);
+        startActivity(intent);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
     private void BuscarUsuario() {
 
-        Boolean ema=emailValidator(e1.getText().toString());
-        if(ema==true){
+        Boolean ema = emailValidator(e1.getText().toString());
+        if (ema == true) {
 /*
             for(int i=0;i<Sesion.LISTA_USUARIOS.size();i++){
                 if(Sesion.LISTA_USUARIOS.get(i).getCorreo().equalsIgnoreCase(e1.getText().toString()) &&
@@ -153,15 +166,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }*/
 
-        }else{
+        } else {
             Toast.makeText(this, "Formato de Email Incorrecto", Toast.LENGTH_SHORT).show();
             e1.setFocusable(true);
         }
 
     }
 
-    public boolean emailValidator(String email)
-    {
+    public boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;
         final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -170,4 +182,7 @@ public class LoginActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
+    public void IniciarSesion(View view) {
+
+    }
 }

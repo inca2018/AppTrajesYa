@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityPrincipal">
+
+    <include android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/menu_principal"
+        >
+    </include>
+    <include android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/toolbar_base"
+        android:visibility="gone"
+        >
+    </include>
+    <include layout="@layout/panel_botones"></include>
+    <include layout="@layout/buscador">
+    </include>
+    <include layout="@layout/fragment_contenedor">
+    </include>
+</androidx.constraintlayout.widget.ConstraintLayout>
