@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        crear_cuenta=findViewById(R.id.btnNuevoUsuario);
         sin_cuenta=findViewById(R.id.btnSinCuenta);
 
         inicio_sesion = findViewById(R.id.inicio_sesion);
@@ -112,13 +111,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void opciones() {
-       crear_cuenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* Intent intent=new Intent(LoginActivity.this,CrearCuentaGeneral.class);
-                startActivity(intent);*/
-            }
-        });
         sin_cuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -37,5 +37,6 @@
     <string name="crear_cuenta_2"><u>Crear Cuenta</u></string>
     <string name="ingres_sin_cuenta"><u>Ingresar Sin Cuenta</u></string>
     <string name="nueva_cuenta"><u>Nueva Cuenta:</u></string>
+    <string name="usuario">Usuario</string>
 
 </resources>
