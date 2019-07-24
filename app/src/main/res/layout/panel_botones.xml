@@ -5,8 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:backgroundTint="@color/colorPrimary">
+    android:background="@drawable/gradiente"
+    android:backgroundTint="@drawable/gradiente">
 
 
     <LinearLayout
@@ -16,7 +16,7 @@
         android:layout_margin="2dp">
 
 
-        <androidx.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2.2"
@@ -32,8 +32,8 @@
                 card_view:srcCompat="@drawable/ic_logotipo_mi_cumple"
                 android:layout_margin="2dp"
                 tools:ignore="VectorDrawableCompat" />
-        </androidx.support.v7.widget.CardView>
-        <androidx.support.v7.widget.CardView
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
             android:id="@+id/panel_boton_cumpleKids"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,9 +53,9 @@
                 android:layout_margin="8dp"
                 android:gravity="center"
                 />
-        </androidx.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <androidx.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/panel_boton_cumplefotos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,8 +77,8 @@
                 android:layout_margin="8dp"
                 android:gravity="center"
                 />
-        </androidx.support.v7.widget.CardView>
-        <androidx.support.v7.widget.CardView
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
             android:id="@+id/panel_boton_videos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,6 +100,6 @@
                 android:layout_margin="8dp"
                 android:gravity="center"
                 />
-        </androidx.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </LinearLayout>

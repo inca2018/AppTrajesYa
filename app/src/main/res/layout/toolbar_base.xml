@@ -5,19 +5,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <androidx.support.design.widget.AppBarLayout
+
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             >
 
-        <androidx.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar_base"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/gradiente"
             tools:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             >
@@ -171,6 +172,6 @@
 
 
                 </LinearLayout>
-        </androidx.support.v7.widget.Toolbar>
-        </androidx.support.design.widget.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
 </LinearLayout>
