@@ -18,4 +18,8 @@
     <color name="noFocus">  #1565C0</color>
     <color name="deseo">#cc0066</color>
     <color name="celeste_bjo"> #e3f2fd</color>
+
+    <color name="base1">#FEDA3B</color>
+    <color name="base2">#F6A300</color>
+
 </resources>
