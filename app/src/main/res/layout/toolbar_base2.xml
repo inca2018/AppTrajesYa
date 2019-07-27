@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_base"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            tools:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:elevation="10dp"
+            >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="2dp"
+                    >
+
+                                <Button
+                                    android:id="@+id/opcion1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="2"
+                                    android:src="@drawable/ic_inicio_menu"
+                                    android:textAlignment="center"
+                                    android:text="Inicio"
+                                    android:textColor="@color/blanco"
+                                    android:textSize="12sp"
+                                    android:layout_margin="2dp"
+                                    android:drawableTop="@drawable/ic_inicio_menu"
+                                    android:drawableTint="@color/blanco"
+                                    android:background="@android:color/transparent"
+                                    android:textAllCaps="false"
+
+                                    />
+                        <TextView
+                            android:id="@+id/opt2"
+                            android:layout_weight="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Categorias"
+                            android:textColor="@color/noFocus"
+                            android:textSize="12sp"
+                            android:layout_margin="2dp"
+                            android:drawableTop="@drawable/ic_categoria_menu"
+                            android:drawableTint="@color/noFocus"
+                            />
+                        <TextView
+                            android:id="@+id/opt3"
+                            android:layout_weight="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Favoritos"
+                            android:textColor="@color/noFocus"
+                            android:textSize="12sp"
+                            android:layout_margin="2dp"
+                            android:drawableTop="@drawable/ic_favorito_menu"
+                            android:drawableTint="@color/noFocus"
+                            />
+                        <TextView
+                            android:id="@+id/opt4"
+                            android:layout_weight="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Carrito"
+                            android:textColor="@color/noFocus"
+                            android:textSize="12sp"
+                            android:layout_margin="2dp"
+                            android:drawableTop="@drawable/ic_carrito_menu"
+                            android:drawableTint="@color/noFocus"
+                            />
+                        <TextView
+                            android:id="@+id/opt5"
+                            android:layout_weight="2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Perfil"
+                            android:textColor="@color/noFocus"
+                            android:textSize="12sp"
+                            android:layout_margin="2dp"
+                            android:drawableTop="@drawable/ic_perfil_menu"
+                            android:drawableTint="@color/noFocus"
+                            />
+
+                </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+</LinearLayout>

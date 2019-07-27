@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityPrincipal"></activity>
+        <activity android:name=".Activities.ActivityPrincipal"></activity>
         <activity android:name=".Sesion.SesionGoogleLogin" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.Item" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -23,14 +24,14 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Splash">
+        <activity android:name=".Activities.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activities.MainActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
