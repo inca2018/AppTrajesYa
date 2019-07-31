@@ -3,8 +3,8 @@ package inca.jesus.trajesya.Data.Conexion;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import inca.jesus.trajesya.Data.Modelo.Perfil;
-import inca.jesus.trajesya.Data.Modelo.Usuario;
+import inca.jesus.trajesya.Clases.Perfil;
+import inca.jesus.trajesya.Clases.Usuario;
 
 import static android.content.Context.MODE_PRIVATE;
 

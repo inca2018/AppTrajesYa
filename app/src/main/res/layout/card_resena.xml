@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="5dp">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal"
+             android:layout_margin="5dp">
+
+             <TextView
+                 android:id="@+id/card_resena_usuario"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+
+                 android:text="Jesus Inca Cardenas  "/>
+             <TextView
+                 android:id="@+id/card_resena_fecha"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+
+                 android:text="| 05/05/2017"/>
+
+
+         </LinearLayout>
+
+            <TextView
+                android:id="@+id/card_resena_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Producto en buen estado "
+                android:textStyle="bold"
+                android:textAlignment="textStart"
+                android:layout_margin="5dp"/>
+
+            <RatingBar
+                android:id="@+id/card_resena_rating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:isIndicator="true"
+                android:progressTint="#FDDB39"
+                android:progressBackgroundTint="@color/colorAccent"
+                android:rating="5"
+                android:numStars="5"
+                android:secondaryProgressTint="#FDDB39"
+                android:layout_margin="5dp"
+                />
+
+            <TextView
+                android:id="@+id/card_resena_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" El producto que me entregaron excelente!! me gusto!!! "
+                android:textAlignment="textStart"
+                android:layout_margin="5dp"/>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/blanco">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/card_filtro_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:text="Ordenado por"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+
+                />
+           <ImageView
+               android:id="@+id/card_filtro_imagen"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_weight="6"
+               android:layout_margin="5dp"
+               android:src="@drawable/ic_check_nuevo"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/card_filtro_linear"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary"
+            >
+        </LinearLayout>
+     </LinearLayout>
+
+    </LinearLayout>
+
+    </androidx.cardview.widget.CardView>

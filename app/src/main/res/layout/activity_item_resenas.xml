@@ -1,0 +1,361 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <include layout="@layout/toolbar_base"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/card1"
+                app:cardBackgroundColor="@color/blanco"
+                android:layout_margin="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="4dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="5dp">
+
+                        <RatingBar
+
+                            android:id="@+id/rating_resenass"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:isIndicator="true"
+                            android:progressTint="@color/verde"
+                            android:progressBackgroundTint="@color/colorAccent"
+                            android:rating="5"
+                            android:numStars="5"
+                            android:max="5"
+                            android:secondaryProgressTint="#FDDB39"
+                            android:layout_margin="5dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/f_total"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="(33) RESEÑAS"
+                            android:textAlignment="textStart"
+                            android:layout_margin="5dp"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="1dp"
+                        android:background="@color/SinCheck"
+                        android:layout_margin="5dp">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="5dp">
+
+                        <TextView
+                            android:id="@+id/promedio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="4,4 de 5"
+                            android:textStyle="bold"
+                            android:layout_margin="5dp"/>
+
+                        <TextView
+                            android:id="@+id/f_total2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="33 calificaciones"
+                            android:textAlignment="textStart"
+                            android:layout_margin="5dp"/>
+
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                         android:layout_margin="2dp"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
+
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:layout_weight="6"
+                         android:text="5"
+                         android:layout_margin="4dp"
+                         android:textStyle="bold"/>
+                         <RatingBar
+                             style="?android:attr/ratingBarStyleSmall"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="6"
+                             android:isIndicator="true"
+                             android:progressTint="@color/verde"
+                             android:rating="1"
+                             android:numStars="1"
+                             android:layout_margin="4dp"
+
+                             />
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:id="@+id/firstBar5"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:background="@color/SinCheck"
+                        android:layout_margin="4dp"
+                        android:progress="20"
+                        android:max="30"/>
+                         <TextView
+                             android:id="@+id/total_5"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="6"
+                             android:text="20"
+                             android:textStyle="bold"
+                             android:layout_margin="4dp"/>
+
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
+
+                             <TextView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_weight="6"
+                                 android:text="4"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+                             <RatingBar
+                                 style="?android:attr/ratingBarStyleSmall"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:clickable="true"
+                                 android:isIndicator="true"
+                                 android:progressTint="@color/verde"
+                                 android:progressBackgroundTint="@color/colorAccent"
+                                 android:rating="1"
+                                 android:numStars="1"
+                                 android:secondaryProgressTint="#FDDB39"
+                                 android:layout_margin="4dp"
+                                 />
+                             <ProgressBar
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.5"
+                                 android:id="@+id/firstBar4"
+                                 style="?android:attr/progressBarStyleHorizontal"
+                                 android:background="@color/SinCheck"
+                                 android:layout_margin="4dp"
+                                 android:progress="10"
+                                 android:max="30"/>
+                             <TextView
+                                 android:id="@+id/total_4"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:text="10"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
+
+                             <TextView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_weight="6"
+                                 android:text="3"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+                             <RatingBar
+                                 style="?android:attr/ratingBarStyleSmall"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:clickable="true"
+                                 android:isIndicator="true"
+                                 android:progressTint="@color/amarillo"
+                                 android:progressBackgroundTint="@color/colorAccent"
+                                 android:rating="1"
+                                 android:numStars="1"
+                                 android:secondaryProgressTint="#FDDB39"
+                                 android:layout_margin="4dp"
+                                 />
+                             <ProgressBar
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.5"
+                                 android:id="@+id/firstBar3"
+                                 style="?android:attr/progressBarStyleHorizontal"
+                                 android:background="@color/SinCheck"
+                                 android:layout_margin="4dp"
+                                 android:max="30"
+                                 android:progress="6"/>
+                             <TextView
+                                 android:id="@+id/total_3"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:text="6"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
+
+                             <TextView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_weight="6"
+                                 android:text="2"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+                             <RatingBar
+                                 style="?android:attr/ratingBarStyleSmall"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:clickable="true"
+                                 android:isIndicator="true"
+                                 android:progressTint="@color/amarillo"
+                                 android:progressBackgroundTint="@color/colorAccent"
+                                 android:rating="1"
+                                 android:numStars="1"
+                                 android:secondaryProgressTint="#FDDB39"
+                                 android:layout_margin="4dp"
+                                 />
+                             <ProgressBar
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.5"
+                                 android:id="@+id/firstBar2"
+                                 style="?android:attr/progressBarStyleHorizontal"
+                                 android:background="@color/SinCheck"
+                                 android:layout_margin="4dp"
+                                 android:max="30"
+                                 android:progress="3"/>
+                             <TextView
+                                 android:id="@+id/total_2"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:text="3"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal">
+
+                             <TextView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:layout_weight="6"
+                                 android:text="1"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"/>
+                             <RatingBar
+                                 style="?android:attr/ratingBarStyleSmall"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:clickable="true"
+                                 android:isIndicator="true"
+                                 android:progressTint="@color/rojo"
+                                 android:progressBackgroundTint="@color/colorAccent"
+                                 android:rating="1"
+                                 android:numStars="1"
+                                 android:secondaryProgressTint="#FDDB39"
+                                 android:layout_margin="4dp"
+                                 />
+                             <ProgressBar
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1.5"
+                                 android:id="@+id/firstBar1"
+                                 style="?android:attr/progressBarStyleHorizontal"
+                                 android:background="@color/SinCheck"
+                                 android:layout_margin="4dp"
+                                 android:progress="1"
+                                 android:max="30"/>
+                             <TextView
+                                 android:id="@+id/total_1"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="6"
+                                 android:text="1"
+                                 android:textStyle="bold"
+                                 android:layout_margin="4dp"
+                                 />
+
+                         </LinearLayout>
+
+
+
+                     </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_lista_resenas"
+                android:layout_margin="10dp">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

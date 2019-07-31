@@ -2,27 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/base1"
-    >
+    android:background="@color/colorPrimary"
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        card_view:srcCompat="@mipmap/logo_trajes_ya" />
+    >
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_linear_2"
-        android:layout_weight="1"
         android:layout_margin="4dp"
         app:cardCornerRadius="25dp">
 
 
-    <android.widget.SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_datos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

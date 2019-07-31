@@ -1,0 +1,236 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/card1"
+                app:cardBackgroundColor="@color/blanco"
+                android:layout_margin="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp"
+                    android:padding="5dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/botonSesion2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="GOOGLE +"
+                            android:textStyle="italic"
+                            android:textColor="@color/blanco"
+                            android:textSize="20sp"
+                            android:background="@color/google"
+                            android:backgroundTint="@color/google"
+                            android:drawableLeft="@drawable/goo"
+                            android:layout_margin="4dp"
+                            android:padding="4dp"/>
+                        <Button
+                            android:id="@+id/boton_sesion_Fb2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="FACEBOOK"
+                            android:textColor="@color/blanco"
+                            android:textStyle="italic"
+                            android:textSize="20sp"
+                            android:background="@color/fb"
+                            android:drawableLeft="@drawable/fb"
+                            android:layout_margin="4dp"
+                            android:padding="4dp"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Inicia Sesión usando tus redes sociales."
+                        android:textColor="@color/negro"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Este paso te ahorrará tiempo y podrás compartir productos y promociones de forma fácil con tu familia y amigos"
+                        android:textSize="12sp"
+                        android:layout_margin="5dp"/>
+
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/card2"
+                app:cardBackgroundColor="@color/blanco"
+                android:layout_margin="5dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp">
+
+                        <EditText
+                            android:id="@+id/nueva_nom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Nombre"
+                            android:textColorHint="#9FA8DA"
+                            android:textColorLink="@color/colorAccent"
+                            android:layout_margin="5dp"
+                            tools:ignore="HardcodedText,RtlHardcoded"
+                            />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp">
+
+                        <EditText
+                            android:id="@+id/nueva_ape"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Apellidos"
+                            android:textColorHint="#9FA8DA"
+                            android:textColorLink="@color/colorAccent"
+                            android:layout_margin="5dp"
+                            tools:ignore="HardcodedText,RtlHardcoded"
+                            />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/nueva_email"
+                            android:inputType="text"
+                            android:hint="Email"
+                            android:textColorHint="#9FA8DA"
+                            android:textColorLink="@color/colorAccent"
+                            android:layout_margin="5dp"
+                            tools:ignore="HardcodedText,RtlHardcoded"
+                            />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/login_password_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:passwordToggleEnabled = "true">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nueva_pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contraseña"
+                            android:layout_margin="5dp"
+                            android:elevation="10dp"
+                            android:textColor="@color/colorAccent"
+                            android:imeActionLabel="login"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:textColorHint="#9FA8DA"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp">
+
+                        <EditText
+                            android:id="@+id/nueva_dni"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="DNI(Opcional)"
+                            android:textColorHint="#9FA8DA"
+                            android:textColorLink="@color/colorAccent"
+                            android:layout_margin="5dp"
+                            tools:ignore="HardcodedText,RtlHardcoded"
+                            />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp">
+
+                        <EditText
+                            android:id="@+id/nueva_telf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:hint="Teléfono Celular(Opcional)"
+                            android:textColorHint="#9FA8DA"
+                            android:textColorLink="@color/colorAccent"
+                            android:layout_margin="5dp"
+                            tools:ignore="HardcodedText,RtlHardcoded"
+                            />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Me gustaria recibir comunicaciones promocionales"
+                        android:layout_margin="5dp"/>
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Acepto los Términos y condiciones"
+                        android:layout_margin="5dp"/>
+
+                    <Button
+                        android:id="@+id/boton_crear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CREAR CUENTA"
+                        android:textColor="@color/blanco"
+                        android:textSize="20dp"
+                        android:background="@color/colorAccent"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

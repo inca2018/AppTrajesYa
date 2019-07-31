@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
+            <ImageView
+                android:id="@+id/card_buscar_imagen"
+                android:layout_width="match_parent"
+                android:layout_weight="2.5"
+                android:layout_height="70dp"
+                android:src="@drawable/lcd1"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/card_buscar_nom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_margin="6dp"
+                    />
+                <TextView
+                    android:id="@+id/card_buscar_vendedor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+                    android:textSize="10sp"
+                    android:gravity="center"
+                    android:layout_margin="4dp"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:src="@drawable/ic_boton_adelante"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
