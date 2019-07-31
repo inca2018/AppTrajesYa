@@ -11,9 +11,7 @@
         layout="@layout/menu_principal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="100dp"></include>
-
+        ></include>
 
     <include
         layout="@layout/buscador"
