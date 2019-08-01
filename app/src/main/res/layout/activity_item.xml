@@ -434,12 +434,14 @@
                     android:layout_margin="2dp"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_colores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp">
+                    android:layout_margin="4dp"
+                    android:visibility="gone">
 
                 </androidx.recyclerview.widget.RecyclerView>
                 <TextView
@@ -567,7 +569,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    android:text="COMPRAR"
+                    android:text="RESERVAR"
                     android:textSize="16dp"
                     android:textColor="@color/blanco"
                     android:background="@android:color/transparent"
