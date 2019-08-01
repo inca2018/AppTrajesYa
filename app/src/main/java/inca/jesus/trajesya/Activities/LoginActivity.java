@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.etPassword);
         callbackManager = CallbackManager.Factory.create();
         loginButton = findViewById(R.id.loginFb);
+        sin_cuenta=findViewById(R.id.btnSinCuenta);
         loginButton.setReadPermissions("email");
 
         TextView sin_cuenta =findViewById(R.id.btnSinCuenta);

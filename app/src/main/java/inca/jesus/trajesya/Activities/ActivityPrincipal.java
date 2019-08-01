@@ -61,9 +61,27 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         fragmentManager = getSupportFragmentManager();
-        toolbar = (Toolbar) findViewById(R.id.toolbar_base);
+        toolbar =  findViewById(R.id.toolbar_base);
         setSupportActionBar(toolbar);
-        linear_search=(CardView) findViewById(R.id.card_linear_2);
+        linear_search= findViewById(R.id.card_linear_2);
+
+        l1=findViewById(R.id.linear1);
+        l2=findViewById(R.id.linear2);
+        l3=findViewById(R.id.linear3);
+        l4=findViewById(R.id.linear4);
+        l5=findViewById(R.id.linear5);
+
+        o1=findViewById(R.id.ope_1);
+        o2=findViewById(R.id.ope_2);
+        o3=findViewById(R.id.ope_3);
+        o4=findViewById(R.id.ope_4);
+        o5=findViewById(R.id.ope_5);
+        opt1=findViewById(R.id.opt1);
+        opt2=findViewById(R.id.opt2);
+        opt3=findViewById(R.id.opt3);
+        opt4=findViewById(R.id.opt4);
+        opt5=findViewById(R.id.opt5);
+
         //boton_kids=(CardView)findViewById(R.id.panel_boton_cumpleKids);
         //boton_fotos=(CardView)findViewById(R.id.panel_boton_cumplefotos);
 
@@ -88,7 +106,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             System.out.println("INKA: USUARIO"+Sesion.USUARIO.getNombre());
         }
 
-        bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationView =  findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -100,9 +118,9 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                             case R.id.action_2:
                                 Opcion2();
                                 return true;
-                            case R.id.action_3:
-                                Opcion3();
-                                return true;
+                            //case R.id.action_3:
+                              //  Opcion3();
+                               // return true;
                             case R.id.action_4:
                                 Opcion4();
                                 return true;
@@ -135,22 +153,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         search.setOnQueryTextListener(this);
 
 
-        l1=(LinearLayout)findViewById(R.id.linear1);
-        l2=(LinearLayout)findViewById(R.id.linear2);
-        l3=(LinearLayout)findViewById(R.id.linear3);
-        l4=(LinearLayout)findViewById(R.id.linear4);
-        l5=(LinearLayout)findViewById(R.id.linear5);
 
-        o1=(ImageButton)findViewById(R.id.ope_1);
-        o2=(ImageButton)findViewById(R.id.ope_2);
-        o3=(ImageButton)findViewById(R.id.ope_3);
-        o4=(ImageButton)findViewById(R.id.ope_4);
-        o5=(ImageButton)findViewById(R.id.ope_5);
-        opt1=(TextView)findViewById(R.id.opt1);
-        opt2=(TextView)findViewById(R.id.opt2);
-        opt3=(TextView)findViewById(R.id.opt3);
-        opt4=(TextView)findViewById(R.id.opt4);
-        opt5=(TextView)findViewById(R.id.opt5);
 
         l1.setOnClickListener(new View.OnClickListener() {
             @Override

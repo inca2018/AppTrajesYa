@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#FEDA3B</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#F6A300</color>
 
     <color name="colorAccent2">#FF9100</color>
     <color name="blanco">#FFFFFF</color>
@@ -16,7 +16,7 @@
     <color name="verde"> #8BC34A</color>
     <color name="amarillo"> #FFFF00</color>
     <color name="noFocus">  #1565C0</color>
-    <color name="deseo">#cc0066</color>
+    <color name="deseo">#F6A300</color>
     <color name="celeste_bjo"> #e3f2fd</color>
 
     <color name="base1">#FEDA3B</color>

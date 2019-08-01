@@ -145,29 +145,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:elevation="5dp"
-                app:cardCornerRadius="2dp"
+
+            <TextView
+                android:id="@+id/btnSinCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="SIN USUARIO"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent2"
+                android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/btnSinCuenta"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="SIN USUARIO"
-                    android:textColor="@color/colorAccent2"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"/>
-            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

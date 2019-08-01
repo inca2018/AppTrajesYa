@@ -19,8 +19,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabIndicatorColor="@color/base2"
             app:tabSelectedTextColor="@color/blanco"
-            />
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

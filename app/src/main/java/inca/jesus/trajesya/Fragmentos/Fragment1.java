@@ -41,7 +41,7 @@ public class Fragment1 extends Fragment  {
         adapter.addFragment(new Destacados(), getString(R.string.Destacados));
         //adapter.addFragment(new Categorias(), getString(R.string.Categorias));
         adapter.addFragment(new Recomendaciones(), getString(R.string.Recomendaciones));
-        adapter.addFragment(new LoNuevo(), getString(R.string.Lo_nuevo));
+        //adapter.addFragment(new LoNuevo(), getString(R.string.Lo_nuevo));
         adapter.addFragment(new Ofertas(), getString(R.string.lo_mejor));
         //adapter.addFragment(new Fragment6(),getString(R.string.videos));
         viewPager.setAdapter(adapter);

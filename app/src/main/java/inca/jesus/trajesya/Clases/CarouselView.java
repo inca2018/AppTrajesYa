@@ -168,11 +168,11 @@ public class CarouselView extends RelativeLayout implements View.OnClickListener
         for (int i = urls.length - 1; i >= 0; i--) {
             ImageView iv = new ImageView(getContext());
             iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            Picasso.with(getContext()).load(R.drawable.default_image).into(iv);
+            Picasso.get().load(R.drawable.default_image).into(iv);
             String url = urls[i];
             if (url != null) {
                 Uri uri = Uri.parse(url);
-                Picasso.with(getContext()).load(uri).into(iv);
+                Picasso.get().load(uri).into(iv);
             }
             mViews.add(iv);
         }

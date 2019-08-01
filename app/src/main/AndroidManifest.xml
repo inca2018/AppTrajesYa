@@ -16,7 +16,7 @@
         <activity android:name=".Sesion.SesionGoogleLogin" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.Item" />
-
+        <activity android:name=".Activities.CompraActivity" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -48,6 +48,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Activities.Categorias_Sub" />
+        <activity
+            android:name=".Activities.ListaProductos"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

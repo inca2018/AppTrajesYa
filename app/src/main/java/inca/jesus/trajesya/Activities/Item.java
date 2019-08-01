@@ -188,11 +188,11 @@ public class Item extends AppCompatActivity {
                                 intent2.putExtra("o","o2");
                                 startActivity(intent2);
                                 return true;
-                            case R.id.action_3:
+                            /*case R.id.action_3:
                                 Intent intent3 = new Intent(Item.this,ActivityPrincipal.class);
                                 intent3.putExtra("o","o3");
                                 startActivity(intent3);
-                                return true;
+                                return true;*/
                             case R.id.action_4:
                                 Intent intent4 = new Intent(Item.this,ActivityPrincipal.class);
                                 intent4.putExtra("o","o4");

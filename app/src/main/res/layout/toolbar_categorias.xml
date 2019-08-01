@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/toolbar_base"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/gradiente"
             tools:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             >
