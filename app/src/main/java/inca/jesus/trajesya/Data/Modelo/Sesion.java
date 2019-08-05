@@ -1,4 +1,4 @@
-package inca.jesus.trajesya.Data.Conexion;
+package inca.jesus.trajesya.Data.Modelo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,14 +10,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Sesion {
 
-
-    public final static String PATH="http://trajesya.com";
-    public final static String LOGIN=PATH+"/";
-    public final static String GESTION=PATH+"/App/Gestion/CGestion.php";
-
     public Sesion(){
     }
-
 
     public void RegistrarSesion(Context context, Usuario usuario) {
         // Registrar Informacion de usuario en SharedPreferences  para reutilizacion
@@ -48,6 +42,7 @@ public class Sesion {
         Temporal.setPerfilUsuario(perfil);
         return Temporal;
     }
+
 
 
 }

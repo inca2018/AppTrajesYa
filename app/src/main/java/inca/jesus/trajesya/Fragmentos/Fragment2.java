@@ -32,13 +32,14 @@ import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.Data.Modelo.Producto;
 import inca.jesus.trajesya.Clases.Segmento_Categorias;
 import inca.jesus.trajesya.Clases.Segmento_SubCategorias;
-import inca.jesus.trajesya.Data.Conexion.Sesion;
+import inca.jesus.trajesya.Data.Modelo.Sesion;
 import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Categoria;
 import inca.jesus.trajesya.Data.Modelo.Estado;
 import inca.jesus.trajesya.Data.Modelo.Grupo;
 import inca.jesus.trajesya.Data.Modelo.SubCategoria;
 import inca.jesus.trajesya.Data.Modelo.UnidadTerritorial;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 public class Fragment2 extends Fragment {
@@ -193,7 +194,7 @@ public class Fragment2 extends Fragment {
 
     public void ListarCategoriasDisponibles(final Context context){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Sesion.GESTION,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -259,7 +260,7 @@ public class Fragment2 extends Fragment {
 
         final String  idCategoria=String.valueOf(idCate);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Sesion.GESTION,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -327,7 +328,7 @@ public class Fragment2 extends Fragment {
 
         final String  idSubCategoria=String.valueOf(idSubCate);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Sesion.GESTION,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

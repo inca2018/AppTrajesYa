@@ -32,10 +32,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import inca.jesus.trajesya.Data.Conexion.Sesion;
+import inca.jesus.trajesya.Data.Modelo.Sesion;
 import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Clases.Perfil;
 import inca.jesus.trajesya.Data.Modelo.Usuario;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 import org.json.JSONException;
@@ -71,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         SpannableString mitextoU = new SpannableString("SIN USUARIO");
         mitextoU.setSpan(new UnderlineSpan(), 0, mitextoU.length(), 0);
         sin_cuenta.setText(mitextoU);
-
 
         opciones();
         SesionFacebook();
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         if(mensaje.length()==0){
             Usuario Temporal=new Usuario();
             Temporal.setUsuario(usuario.getText().toString());
-            Temporal.setPassword(usuario.getText().toString());
+            Temporal.setPassword(password.getText().toString());
             VerificarUsuarioServidor(context,Temporal);
         }else{
             Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setTitle("Login:");
         progressDialog.setMessage("Iniciando.......");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Sesion.LOGIN,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
