@@ -12,12 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import inca.jesus.trajesya.Adapters.AdapterSegmento;
-import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
+import inca.jesus.trajesya.Adapters.AdapterCategoriasDisponibles;
 
-import inca.jesus.trajesya.Clases.Segmento_Productos;
 import inca.jesus.trajesya.R;
 
 /**
@@ -27,7 +24,7 @@ public class Categorias extends Fragment {
 
     private RecyclerView recycler1;
     private LinearLayoutManager linearLayout1;
-    private AdapterSegmento adapter1;
+    private AdapterCategoriasDisponibles adapter1;
 
 
     public Categorias() {
@@ -44,7 +41,7 @@ public class Categorias extends Fragment {
 
 
         linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
-        adapter1 = new AdapterSegmento(getActivity(), Segmento_Productos.CATEGORIAs, new RecyclerViewOnItemClickListener2() {
+        /*adapter1 = new AdapterCategoriasDisponibles(getActivity(), Segmento_Productos.CATEGORIAs, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 Toast.makeText(getActivity(),"position: "+position, Toast.LENGTH_SHORT).show();
@@ -52,7 +49,7 @@ public class Categorias extends Fragment {
             }
         });
         recycler1.setAdapter(adapter1);
-        recycler1.setLayoutManager(linearLayout1);
+        recycler1.setLayoutManager(linearLayout1);*/
 
         return view;
     }

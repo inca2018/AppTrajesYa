@@ -6,13 +6,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import inca.jesus.trajesya.Adapters.AdapterCategoria;
-import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
+import inca.jesus.trajesya.Adapters.AdapterSubCategoriasDisponibles;
 import inca.jesus.trajesya.Clases.Segmento_Categorias;
 import inca.jesus.trajesya.Clases.Segmento_Productos;
 import inca.jesus.trajesya.R;
@@ -21,7 +19,7 @@ public class Categorias_Sub extends AppCompatActivity {
 
      private RecyclerView recycler2;
     private LinearLayoutManager linearLayout1;
-    private AdapterCategoria adapter2;
+    private AdapterSubCategoriasDisponibles adapter2;
     Segmento_Productos cate;
     List<Segmento_Categorias> tempSub;
     @SuppressLint("WrongConstant")
@@ -38,15 +36,15 @@ public class Categorias_Sub extends AppCompatActivity {
 
 
 
-        linearLayout1 = new LinearLayoutManager(Categorias_Sub.this, LinearLayoutManager.VERTICAL,false);
-        adapter2 = new AdapterCategoria(Categorias_Sub.this,tempSub, new RecyclerViewOnItemClickListener2() {
+        /*linearLayout1 = new LinearLayoutManager(Categorias_Sub.this, LinearLayoutManager.VERTICAL,false);
+        adapter2 = new AdapterSubCategoriasDisponibles(Categorias_Sub.this,tempSub, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
             }
         });
         recycler2.setAdapter(adapter2);
-        recycler2.setLayoutManager(linearLayout1);
+        recycler2.setLayoutManager(linearLayout1);*/
 
 
     }

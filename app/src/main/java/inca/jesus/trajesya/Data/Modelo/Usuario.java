@@ -1,4 +1,6 @@
-package inca.jesus.trajesya.Clases;
+package inca.jesus.trajesya.Data.Modelo;
+
+import inca.jesus.trajesya.Clases.Perfil;
 
 public class Usuario {
     int idUsuario;

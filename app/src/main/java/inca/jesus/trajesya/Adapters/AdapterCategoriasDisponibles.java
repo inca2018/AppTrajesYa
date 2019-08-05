@@ -10,23 +10,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-import inca.jesus.trajesya.Clases.Segmento_Productos;
+import inca.jesus.trajesya.Data.Modelo.Categoria;
 import inca.jesus.trajesya.R;
 
 /**
  * Created by Jesus on 01/06/2017.
  */
 
-public class AdapterSegmento extends RecyclerView.Adapter<AdapterSegmento.ViewHolder> {
+public class AdapterCategoriasDisponibles extends RecyclerView.Adapter<AdapterCategoriasDisponibles.ViewHolder> {
 
     private Context context;
-    private List<Segmento_Productos> my_Data;
+    private List<Categoria> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
+    public String RUTA_PATH="http://admin.trajesya.com/assets/images/";
 
-    public AdapterSegmento(Context context, List<Segmento_Productos> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterCategoriasDisponibles(Context context, List<Categoria> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -58,17 +60,25 @@ public class AdapterSegmento extends RecyclerView.Adapter<AdapterSegmento.ViewHo
         }
     }
 
-    public AdapterSegmento.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_segmento_productos,parent,false);
-        return new AdapterSegmento.ViewHolder(itemView);
+    public AdapterCategoriasDisponibles.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_categorias,parent,false);
+        return new AdapterCategoriasDisponibles.ViewHolder(itemView);
 
     }
     @Override
-    public void onBindViewHolder(final AdapterSegmento.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final AdapterCategoriasDisponibles.ViewHolder holder, final int position) {
 
-        holder.nom.setText(my_Data.get(position).getNombre());
+        holder.nom.setText(my_Data.get(position).getNombreCategoria());
+
+        //Glide.with(holder.itemView.getContext())
+                //.load(RUTA_PATH+my_Data.get(position).getImagenCategoria())
+                //.into(holder.imagen);
+
         Glide.with(holder.itemView.getContext())
-                .load(my_Data.get(position).getIdDrawable())
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.default_imagen)
+                        .error(R.drawable.default_imagen))
+                .load(RUTA_PATH+my_Data.get(position).getImagenCategoria())
                 .into(holder.imagen);
 
 
@@ -112,22 +122,26 @@ public class AdapterSegmento extends RecyclerView.Adapter<AdapterSegmento.ViewHo
     public int getItemCount() {
         return my_Data.size();
     }
-    public int posSeleccion(){
+    public int RecuperarIdCategoria(){
         int d=0;
         for(int i=0;i<my_Data.size();i++){
             if(my_Data.get(i).isSelect()==true){
-                d=my_Data.get(i).getId();
+                d=my_Data.get(i).getIdCategoria();
             }
         }
         return d;
      }
-     public String RecuNombreSegmento(){
+     public String RecuperarNombreCategoria(){
          String d="";
          for(int i=0;i<my_Data.size();i++){
              if(my_Data.get(i).isSelect()==true){
-                 d=my_Data.get(i).getNombre();
+                 d=my_Data.get(i).getNombreCategoria();
              }
          }
          return d;
      }
-    }
+
+     public void LimpiarDatos(){
+        my_Data.clear();
+     }
+}

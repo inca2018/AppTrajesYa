@@ -1,4 +1,4 @@
-package inca.jesus.trajesya.Clases;
+package inca.jesus.trajesya.Data.Modelo;
 
 public class Estado {
 

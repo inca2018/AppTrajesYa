@@ -1,5 +1,7 @@
 package inca.jesus.trajesya.Clases;
 
+import inca.jesus.trajesya.Data.Modelo.Estado;
+
 public class Perfil {
     int idPerfil;
     String NombrePrefil;

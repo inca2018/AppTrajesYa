@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 import inca.jesus.trajesya.Data.Conexion.Sesion;
 import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Clases.Perfil;
-import inca.jesus.trajesya.Clases.Usuario;
+import inca.jesus.trajesya.Data.Modelo.Usuario;
 import inca.jesus.trajesya.R;
 
 import org.json.JSONException;

@@ -4,16 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import inca.jesus.trajesya.Clases.Perfil;
-import inca.jesus.trajesya.Clases.Usuario;
+import inca.jesus.trajesya.Data.Modelo.Usuario;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Sesion {
 
 
-    public final static String PATH="trajesya.com";
+    public final static String PATH="http://trajesya.com";
     public final static String LOGIN=PATH+"/";
-
+    public final static String GESTION=PATH+"/App/Gestion/CGestion.php";
 
     public Sesion(){
     }
