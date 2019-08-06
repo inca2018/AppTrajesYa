@@ -50,13 +50,14 @@ import inca.jesus.trajesya.R;
 public class Destacados extends Fragment {
     private RecyclerView recyclerNuevos,recycler2,recycler3,recycler4;
     private LinearLayoutManager linearLayout1,linearLayout2,linearLayout3,linearLayout4;
-    private Adapter1 adapter1,adapter2,adapter3,adapter4;
-    private Adapter3 adapterItem;
-    private AdapterItemProductos adapterNuevos;
-    CardView card1,card2,card3,card4;
+    private AdapterItemProductos adapterNuevos,adapterMasVistos,adapterMasAlquilados,adapterTendendecias;
+
     Context context;
     /*--------------LISTADOS--*/
     List<Producto> ListaNuevos;
+    List<Producto> ListaMasVistos;
+    List<Producto> ListaMasAlquilados;
+    List<Producto> ListaTendencias;
     public Destacados() {
         // Required empty public constructor
     }
@@ -72,6 +73,9 @@ public class Destacados extends Fragment {
 
         /*-------Iniciar Listado------*/
         ListaNuevos=new ArrayList<>();
+        ListaMasVistos=new ArrayList<>();
+        ListaMasAlquilados=new ArrayList<>();
+        ListaTendencias=new ArrayList<>();
 
         linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
         adapterNuevos = new AdapterItemProductos(getActivity(), ListaNuevos, new RecyclerViewOnItemClickListener2() {
@@ -87,65 +91,38 @@ public class Destacados extends Fragment {
 
 
         linearLayout2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterItem = new Adapter3(getActivity(),ProductoX.CELULARx5, new RecyclerViewOnItemClickListener2() {
+        adapterMasVistos = new AdapterItemProductos(getActivity(),ListaMasVistos, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
             }
         });
-        recycler2.setAdapter(adapterItem);
+        recycler2.setAdapter(adapterMasVistos);
         recycler2.setLayoutManager(linearLayout2);
 
+
+
         linearLayout3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterItem = new Adapter3(getActivity(),ProductoX.CASACASx5, new RecyclerViewOnItemClickListener2() {
+        adapterMasAlquilados = new AdapterItemProductos(getActivity(),ListaMasAlquilados, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
             }
         });
-        recycler3.setAdapter(adapterItem);
+        recycler3.setAdapter(adapterMasAlquilados);
         recycler3.setLayoutManager(linearLayout3);
 
+
+
         linearLayout4 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterItem = new Adapter3(getActivity(),ProductoX.BLUSAx5, new RecyclerViewOnItemClickListener2() {
+        adapterTendendecias = new AdapterItemProductos(getActivity(),ListaTendencias, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
             }
         });
-        recycler4.setAdapter(adapterItem);
+        recycler4.setAdapter(adapterTendendecias);
         recycler4.setLayoutManager(linearLayout4);
-
-
-        card1=(CardView)view.findViewById(R.id.card1);
-        card1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Promo1", Toast.LENGTH_SHORT).show();
-            }
-        });
-        card2=(CardView)view.findViewById(R.id.card2);
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Promo2", Toast.LENGTH_SHORT).show();
-            }
-        });
-        card3=(CardView)view.findViewById(R.id.card3);
-        card3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Promo3", Toast.LENGTH_SHORT).show();
-            }
-        });
-        card4=(CardView)view.findViewById(R.id.card4);
-        card4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Promo4", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
 
         return view;
@@ -205,20 +182,24 @@ public class Destacados extends Fragment {
                                     temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
 
                                     ListaNuevos.add(temp);
+                                    ListaMasVistos.add(temp);
+                                    ListaMasAlquilados.add(temp);
+                                    ListaTendencias.add(temp);
+                                    Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos");
                                 adapterNuevos.notifyDataSetChanged();
+                                adapterMasVistos.notifyDataSetChanged();
+                                adapterMasAlquilados.notifyDataSetChanged();
+                                adapterTendendecias.notifyDataSetChanged();
 
                             } else {
-
                                 Toast.makeText(context, "Productos no Disponibles.", Toast.LENGTH_SHORT).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("Inca","Error JSON:"+e);
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -230,7 +211,7 @@ public class Destacados extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarUltimosProductos");
+                params.put("operacion", "ListarProductosNuevos");
                 return params;
             }
         };

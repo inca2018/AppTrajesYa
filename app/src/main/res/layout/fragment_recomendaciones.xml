@@ -14,7 +14,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PRODUCTOS QUE HAS VISTO RECIENTEMENTE"
+                android:text="TRAJES VISTOS RECIENTEMENTE"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PROMOCIONES"
+                android:text="TRAJES EN PROMOCIÓN"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOS MÁS VENDIDOS EN OTRAS CAMARAS"
+                android:text="MáS ALQUILADOS EN TRAJES TRADICIONALES"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOS MAS VENDIDOS EN CELULARES"
+                android:text="MÁS ALQUILADOS EN OTROS TRAJES"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>

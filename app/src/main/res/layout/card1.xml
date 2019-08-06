@@ -11,8 +11,8 @@
             >
             <ImageView
                 android:id="@+id/card_imagen"
-                android:layout_width="100dp"
-                android:layout_height="120dp"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
                 android:src="@drawable/promo1"
                 />
             <TextView
@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="S/ 113.00"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="@color/base2"
                 android:textStyle="bold"
                 android:textAlignment="center" />
