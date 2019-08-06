@@ -13,6 +13,8 @@ public class Producto {
     UnidadTerritorial provinciaProducto;
     UnidadTerritorial distritoProducto;
     Estado estadoProducto;
+    double precioAlquiler;
+    double precioVenta;
 
 
     public Producto(){
@@ -113,5 +115,21 @@ public class Producto {
 
     public void setEstadoProducto(Estado estadoProducto) {
         this.estadoProducto = estadoProducto;
+    }
+
+    public double getPrecioAlquiler() {
+        return precioAlquiler;
+    }
+
+    public void setPrecioAlquiler(double precioAlquiler) {
+        this.precioAlquiler = precioAlquiler;
+    }
+
+    public double getPrecioVenta() {
+        return precioVenta;
+    }
+
+    public void setPrecioVenta(double precioVenta) {
+        this.precioVenta = precioVenta;
     }
 }

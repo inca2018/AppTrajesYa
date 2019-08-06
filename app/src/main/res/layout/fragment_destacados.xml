@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TV y VIDEO"
+                android:text="ULTIMOS TRAJES"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -87,7 +87,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RELOJES"
+                android:text="LOS MAS VISTOS"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -99,7 +99,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ACCESORIOS PARA CELULARES"
+                android:text="LOS MAS ALQUILADOS"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CELULARES Y SMARTPHONES"
+                android:text="TENDENCIAS"
                 android:textColor="@color/negro"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
