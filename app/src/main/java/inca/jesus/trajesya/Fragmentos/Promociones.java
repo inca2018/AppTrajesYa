@@ -57,7 +57,7 @@ public class Promociones extends Fragment {
         ListaPromociones=new ArrayList<>();
 
         linearLayout = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        adapterPromociones = new AdapterPromociones(getActivity(), ListaPromociones, new RecyclerViewOnItemClickListener2() {
+        adapterPromociones = new AdapterPromociones(getActivity(), Constantes.Base_ListaPromociones, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
             }
@@ -65,8 +65,8 @@ public class Promociones extends Fragment {
         recyclerPromociones.setAdapter(adapterPromociones);
         recyclerPromociones.setLayoutManager(linearLayout);
 
-        ListarPromocionesDisponibles(context);
-        ListarPromocionesDisponibles2(context);
+       // ListarPromocionesDisponibles(context);
+
         return view;
     }
 
@@ -95,64 +95,7 @@ public class Promociones extends Fragment {
                                     Estado estado=new Estado();
                                     estado.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoPromocion(estado);
-                                    Log.i("Inca","Recuperado:"+temp.getNombrePromocion());
-                                    //ListaPromociones.add(temp);
-                                }
-                                Log.i("Inca","Servidor Listar Promociones");
-                                adapterPromociones.notifyDataSetChanged();
-
-                            } else {
-
-                                Toast.makeText(context, "Categorias no Disponibles.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.i("Inca","Error JSON:"+e);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarPromociones");
-                return params;
-            }
-        };
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-    }
-    public void ListarPromocionesDisponibles2(final Context context){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray categorias=jsonResponse.getJSONArray("promociones");
-                                for(int i=0;i<categorias.length();i++){
-                                    JSONObject objeto= categorias.getJSONObject(i);
-                                    Promocion temp=new Promocion();
-                                    temp.setIdPromocion(objeto.getInt("idPromocion"));
-                                    temp.setNombrePromocion(objeto.getString("NombrePromocion"));
-                                    temp.setImagenPromocion(objeto.getString("imagenPromocion"));
-                                    temp.setLinkPromocion(objeto.getString("linkPromocion"));
-                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
-
-                                    Estado estado=new Estado();
-                                    estado.setIdEstado(objeto.getInt("Estado_idEstado"));
-                                    temp.setEstadoPromocion(estado);
-                                    Log.i("Inca","Recuperado:"+temp.getNombrePromocion());
+                                    Log.i("Inca","Promocion Recuperada :"+temp.getNombrePromocion());
                                     ListaPromociones.add(temp);
                                 }
                                 Log.i("Inca","Servidor Listar Promociones");
@@ -165,14 +108,14 @@ public class Promociones extends Fragment {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.i("Inca","Error JSON:"+e);
+                            Log.i("Inca","Error JSON Promociones:"+e);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
+                        Log.i("Inca Error Response", String.valueOf(error));
                     }
                 }) {
             @Override
@@ -185,9 +128,4 @@ public class Promociones extends Fragment {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        adapterPromociones.notifyDataSetChanged();
-    }
 }

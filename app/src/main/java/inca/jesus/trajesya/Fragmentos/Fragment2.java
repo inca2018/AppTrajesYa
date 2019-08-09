@@ -100,7 +100,7 @@ public class Fragment2 extends Fragment {
 
         /*----------ArmarRecycler Categorias-----------------*/
         linearLayout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
-        adapterCategoria = new AdapterCategoriasDisponibles(context, ListaCategoria, new RecyclerViewOnItemClickListener2() {
+        adapterCategoria = new AdapterCategoriasDisponibles(context, Constantes.Base_Categorias, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 //not required
@@ -111,7 +111,7 @@ public class Fragment2 extends Fragment {
 
 
         /*----------Listar Categorias-----------------*/
-        ListarCategoriasDisponibles(context);
+        //ListarCategoriasDisponibles(context);
 
 
 
@@ -223,6 +223,7 @@ public class Fragment2 extends Fragment {
                                     estadoCategoria.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoCategoria(estadoCategoria);
 
+                                    Log.i("Inca","Recuperar Categorias:"+temp.getDescripcionCategoria());
                                     ListaCategoria.add(temp);
                                 }
                                 Log.e("Inca","Servidor Listar Categorias");
@@ -289,6 +290,7 @@ public class Fragment2 extends Fragment {
                                     temp.setEstadoSubCategoria(estadoSubCategoria);
 
                                     ListaSubCategoria.add(temp);
+                                    Log.i("Inca","Recuperar SubCategoria:"+temp.getDescripcionSubCategoria());
                                 }
 
                                 Log.e("Inca","Servidor Listar SubCategorias");
@@ -337,9 +339,9 @@ public class Fragment2 extends Fragment {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
-                                JSONArray categorias=jsonResponse.getJSONArray("productos");
-                                for(int i=0;i<categorias.length();i++){
-                                    JSONObject objeto= categorias.getJSONObject(i);
+                                JSONArray productoCate=jsonResponse.getJSONArray("productosCategorias");
+                                for(int i=0;i<productoCate.length();i++){
+                                    JSONObject objeto= productoCate.getJSONObject(i);
                                     Producto temp=new Producto();
                                     temp.setIdProducto(objeto.getInt("idProducto"));
                                     temp.setNombreProducto(objeto.getString("NombreProducto"));
@@ -376,6 +378,8 @@ public class Fragment2 extends Fragment {
                                     temp.setEstadoProducto(estadoProducto);
 
                                     ListaProducto.add(temp);
+
+                                    Log.i("Inca","Recuperar Productos de Categorias:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos");
                                 adapterProducto.notifyDataSetChanged();

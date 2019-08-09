@@ -14,7 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_weight="6"
-        app:srcCompat="@drawable/logo"
+        android:padding="8dp"
+        app:srcCompat="@drawable/trajesya_blanco"
         android:contentDescription="TODO" />
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

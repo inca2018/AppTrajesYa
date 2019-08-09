@@ -15,13 +15,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo"
-        app:layout_constraintVertical_weight="10"/>
+        app:layout_constraintVertical_weight="10"
+        app:srcCompat="@drawable/trajesya_blanco" />
 
     <ProgressBar
         android:id="@+id/progress"

@@ -66,8 +66,9 @@ public class Destacados extends Fragment {
         ListaMasAlquilados=new ArrayList<>();
         ListaTendencias=new ArrayList<>();
 
+        /*-------Armar Listas---------*/
         linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterNuevos = new AdapterItemProductos(getActivity(), ListaNuevos, new RecyclerViewOnItemClickListener2() {
+        adapterNuevos = new AdapterItemProductos(getActivity(), Constantes.Base_ListaProductoNuevo, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 //not required
@@ -76,11 +77,11 @@ public class Destacados extends Fragment {
         recyclerNuevos.setAdapter(adapterNuevos);
         recyclerNuevos.setLayoutManager(linearLayout1);
 
-        ListarProductosNuevos(context);
+        //ListarProductosNuevos(context);
 
 
         linearLayout2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterMasVistos = new AdapterItemProductos(getActivity(),ListaMasVistos, new RecyclerViewOnItemClickListener2() {
+        adapterMasVistos = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoMasVisto, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
@@ -89,10 +90,10 @@ public class Destacados extends Fragment {
         recycler2.setAdapter(adapterMasVistos);
         recycler2.setLayoutManager(linearLayout2);
 
-
+        //ListarProductosMasVistos(context);
 
         linearLayout3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterMasAlquilados = new AdapterItemProductos(getActivity(),ListaMasAlquilados, new RecyclerViewOnItemClickListener2() {
+        adapterMasAlquilados = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoMasAlquilados, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
@@ -101,10 +102,10 @@ public class Destacados extends Fragment {
         recycler3.setAdapter(adapterMasAlquilados);
         recycler3.setLayoutManager(linearLayout3);
 
-
+        //ListarProductosMasAlquilados(context);
 
         linearLayout4 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterTendendecias = new AdapterItemProductos(getActivity(),ListaTendencias, new RecyclerViewOnItemClickListener2() {
+        adapterTendendecias = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoTendencias, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
@@ -113,6 +114,7 @@ public class Destacados extends Fragment {
         recycler4.setAdapter(adapterTendendecias);
         recycler4.setLayoutManager(linearLayout4);
 
+        //ListarProductosTendencias(context);
 
         return view;
 
@@ -207,13 +209,257 @@ public class Destacados extends Fragment {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
     }
+    public void ListarProductosMasVistos(final Context context){
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
 
+                            if (success) {
+                                JSONArray productos=jsonResponse.getJSONArray("productos");
+                                for(int i=0;i<productos.length();i++){
+                                    JSONObject objeto= productos.getJSONObject(i);
+                                    Producto temp=new Producto();
+                                    temp.setIdProducto(objeto.getInt("idProducto"));
+                                    temp.setNombreProducto(objeto.getString("NombreProducto"));
+                                    temp.setDescripcionProducto(objeto.getString("DescripcionProducto"));
+                                    temp.setImagenProducto(objeto.getString("imagenPortada"));
+                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
 
-    /*public void onBackPressed() {
-        Intent intent =new Intent(getActivity(),ActivityPrincipal.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK  | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        return;
-    }*/
+                                    Categoria categoria=new Categoria();
+                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
+                                    temp.setCategoriaProducto(categoria);
+
+                                    SubCategoria subCategoria=new SubCategoria();
+                                    subCategoria.setIdSubCategoria(objeto.getInt("SubCategoria_idSubCategoria"));
+                                    temp.setSubCategoriaProducto(subCategoria);
+
+                                    UnidadTerritorial departamento=new UnidadTerritorial();
+                                    departamento.setIdUnidadTerritorial(objeto.getInt("Departamento_idDepartamento"));
+                                    departamento.setNombreUnidadTerritorial(objeto.getString("departamento"));
+                                    temp.setDepartamentoProducto(departamento);
+
+                                    UnidadTerritorial provincia=new UnidadTerritorial();
+                                    provincia.setIdUnidadTerritorial(objeto.getInt("Provincia_idProvincia"));
+                                    UnidadTerritorial distrito=new UnidadTerritorial();
+                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                    provincia.setNombreUnidadTerritorial(objeto.getString("provincia"));
+                                    temp.setDepartamentoProducto(provincia);
+
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    temp.setDepartamentoProducto(distrito);
+
+                                    Estado estadoProducto=new Estado();
+                                    estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    temp.setEstadoProducto(estadoProducto);
+
+                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+
+                                    ListaMasVistos.add(temp);
+
+                                    Log.i("Inca","Recupero Producto mas vistos:"+temp.getNombreProducto());
+                                }
+                                Log.e("Inca","Servidor Listar Productos Mas vistos");
+                                adapterMasVistos.notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(context, "Productos no Disponibles mas vistos", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca","Error JSON:"+e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "ListarProductosMasVistos");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+    }
+    public void ListarProductosMasAlquilados(final Context context){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                JSONArray productos=jsonResponse.getJSONArray("productos");
+                                for(int i=0;i<productos.length();i++){
+                                    JSONObject objeto= productos.getJSONObject(i);
+                                    Producto temp=new Producto();
+                                    temp.setIdProducto(objeto.getInt("idProducto"));
+                                    temp.setNombreProducto(objeto.getString("NombreProducto"));
+                                    temp.setDescripcionProducto(objeto.getString("DescripcionProducto"));
+                                    temp.setImagenProducto(objeto.getString("imagenPortada"));
+                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
+
+                                    Categoria categoria=new Categoria();
+                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
+                                    temp.setCategoriaProducto(categoria);
+
+                                    SubCategoria subCategoria=new SubCategoria();
+                                    subCategoria.setIdSubCategoria(objeto.getInt("SubCategoria_idSubCategoria"));
+                                    temp.setSubCategoriaProducto(subCategoria);
+
+                                    UnidadTerritorial departamento=new UnidadTerritorial();
+                                    departamento.setIdUnidadTerritorial(objeto.getInt("Departamento_idDepartamento"));
+                                    departamento.setNombreUnidadTerritorial(objeto.getString("departamento"));
+                                    temp.setDepartamentoProducto(departamento);
+
+                                    UnidadTerritorial provincia=new UnidadTerritorial();
+                                    provincia.setIdUnidadTerritorial(objeto.getInt("Provincia_idProvincia"));
+                                    provincia.setNombreUnidadTerritorial(objeto.getString("provincia"));
+                                    temp.setDepartamentoProducto(provincia);
+
+                                    UnidadTerritorial distrito=new UnidadTerritorial();
+                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    temp.setDepartamentoProducto(distrito);
+
+                                    Estado estadoProducto=new Estado();
+                                    estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    temp.setEstadoProducto(estadoProducto);
+
+                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+
+                                    ListaMasAlquilados.add(temp);
+
+                                    Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
+                                }
+                                Log.e("Inca","Servidor Listar Productos");
+
+                                adapterMasAlquilados.notifyDataSetChanged();
+
+                            } else {
+                                Toast.makeText(context, "Productos no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca","Error JSON:"+e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "ListarProductosMasAlquilados");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+    }
+    public void ListarProductosTendencias(final Context context){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                JSONArray productos=jsonResponse.getJSONArray("productos");
+                                for(int i=0;i<productos.length();i++){
+                                    JSONObject objeto= productos.getJSONObject(i);
+                                    Producto temp=new Producto();
+                                    temp.setIdProducto(objeto.getInt("idProducto"));
+                                    temp.setNombreProducto(objeto.getString("NombreProducto"));
+                                    temp.setDescripcionProducto(objeto.getString("DescripcionProducto"));
+                                    temp.setImagenProducto(objeto.getString("imagenPortada"));
+                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
+
+                                    Categoria categoria=new Categoria();
+                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
+                                    temp.setCategoriaProducto(categoria);
+
+                                    SubCategoria subCategoria=new SubCategoria();
+                                    subCategoria.setIdSubCategoria(objeto.getInt("SubCategoria_idSubCategoria"));
+                                    temp.setSubCategoriaProducto(subCategoria);
+
+                                    UnidadTerritorial departamento=new UnidadTerritorial();
+                                    departamento.setIdUnidadTerritorial(objeto.getInt("Departamento_idDepartamento"));
+                                    departamento.setNombreUnidadTerritorial(objeto.getString("departamento"));
+                                    temp.setDepartamentoProducto(departamento);
+
+                                    UnidadTerritorial provincia=new UnidadTerritorial();
+                                    provincia.setIdUnidadTerritorial(objeto.getInt("Provincia_idProvincia"));
+                                    provincia.setNombreUnidadTerritorial(objeto.getString("provincia"));
+                                    temp.setDepartamentoProducto(provincia);
+
+                                    UnidadTerritorial distrito=new UnidadTerritorial();
+                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    temp.setDepartamentoProducto(distrito);
+
+                                    Estado estadoProducto=new Estado();
+                                    estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    temp.setEstadoProducto(estadoProducto);
+
+                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+
+                                    ListaTendencias.add(temp);
+                                    Log.i("Inca","Recupero Producto Tendencias:"+temp.getNombreProducto());
+                                }
+                                Log.e("Inca","Servidor Listar Productos Tendencias");
+
+                                adapterTendendecias.notifyDataSetChanged();
+
+                            } else {
+                                Toast.makeText(context, "Productos no Disponibles Tendencias.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca","Error JSON:"+e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "ListarProductosTendencias");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+    }
+
 }
