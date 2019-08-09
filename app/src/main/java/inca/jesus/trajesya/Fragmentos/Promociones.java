@@ -3,6 +3,8 @@ package inca.jesus.trajesya.Fragmentos;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,14 +34,15 @@ import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 
-public class Ofertas extends Fragment {
+public class Promociones extends Fragment {
 
     private RecyclerView recyclerPromociones;
     private LinearLayoutManager linearLayout;
     private AdapterPromociones adapterPromociones;
-    List<Promocion> ListaPromociones;
     Context context;
-    public Ofertas() {
+    List<Promocion> ListaPromociones;
+
+    public Promociones() {
         // Required empty public constructor
     }
 
@@ -48,10 +51,12 @@ public class Ofertas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_lo_mejor, container, false);
-        ListaPromociones=new ArrayList<>();
         context=getActivity();
-        recyclerPromociones=(RecyclerView)view.findViewById(R.id.recyclerPromociones);
-        linearLayout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
+
+        recyclerPromociones=view.findViewById(R.id.recyclerPromociones);
+        ListaPromociones=new ArrayList<>();
+
+        linearLayout = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         adapterPromociones = new AdapterPromociones(getActivity(), ListaPromociones, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
@@ -61,11 +66,9 @@ public class Ofertas extends Fragment {
         recyclerPromociones.setLayoutManager(linearLayout);
 
         ListarPromocionesDisponibles(context);
-
-
+        ListarPromocionesDisponibles2(context);
         return view;
     }
-
 
     public void ListarPromocionesDisponibles(final Context context){
 
@@ -89,14 +92,13 @@ public class Ofertas extends Fragment {
                                     temp.setFechaRegistro(objeto.getString("fechaRegistro"));
                                     temp.setFechaUpdate(objeto.getString("fechaUpdate"));
 
-
                                     Estado estado=new Estado();
                                     estado.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoPromocion(estado);
-
-                                    ListaPromociones.add(temp);
+                                    Log.i("Inca","Recuperado:"+temp.getNombrePromocion());
+                                    //ListaPromociones.add(temp);
                                 }
-                                Log.e("Inca","Servidor Listar Promociones");
+                                Log.i("Inca","Servidor Listar Promociones");
                                 adapterPromociones.notifyDataSetChanged();
 
                             } else {
@@ -106,9 +108,8 @@ public class Ofertas extends Fragment {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.e("Inca","Error JSON:"+e);
+                            Log.i("Inca","Error JSON:"+e);
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -125,5 +126,68 @@ public class Ofertas extends Fragment {
             }
         };
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+    public void ListarPromocionesDisponibles2(final Context context){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                JSONArray categorias=jsonResponse.getJSONArray("promociones");
+                                for(int i=0;i<categorias.length();i++){
+                                    JSONObject objeto= categorias.getJSONObject(i);
+                                    Promocion temp=new Promocion();
+                                    temp.setIdPromocion(objeto.getInt("idPromocion"));
+                                    temp.setNombrePromocion(objeto.getString("NombrePromocion"));
+                                    temp.setImagenPromocion(objeto.getString("imagenPromocion"));
+                                    temp.setLinkPromocion(objeto.getString("linkPromocion"));
+                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
+
+                                    Estado estado=new Estado();
+                                    estado.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    temp.setEstadoPromocion(estado);
+                                    Log.i("Inca","Recuperado:"+temp.getNombrePromocion());
+                                    ListaPromociones.add(temp);
+                                }
+                                Log.i("Inca","Servidor Listar Promociones");
+                                adapterPromociones.notifyDataSetChanged();
+
+                            } else {
+
+                                Toast.makeText(context, "Categorias no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Inca","Error JSON:"+e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "ListarPromociones");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        adapterPromociones.notifyDataSetChanged();
     }
 }

@@ -4,40 +4,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.cardview.widget.CardView;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import inca.jesus.trajesya.Activities.ActivityPrincipal;
-import inca.jesus.trajesya.Adapters.Adapter1;
-import inca.jesus.trajesya.Adapters.Adapter3;
 import inca.jesus.trajesya.Adapters.AdapterItemProductos;
 import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
-import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Categoria;
 import inca.jesus.trajesya.Data.Modelo.Estado;
@@ -66,10 +55,10 @@ public class Destacados extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_destacados, container, false);
         context=getActivity();
-        recyclerNuevos =(RecyclerView)view.findViewById(R.id.recycler1);
-        recycler2=(RecyclerView)view.findViewById(R.id.recycler2);
-        recycler3=(RecyclerView)view.findViewById(R.id.recycler3);
-        recycler4=(RecyclerView)view.findViewById(R.id.recycler4);
+        recyclerNuevos =view.findViewById(R.id.recycler1);
+        recycler2=view.findViewById(R.id.recycler2);
+        recycler3=view.findViewById(R.id.recycler3);
+        recycler4=view.findViewById(R.id.recycler4);
 
         /*-------Iniciar Listado------*/
         ListaNuevos=new ArrayList<>();
@@ -219,15 +208,12 @@ public class Destacados extends Fragment {
 
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 
-    public void onBackPressed() {
+
+    /*public void onBackPressed() {
         Intent intent =new Intent(getActivity(),ActivityPrincipal.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK  | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         return;
-    }
+    }*/
 }

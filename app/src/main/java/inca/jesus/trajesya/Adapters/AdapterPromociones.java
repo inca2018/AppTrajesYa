@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import inca.jesus.trajesya.Activities.Item;
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Data.Modelo.Promocion;
 import inca.jesus.trajesya.Data.Utils.Constantes;
+import inca.jesus.trajesya.GlideApp;
+import inca.jesus.trajesya.MyGlideApp;
 import inca.jesus.trajesya.R;
 
 
@@ -62,11 +65,11 @@ public class AdapterPromociones extends RecyclerView.Adapter<AdapterPromociones.
     @Override
     public void onBindViewHolder(AdapterPromociones.ViewHolder holder, final int position) {
 
-
-
-        Glide.with(holder.itemView.getContext())
+        Glide.with(context)
                 .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenPromocion())
+                //.diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(holder.imagen);
+
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,5 +86,7 @@ public class AdapterPromociones extends RecyclerView.Adapter<AdapterPromociones.
     public int getItemCount() {
         return my_Data.size();
     }
+
+
 
 }
