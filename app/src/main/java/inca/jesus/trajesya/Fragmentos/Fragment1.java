@@ -32,8 +32,9 @@ public class Fragment1 extends Fragment  {
     }
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
-        adapter.addFragment(new Promociones(), getString(R.string.lo_mejor));
+
         adapter.addFragment(new Recomendaciones(), getString(R.string.Recomendaciones));
+        adapter.addFragment(new Promociones(), getString(R.string.lo_mejor));
         adapter.addFragment(new Destacados(), getString(R.string.Destacados));
 
 
