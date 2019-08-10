@@ -29,7 +29,7 @@ public class Fragment1 extends Fragment  {
             tabs.setupWithViewPager(mViewPager);
             tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         return view;
-    }
+    }   
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
         adapter.addFragment(new Promociones(), getString(R.string.lo_mejor));
