@@ -19,6 +19,7 @@ import inca.jesus.trajesya.Activities.Item;
 
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.GlideApp;
 import inca.jesus.trajesya.R;
 
 
@@ -71,7 +72,7 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
                 .load(my_Data.get(position).getImagenProducto())
                 .into(holder.imagen);*/
 
-        Glide.with(holder.itemView.getContext())
+        GlideApp.with(holder.itemView.getContext())
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.default_imagen)
                         .error(R.drawable.default_imagen))

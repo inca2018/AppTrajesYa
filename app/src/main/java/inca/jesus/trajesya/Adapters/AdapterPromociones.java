@@ -2,6 +2,7 @@ package inca.jesus.trajesya.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
-import inca.jesus.trajesya.Activities.Item;
-import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Data.Modelo.Promocion;
 import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.GlideApp;
@@ -65,7 +64,7 @@ public class AdapterPromociones extends RecyclerView.Adapter<AdapterPromociones.
     @Override
     public void onBindViewHolder(AdapterPromociones.ViewHolder holder, final int position) {
 
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenPromocion())
                 //.diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(holder.imagen);
@@ -73,20 +72,18 @@ public class AdapterPromociones extends RecyclerView.Adapter<AdapterPromociones.
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*System.out.println("Click en Imagen");
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("Producto",my_Data.get(position));
-                context.startActivity(intent);*/
-                Toast.makeText(context, my_Data.get(position).getNombrePromocion(), Toast.LENGTH_SHORT).show();
+
+                Uri uri = Uri.parse(my_Data.get(position).getLinkPromocion());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+
+                //Toast.makeText(context, my_Data.get(position).getNombrePromocion(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
     @Override
     public int getItemCount() {
         return my_Data.size();
     }
-
-
 
 }

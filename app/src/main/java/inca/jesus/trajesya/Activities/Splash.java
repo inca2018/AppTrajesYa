@@ -1,7 +1,11 @@
 package inca.jesus.trajesya.Activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,49 +43,37 @@ public class Splash extends AppCompatActivity {
 
     private ProgressBar p;
     private TextView txtProgress;
+    Context context;
 
-    private int pStatus = 0;
-    private Handler handler = new Handler();
-    ImageView ima;
+    //public static final String DATA_SAVED_BROADCAST = "inca.jesus.datasaved";
+
+    private BroadcastReceiver Sincronizador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        p = findViewById(R.id.progress);
-        txtProgress =  findViewById(R.id.texxt_progress);
-
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ListarPromocionesDisponibles(getApplicationContext());
-                while (pStatus <= 100) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            p.setProgress(pStatus);
-                            txtProgress.setText("Cargando... "+pStatus+" %");
-                        }
-                    });
-                    try {
-                        Thread.sleep(80);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    pStatus++;
-                }
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        mover();
-                    }
-                });
-            }
-        }).start();*/
-
-        ListarCategoriasDisponibles(getApplicationContext());
-
+        context=getApplicationContext();
+        try {
+            VerificarConexion(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
+    public void VerificarConexion(Context context) throws Exception {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null ) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                p = findViewById(R.id.progress);
+                txtProgress =  findViewById(R.id.texxt_progress);
+                ListarCategoriasDisponibles(getApplicationContext());
+            }else{
+                Toast.makeText(context, "No tiene Conexión a Internet!", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(context, "No tiene Conexión a Internet!", Toast.LENGTH_SHORT).show();
+        }
+    }
     void mover(){
         Intent intent = new Intent(Splash.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -123,6 +115,7 @@ public class Splash extends AppCompatActivity {
                                 }
                                 Log.e("Inca","Servidor Listar Categorias");
 
+                                Progreso(10);
                                 ListarPromocionesDisponibles(context);
 
                             } else {
@@ -181,7 +174,7 @@ public class Splash extends AppCompatActivity {
                                     Constantes.Base_ListaPromociones.add(temp);
                                 }
                                 Log.i("Inca","Servidor Listar Promociones");
-
+                                Progreso(25);
                                 ListarProductosNuevos(context);
 
                             } else {
@@ -266,6 +259,8 @@ public class Splash extends AppCompatActivity {
                                     Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos");
+
+                                Progreso(42);
                                 ListarProductosMasVistos(context);
 
                             } else {
@@ -350,6 +345,8 @@ public class Splash extends AppCompatActivity {
                                     Log.i("Inca","Recupero Producto mas vistos:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos Mas vistos");
+
+                                Progreso(56);
                                 ListarProductosMasAlquilados(context);
                             } else {
                                 Toast.makeText(context, "Productos no Disponibles mas vistos", Toast.LENGTH_SHORT).show();
@@ -433,6 +430,7 @@ public class Splash extends AppCompatActivity {
                                     Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos");
+                                Progreso(81);
 
                                 ListarProductosTendencias(context);
 
@@ -517,7 +515,7 @@ public class Splash extends AppCompatActivity {
                                     Log.i("Inca","Recupero Producto Tendencias:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos Tendencias");
-
+                                Progreso(100);
                                 mover();
 
                             } else {
@@ -545,4 +543,10 @@ public class Splash extends AppCompatActivity {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
     }
+
+    public void Progreso(int tiempo){
+        p.setProgress(tiempo);
+        txtProgress.setText("Cargando... "+tiempo+" %");
+    }
+
 }
