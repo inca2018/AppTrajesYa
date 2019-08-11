@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -80,9 +81,12 @@ public class AdapterItemFavorito extends RecyclerView.Adapter<AdapterItemFavorit
         holder.precio2.setText("Precio Promoción S./ "+String.valueOf(my_Data.get(position).getP().getPrecio()));
         holder.precio3.setText("Precio miCumple S./ "+String.valueOf(my_Data.get(position).getP().getPrecio()));
 
-        Glide.with(holder.itemView.getContext())
+        Picasso.get()
                 .load(my_Data.get(position).getP().getIdDrawable())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
+
         holder.eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -36,22 +36,24 @@
                 android:visibility="gone"
                 >
 
+
                 <TextView
                     android:id="@+id/titulo_categoria"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TITULO DE CATEGORIAS"
-                    android:textSize="18dp"
-                    android:inputType="textMultiLine"
+                    android:text=""
+                    android:textSize="18sp"
                     android:textColor="@color/negro"
-                    android:layout_margin="10dp"/>
+                    android:textStyle="italic"
+                    android:layout_margin="4dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Ver Todo"
-                    android:layout_margin="10dp"
-                    android:textSize="16dp"
+                    android:layout_margin="4dp"
+                    android:textSize="12dp"
                     android:textColor="@color/negro"
+                    android:textAlignment="textEnd"
                     />
 
                 <androidx.recyclerview.widget.RecyclerView

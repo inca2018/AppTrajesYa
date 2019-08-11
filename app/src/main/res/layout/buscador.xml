@@ -30,8 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:queryHint="Buscar Productos"
-        app:queryHint="Buscar Productos"
+        android:queryHint="Buscar Trajes"
+        app:queryHint="Buscar Trajes"
         app:defaultQueryHint="Buscar"
         />
     </androidx.cardview.widget.CardView>

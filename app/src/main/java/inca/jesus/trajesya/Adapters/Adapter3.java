@@ -12,11 +12,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import inca.jesus.trajesya.Activities.Item;
 import inca.jesus.trajesya.Clases.ProductoX;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 
@@ -64,9 +66,14 @@ public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
 
         holder.desc.setText(String.valueOf(my_Data.get(position).getDescuentos()+" %"));
         holder.precio.setText("S/ "+my_Data.get(position).getPrecio());
-        Glide.with(holder.itemView.getContext())
+
+
+        Picasso.get()
                 .load(my_Data.get(position).getIdDrawable())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
+
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

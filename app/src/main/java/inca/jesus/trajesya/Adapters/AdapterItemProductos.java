@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import inca.jesus.trajesya.Activities.Item;
 
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.GlideApp;
 import inca.jesus.trajesya.R;
 
@@ -31,7 +33,7 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
     private Context context;
     private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
-    public String RUTA_PATH="http://admin.trajesya.com/assets/images/";
+
 
     public AdapterItemProductos(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
@@ -68,43 +70,36 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
 
         holder.desc.setText(String.valueOf("10%"));
         holder.precio.setText("S/ "+my_Data.get(position).getPrecioAlquiler());
-        /*Glide.with(holder.itemView.getContext())
-                .load(my_Data.get(position).getImagenProducto())
-                .into(holder.imagen);*/
 
-        GlideApp.with(holder.itemView.getContext())
-                .applyDefaultRequestOptions(new RequestOptions()
-                        .placeholder(R.drawable.default_imagen)
-                        .error(R.drawable.default_imagen))
-                .load(RUTA_PATH+my_Data.get(position).getImagenProducto())
+        Picasso.get()
+                .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenProducto())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  System.out.println("Click en Imagen");
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("Producto",my_Data.get(position));
-                context.startActivity(intent);*/
 
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
             }
         });
         holder.desc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* System.out.println("Click en Desc");
-                Intent intent = new Intent(context,Item.class);
-                intent.putExtra("Producto",my_Data.get(position));
-                context.startActivity(intent);*/
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
             }
         });
         holder.precio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*System.out.println("Click en Precio");
-                Intent intent = new Intent(context,Item.class);
-                intent.putExtra("Producto",my_Data.get(position));
-                context.startActivity(intent);*/
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
             }
         });
 

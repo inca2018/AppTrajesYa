@@ -64,22 +64,6 @@ public class AdapterSubCategoriasDisponibles extends RecyclerView.Adapter<Adapte
 
         holder.nom.setText(my_Data.get(position).getNombreSubCategoria());
 
-        /*Glide.with(holder.itemView.getContext())
-                .applyDefaultRequestOptions(new RequestOptions()
-                        .placeholder(R.drawable.default_imagen)
-                        .error(R.drawable.default_imagen))
-                .load(RUTA_PATH+my_Data.get(position).getImagenSubCategorias())
-                .into(holder.imagen);*/
-        /*holder.imagen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for(int i=0;i<my_Data.size();i++){
-                    my_Data.get(i).setSelect(false);
-                }
-                my_Data.get(position).setSelect(true);
-                notifyDataSetChanged();
-            }
-        });*/
         holder.nom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

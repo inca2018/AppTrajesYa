@@ -55,14 +55,14 @@
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/texxt_progress2"
+        app:layout_constraintBottom_toTopOf="@+id/txtVersion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress"
         app:layout_constraintVertical_weight="1"/>
 
     <TextView
-        android:id="@+id/texxt_progress2"
+        android:id="@+id/txtVersion"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -70,7 +70,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/roboto_thin"
-        android:text="Versión 1.0"
+        android:text=""
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@android:color/white"

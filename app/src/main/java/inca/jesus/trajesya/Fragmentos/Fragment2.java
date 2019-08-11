@@ -32,7 +32,6 @@ import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.Data.Modelo.Producto;
 import inca.jesus.trajesya.Clases.Segmento_Categorias;
 import inca.jesus.trajesya.Clases.Segmento_SubCategorias;
-import inca.jesus.trajesya.Data.Modelo.Sesion;
 import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Categoria;
 import inca.jesus.trajesya.Data.Modelo.Estado;
@@ -100,7 +99,7 @@ public class Fragment2 extends Fragment {
 
         /*----------ArmarRecycler Categorias-----------------*/
         linearLayout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
-        adapterCategoria = new AdapterCategoriasDisponibles(context, Constantes.Base_Categorias, new RecyclerViewOnItemClickListener2() {
+        adapterCategoria = new AdapterCategoriasDisponibles(context, Constantes.Base_Categorias_Todo, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 //not required
@@ -129,6 +128,7 @@ public class Fragment2 extends Fragment {
                 Log.e("Inca","Ingreso Adapter Categoria");
                 /*----------Limpiar Lista SubCategorias-----------------*/
                 ListaSubCategoria.clear();
+                ListaSubCategoria=RecuperarSubCategorias(idCategoria);
                 Log.e("Inca","IdCategoria Enviado:"+idCategoria);
                 if(idCategoria!=0){
                     panelSubCategoria.setVisibility(View.VISIBLE);
@@ -145,7 +145,7 @@ public class Fragment2 extends Fragment {
                     recyclerSubCategorias.setLayoutManager(linearLayout);
 
                     /*----------Listar SubCategorias-----------------*/
-                    ListarSubCategoriasDisponibles(context,idCategoria);
+                   // ListarSubCategoriasDisponibles(context,idCategoria);
 
 
                     /*----------Verificar Cambios en Lista SubCategorias-----------------*/
@@ -162,6 +162,7 @@ public class Fragment2 extends Fragment {
                             Log.e("Inca","Ingreso Adapter SubCategoria");
                             /*----------Limpiar Lista Productos-----------------*/
                             ListaProducto.clear();
+                            ListaProducto=RecuperarProductos(idSubCategoria);
                             if(idSubCategoria!=0){
                                 panelSubCategoria.setVisibility(View.GONE);
                                 panelProductos.setVisibility(View.VISIBLE);
@@ -179,7 +180,7 @@ public class Fragment2 extends Fragment {
                                 recyclerProducto.setLayoutManager(linearLayout);
 
                                 /*----------Listar Productos-----------------*/
-                                ListarProductosDisponibles(context,idSubCategoria);
+                                //ListarProductosDisponibles(context,idSubCategoria);
                             }
 
                         }
@@ -192,226 +193,26 @@ public class Fragment2 extends Fragment {
         return view;
     }
 
-    public void ListarCategoriasDisponibles(final Context context){
+    private List<Producto> RecuperarProductos(int idSubCategoria) {
+        List<Producto> temp=new ArrayList<>();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray categorias=jsonResponse.getJSONArray("categorias");
-                                for(int i=0;i<categorias.length();i++){
-                                    JSONObject objeto= categorias.getJSONObject(i);
-                                    Categoria temp=new Categoria();
-                                    temp.setIdCategoria(objeto.getInt("idCategoria"));
-                                    temp.setNombreCategoria(objeto.getString("NombreCategoria"));
-                                    temp.setDescripcionCategoria(objeto.getString("Descripcion"));
-                                    temp.setImagenCategoria(objeto.getString("imagenPortada"));
-                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
-
-                                    Grupo grupoCategoria=new Grupo();
-                                    grupoCategoria.setIdGrupo(objeto.getInt("Grupo_idGrupo"));
-                                    grupoCategoria.setDescripcionGrupo(objeto.getString("NombreGrupo"));
-                                    temp.setGrupoCategoria(grupoCategoria);
-
-                                    Estado estadoCategoria=new Estado();
-                                    estadoCategoria.setIdEstado(objeto.getInt("Estado_idEstado"));
-                                    temp.setEstadoCategoria(estadoCategoria);
-
-                                    Log.i("Inca","Recuperar Categorias:"+temp.getDescripcionCategoria());
-                                    ListaCategoria.add(temp);
-                                }
-                                Log.e("Inca","Servidor Listar Categorias");
-                                adapterCategoria.notifyDataSetChanged();
-
-                            } else {
-
-                                Toast.makeText(context, "Categorias no Disponibles.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("Inca","Error JSON:"+e);
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarCategorias");
-                return params;
+        for(int i=0;i<Constantes.Base_Producto_Todo.size();i++){
+            if(Constantes.Base_Producto_Todo.get(i).getSubCategoriaProducto().getIdSubCategoria()==idSubCategoria){
+                temp.add(Constantes.Base_Producto_Todo.get(i));
             }
-        };
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+        }
+        return temp;
     }
 
-    public void ListarSubCategoriasDisponibles(final Context context,final int idCate){
+    private List<SubCategoria> RecuperarSubCategorias(int idCategoria) {
+        List<SubCategoria> temp=new ArrayList<>();
 
-        final String  idCategoria=String.valueOf(idCate);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray categorias=jsonResponse.getJSONArray("subcategorias");
-                                for(int i=0;i<categorias.length();i++){
-                                    JSONObject objeto= categorias.getJSONObject(i);
-                                    SubCategoria temp=new SubCategoria();
-                                    temp.setIdSubCategoria(objeto.getInt("idSubCategoria"));
-                                    temp.setNombreSubCategoria(objeto.getString("NombreSubCategoria"));
-                                    temp.setDescripcionSubCategoria(objeto.getString("Descripcion"));
-                                    temp.setImagenSubCategorias(objeto.getString("imagenPortada"));
-                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
-
-                                    Categoria categoria=new Categoria();
-                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
-                                    temp.setCategoriaSubCategoria(categoria);
-
-                                    Estado estadoSubCategoria=new Estado();
-                                    estadoSubCategoria.setIdEstado(objeto.getInt("Estado_idEstado"));
-                                    temp.setEstadoSubCategoria(estadoSubCategoria);
-
-                                    ListaSubCategoria.add(temp);
-                                    Log.i("Inca","Recuperar SubCategoria:"+temp.getDescripcionSubCategoria());
-                                }
-
-                                Log.e("Inca","Servidor Listar SubCategorias");
-                                adapterSubCategoria.notifyDataSetChanged();
-
-                            } else {
-
-                                Toast.makeText(context, "SubCategorias no Disponibles.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("Inca","Error JSON:"+e);
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarSubCategorias");
-                params.put("idCategoria",idCategoria);
-                return params;
+        for(int i=0;i<Constantes.Base_SubCategorias_Todo.size();i++){
+            if(Constantes.Base_SubCategorias_Todo.get(i).getCategoriaSubCategoria().getIdCategoria()==idCategoria){
+                 temp.add(Constantes.Base_SubCategorias_Todo.get(i));
             }
-        };
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-
-    }
-
-    public void ListarProductosDisponibles(final Context context,final int idSubCate){
-
-        final String  idSubCategoria=String.valueOf(idSubCate);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray productoCate=jsonResponse.getJSONArray("productosCategorias");
-                                for(int i=0;i<productoCate.length();i++){
-                                    JSONObject objeto= productoCate.getJSONObject(i);
-                                    Producto temp=new Producto();
-                                    temp.setIdProducto(objeto.getInt("idProducto"));
-                                    temp.setNombreProducto(objeto.getString("NombreProducto"));
-                                    temp.setDescripcionProducto(objeto.getString("DescripcionProducto"));
-                                    temp.setImagenProducto(objeto.getString("imagenPortada"));
-                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
-
-                                    Categoria categoria=new Categoria();
-                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
-                                    temp.setCategoriaProducto(categoria);
-
-                                    SubCategoria subCategoria=new SubCategoria();
-                                    subCategoria.setIdSubCategoria(objeto.getInt("SubCategoria_idSubCategoria"));
-                                    temp.setSubCategoriaProducto(subCategoria);
-
-                                    UnidadTerritorial departamento=new UnidadTerritorial();
-                                    departamento.setIdUnidadTerritorial(objeto.getInt("Departamento_idDepartamento"));
-                                    departamento.setNombreUnidadTerritorial(objeto.getString("departamento"));
-                                    temp.setDepartamentoProducto(departamento);
-
-                                    UnidadTerritorial provincia=new UnidadTerritorial();
-                                    provincia.setIdUnidadTerritorial(objeto.getInt("Provincia_idProvincia"));
-                                    provincia.setNombreUnidadTerritorial(objeto.getString("provincia"));
-                                    temp.setDepartamentoProducto(provincia);
-
-                                    UnidadTerritorial distrito=new UnidadTerritorial();
-                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
-                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
-                                    temp.setDepartamentoProducto(distrito);
-
-                                    Estado estadoProducto=new Estado();
-                                    estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
-                                    temp.setEstadoProducto(estadoProducto);
-
-                                    ListaProducto.add(temp);
-
-                                    Log.i("Inca","Recuperar Productos de Categorias:"+temp.getNombreProducto());
-                                }
-                                Log.e("Inca","Servidor Listar Productos");
-                                adapterProducto.notifyDataSetChanged();
-
-                            } else {
-
-                                Toast.makeText(context, "Productos no Disponibles.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("Inca","Error JSON:"+e);
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarProductos");
-                params.put("idSubCategoria", idSubCategoria);
-                return params;
-            }
-        };
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-
+        }
+        return temp;
     }
 
     }

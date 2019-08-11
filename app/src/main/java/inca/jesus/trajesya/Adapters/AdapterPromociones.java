@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -64,10 +65,12 @@ public class AdapterPromociones extends RecyclerView.Adapter<AdapterPromociones.
     @Override
     public void onBindViewHolder(AdapterPromociones.ViewHolder holder, final int position) {
 
-        GlideApp.with(context)
+        Picasso.get()
                 .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenPromocion())
-                //.diskCacheStrategy(DiskCacheStrategy.DATA)
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
+
 
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override

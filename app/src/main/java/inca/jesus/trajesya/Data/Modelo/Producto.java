@@ -1,5 +1,7 @@
 package inca.jesus.trajesya.Data.Modelo;
 
+import java.util.List;
+
 public class Producto {
     int idProducto;
     String nombreProducto;
@@ -15,6 +17,10 @@ public class Producto {
     Estado estadoProducto;
     double precioAlquiler;
     double precioVenta;
+    String verificadoProducto;
+
+    List<Galeria> GaleriaProducto;
+    List<Medida> MedidaProducto;
 
 
     public Producto(){
@@ -131,5 +137,29 @@ public class Producto {
 
     public void setPrecioVenta(double precioVenta) {
         this.precioVenta = precioVenta;
+    }
+
+    public List<Galeria> getGaleriaProducto() {
+        return GaleriaProducto;
+    }
+
+    public void setGaleriaProducto(List<Galeria> galeriaProducto) {
+        GaleriaProducto = galeriaProducto;
+    }
+
+    public List<Medida> getMedidaProducto() {
+        return MedidaProducto;
+    }
+
+    public void setMedidaProducto(List<Medida> medidaProducto) {
+        MedidaProducto = medidaProducto;
+    }
+
+    public String getVerificadoProducto() {
+        return verificadoProducto;
+    }
+
+    public void setVerificadoProducto(String verificadoProducto) {
+        this.verificadoProducto = verificadoProducto;
     }
 }

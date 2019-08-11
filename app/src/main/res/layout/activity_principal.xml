@@ -10,12 +10,7 @@
         layout="@layout/menu_principal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></include>
-    <include android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        layout="@layout/toolbar_base"
-        android:visibility="gone"
-        >
-    </include>
+
     <include
         layout="@layout/buscador"
         tools:layout_editor_absoluteX="-16dp"

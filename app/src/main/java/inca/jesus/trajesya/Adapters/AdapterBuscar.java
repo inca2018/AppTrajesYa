@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -61,8 +62,10 @@ public class AdapterBuscar extends RecyclerView.Adapter<AdapterBuscar.ViewHolder
         holder.nom.setText(my_Data.get(position).getNom_producto());
         holder.vendedor.setText(my_Data.get(position).getVendedor());
 
-        Glide.with(holder.itemView.getContext())
-                .load(my_Data.get(position).getIdDrawable())
+        Picasso.get()
+                .load(my_Data.get(position).getNom_producto())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.foto);
 
     }

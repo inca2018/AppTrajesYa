@@ -2,18 +2,22 @@ package inca.jesus.trajesya.Adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import inca.jesus.trajesya.Activities.Item;
 import inca.jesus.trajesya.Data.Modelo.Producto;
+
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 /**
@@ -25,7 +29,7 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
     private Context context;
     private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
-    public String RUTA_PATH="http://admin.trajesya.com/assets/images/";
+
 
     public AdapterProductosDisponibles(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
@@ -66,13 +70,22 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
     public void onBindViewHolder(AdapterProductosDisponibles.ViewHolder holder, final int position) {
 
         holder.nom.setText(my_Data.get(position).getNombreProducto());
-        Glide.with(holder.itemView.getContext())
-                .applyDefaultRequestOptions(new RequestOptions()
-                        .placeholder(R.drawable.default_imagen)
-                        .error(R.drawable.default_imagen))
-                .load(RUTA_PATH+my_Data.get(position).getImagenProducto())
+
+        Picasso.get()
+                .load(Constantes.PATH_IMAGEN +my_Data.get(position).getImagenProducto())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
+        holder.imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {

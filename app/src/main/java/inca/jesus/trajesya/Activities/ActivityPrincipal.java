@@ -61,44 +61,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         fragmentManager = getSupportFragmentManager();
-        toolbar =  findViewById(R.id.toolbar_base);
-        setSupportActionBar(toolbar);
         linear_search= findViewById(R.id.card_linear_2);
-
-        l1=findViewById(R.id.linear1);
-        l2=findViewById(R.id.linear2);
-        l3=findViewById(R.id.linear3);
-        l4=findViewById(R.id.linear4);
-        l5=findViewById(R.id.linear5);
-
-        o1=findViewById(R.id.ope_1);
-        o2=findViewById(R.id.ope_2);
-        o3=findViewById(R.id.ope_3);
-        o4=findViewById(R.id.ope_4);
-        o5=findViewById(R.id.ope_5);
-        opt1=findViewById(R.id.opt1);
-        opt2=findViewById(R.id.opt2);
-        opt3=findViewById(R.id.opt3);
-        opt4=findViewById(R.id.opt4);
-        opt5=findViewById(R.id.opt5);
-
-        //boton_kids=(CardView)findViewById(R.id.panel_boton_cumpleKids);
-        //boton_fotos=(CardView)findViewById(R.id.panel_boton_cumplefotos);
-
-       /* boton_kids.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ActivityPrincipal.this,ListaProductos.class);
-                startActivity(intent);
-            }
-        });
-        boton_fotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ActivityPrincipal.this,CumpleFotos.class);
-                startActivity(intent);
-            }
-        });*/
 
         if(Sesion.USUARIO.getId()==null){
             System.out.println("INKA: USUARIO VACIO");
@@ -153,104 +116,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         search.setOnQueryTextListener(this);
 
 
-
-
-        l1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion1();
-
-            }
-        });
-        l2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion2();
-            }
-        });
-        l3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion3();
-            }
-        });
-        l4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion4();
-            }
-        });
-        l5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion5();
-            }
-        });
-
-        o1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion1();
-
-            }
-        });
-        o2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion2();
-            }
-        });
-        o3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion3();
-            }
-        });
-        o4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion4();
-            }
-        });
-        o5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion5();
-            }
-        });
-
-        opt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion1();
-
-            }
-        });
-        opt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion2();
-            }
-        });
-        opt3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion3();
-            }
-        });
-        opt4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion4();
-            }
-        });
-        opt5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Opcion5();
-            }
-        });
-
         if(getIntent().getStringExtra("o")==null){
             fragment = new Fragment1();
             fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
@@ -294,17 +159,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         }
     }
     public void Opcion1() {
-        o1.setImageResource(R.drawable.ic_inicio_menu);
-        o2.setImageResource(R.drawable.ic_categoria3);
-        o3.setImageResource(R.drawable.ic_favoritos3);
-        o4.setImageResource(R.drawable.ic_carrito3);
-        o5.setImageResource(R.drawable.ic_perfil3);
-
-        opt1.setTextColor(getResources().getColor(R.color.blanco));
-        opt2.setTextColor(getResources().getColor(R.color.noFocus));
-        opt3.setTextColor(getResources().getColor(R.color.noFocus));
-        opt4.setTextColor(getResources().getColor(R.color.noFocus));
-        opt5.setTextColor(getResources().getColor(R.color.noFocus));
 
         fragment = new Fragment1();
         fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
@@ -342,17 +196,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     public void Opcion2() {
-        o1.setImageResource(R.drawable.ic_inicio3);
-        o2.setImageResource(R.drawable.ic_categoria_blanco_ofii);
-        o3.setImageResource(R.drawable.ic_favoritos3);
-        o4.setImageResource(R.drawable.ic_carrito3);
-        o5.setImageResource(R.drawable.ic_perfil3);
-
-        opt1.setTextColor(getResources().getColor(R.color.noFocus));
-        opt2.setTextColor(getResources().getColor(R.color.blanco));
-        opt3.setTextColor(getResources().getColor(R.color.noFocus));
-        opt4.setTextColor(getResources().getColor(R.color.noFocus));
-        opt5.setTextColor(getResources().getColor(R.color.noFocus));
 
 
         fragment = new Fragment2();
@@ -392,17 +235,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     public void Opcion3() {
-        o1.setImageResource(R.drawable.ic_inicio3);
-        o2.setImageResource(R.drawable.ic_categoria3);
-        o3.setImageResource(R.drawable.ic_favorito_blanco_of);
-        o4.setImageResource(R.drawable.ic_carrito3);
-        o5.setImageResource(R.drawable.ic_perfil3);
-
-        opt1.setTextColor(getResources().getColor(R.color.noFocus));
-        opt2.setTextColor(getResources().getColor(R.color.noFocus));
-        opt3.setTextColor(getResources().getColor(R.color.blanco));
-        opt4.setTextColor(getResources().getColor(R.color.noFocus));
-        opt5.setTextColor(getResources().getColor(R.color.noFocus));
 
 
         fragment = new Fragment3();
@@ -442,17 +274,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     public void Opcion4() {
-        o1.setImageResource(R.drawable.ic_inicio3);
-        o2.setImageResource(R.drawable.ic_categoria3);
-        o3.setImageResource(R.drawable.ic_favoritos3);
-        o4.setImageResource(R.drawable.ic_carrito_blanco_ofi);
-        o5.setImageResource(R.drawable.ic_perfil3);
-
-        opt1.setTextColor(getResources().getColor(R.color.noFocus));
-        opt2.setTextColor(getResources().getColor(R.color.noFocus));
-        opt3.setTextColor(getResources().getColor(R.color.noFocus));
-        opt4.setTextColor(getResources().getColor(R.color.blanco));
-        opt5.setTextColor(getResources().getColor(R.color.noFocus));
 
 
 
@@ -492,19 +313,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     public void Opcion5() {
-
-        o1.setImageResource(R.drawable.ic_inicio3);
-        o2.setImageResource(R.drawable.ic_categoria3);
-        o3.setImageResource(R.drawable.ic_favoritos3);
-        o4.setImageResource(R.drawable.ic_carrito3);
-        o5.setImageResource(R.drawable.ic_perfil_blanco_ofii);
-
-        opt1.setTextColor(getResources().getColor(R.color.noFocus));
-        opt2.setTextColor(getResources().getColor(R.color.noFocus));
-        opt3.setTextColor(getResources().getColor(R.color.noFocus));
-        opt4.setTextColor(getResources().getColor(R.color.noFocus));
-        opt5.setTextColor(getResources().getColor(R.color.blanco));
-
 
         /*if(Sesion.USUARIO.getId()==null){
             fragment = new Fragment5();
@@ -549,7 +357,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             resetSearch();
             return false;
         }
-
         List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
         for (ProductoX value : ProductoX.TODO) {
             if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {

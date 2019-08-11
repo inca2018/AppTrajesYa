@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -81,8 +82,11 @@ public class AdapterItemCompra extends RecyclerView.Adapter<AdapterItemCompra.Vi
 
         holder.descontado.setText(String.valueOf("S/."+formateador.format(resu)));
 
-        Glide.with(holder.itemView.getContext())
+
+        Picasso.get()
                 .load(my_Data.get(position).getProductoX().getIdDrawable())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
         holder.eliminar.setOnClickListener(new View.OnClickListener() {

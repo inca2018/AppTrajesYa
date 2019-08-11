@@ -10,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -19,6 +20,7 @@ import java.util.List;
 import inca.jesus.trajesya.Clases.ListResenas;
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Clases.Resenas;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 /**
@@ -73,9 +75,13 @@ public class AdapterBaseFiltro extends RecyclerView.Adapter<AdapterBaseFiltro.Vi
 
         //FALTA VARIAVLE PLUS
         holder.titulo.setText(my_Data.get(position).getNom_producto());
-        Glide.with(holder.itemView.getContext())
-                .load(my_Data.get(position).getIdDrawable())
+
+        Picasso.get()
+                .load(my_Data.get(position).getNom_producto())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
+
         holder.desc.setText("Acumula "+String.valueOf(my_Data.get(position).getDescuentos()+" Puntos"));
         DecimalFormat formateador = new DecimalFormat("###,###.##");
         double resu=(100*my_Data.get(position).getPrecio())/(100+my_Data.get(position).getDescuentos());

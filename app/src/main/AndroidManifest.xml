@@ -7,24 +7,31 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_celular"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_celular"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ActivityPrincipal"></activity>
-        <activity android:name=".Sesion.SesionGoogleLogin" />
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.Item" />
-        <activity android:name=".Activities.CompraActivity" />
-        <activity android:name=".Activities.Splash">
+        <activity android:name=".Activities.ActivityPrincipal"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".Sesion.SesionGoogleLogin"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Item"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.CompraActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Splash"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -41,7 +48,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Categorias_Sub" />
+        <activity android:name=".Activities.Categorias_Sub"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.ListaProductos"
             android:screenOrientation="portrait" />

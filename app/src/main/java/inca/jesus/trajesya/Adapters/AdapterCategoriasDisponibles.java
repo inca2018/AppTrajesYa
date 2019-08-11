@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import inca.jesus.trajesya.Data.Modelo.Categoria;
+import inca.jesus.trajesya.Data.Utils.Constantes;
+import inca.jesus.trajesya.GlideApp;
 import inca.jesus.trajesya.R;
 
 /**
@@ -26,7 +29,7 @@ public class AdapterCategoriasDisponibles extends RecyclerView.Adapter<AdapterCa
     private Context context;
     private List<Categoria> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
-    public String RUTA_PATH="http://admin.trajesya.com/assets/images/";
+
 
     public AdapterCategoriasDisponibles(Context context, List<Categoria> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
@@ -70,15 +73,10 @@ public class AdapterCategoriasDisponibles extends RecyclerView.Adapter<AdapterCa
 
         holder.nom.setText(my_Data.get(position).getNombreCategoria());
 
-        //Glide.with(holder.itemView.getContext())
-                //.load(RUTA_PATH+my_Data.get(position).getImagenCategoria())
-                //.into(holder.imagen);
-
-        Glide.with(holder.itemView.getContext())
-                .applyDefaultRequestOptions(new RequestOptions()
-                        .placeholder(R.drawable.default_imagen)
-                        .error(R.drawable.default_imagen))
-                .load(RUTA_PATH+my_Data.get(position).getImagenCategoria())
+        Picasso.get()
+                .load(Constantes.PATH_IMAGEN +my_Data.get(position).getImagenCategoria())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
 

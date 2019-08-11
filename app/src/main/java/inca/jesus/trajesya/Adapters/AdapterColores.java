@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import inca.jesus.trajesya.Clases.TiposProductos;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 /**
@@ -73,8 +75,10 @@ public class AdapterColores extends RecyclerView.Adapter<AdapterColores.ViewHold
             holder.nom.setTextColor(context.getResources().getColor(R.color.negro));
         }
 
-        Glide.with(holder.itemView.getContext())
+        Picasso.get()
                 .load(my_Data.get(position).getImagen())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
         holder.card.setOnClickListener(new View.OnClickListener() {

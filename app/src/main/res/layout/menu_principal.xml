@@ -13,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:elevation="10dp"
         app:itemBackground="@drawable/gradiente"
-        app:itemIconTint="@color/blanco"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemIconTint="@drawable/color_select_principal"
+        app:itemTextColor="@drawable/color_select_principal"
+        app:labelVisibilityMode="labeled"/>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -80,8 +81,11 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
 
         holder.descontado.setText(String.valueOf("Precio miCumple: S/."+formateador.format(resu)));
         holder.vendedor.setText("Enviado y Vendido por: "+my_Data.get(position).getP().getVendedor());
-        Glide.with(holder.itemView.getContext())
+
+        Picasso.get()
                 .load(my_Data.get(position).getP().getIdDrawable())
+                .placeholder(R.drawable.default_imagen)
+                .error(R.drawable.default_imagen)
                 .into(holder.imagen);
 
         holder.eliminar.setOnClickListener(new View.OnClickListener() {

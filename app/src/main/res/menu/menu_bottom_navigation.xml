@@ -3,17 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_1"
-        android:icon="@drawable/ic_inicio_menu"
+        android:icon="@drawable/in_home"
         android:title="Inicio"
         android:enabled="true"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/action_2"
-        android:icon="@drawable/ic_categoria_blanco_ofii"
+        android:icon="@drawable/in_category"
         android:title="Categorias"
-        android:enabled="true"
-        app:showAsAction="ifRoom"
+
         />
     <!--<item
         android:id="@+id/action_3"
@@ -25,14 +24,14 @@
 
     <item
         android:id="@+id/action_4"
-        android:icon="@drawable/ic_carrito_blanco_ofi"
+        android:icon="@drawable/in_reservation"
         android:title="Reserva"
         android:enabled="true"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/action_5"
-        android:icon="@drawable/ic_perfil_blanco_ofii"
+        android:icon="@drawable/in_profile"
         android:title="Perfil"
         android:enabled="true"
         app:showAsAction="ifRoom"

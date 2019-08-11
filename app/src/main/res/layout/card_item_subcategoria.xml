@@ -18,12 +18,12 @@
         android:id="@+id/card_categoria_nom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="14sp"
+        android:layout_margin="8dp"
         android:fontFamily="sans-serif"
         android:text="Texto de Categoria"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="@color/negro"
-        android:textStyle="italic"
+        android:textSize="20sp"
         android:typeface="normal" />
 
 

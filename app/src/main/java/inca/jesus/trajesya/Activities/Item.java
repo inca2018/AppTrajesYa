@@ -1,7 +1,10 @@
 package inca.jesus.trajesya.Activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -12,10 +15,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.Time;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,10 +29,12 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import inca.jesus.trajesya.Adapters.Adapter3;
@@ -44,6 +52,10 @@ import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Clases.Resenas;
 import inca.jesus.trajesya.Clases.Sesion;
 import inca.jesus.trajesya.Clases.TiposProductos;
+import inca.jesus.trajesya.Data.Modelo.Galeria;
+import inca.jesus.trajesya.Data.Modelo.Medida;
+import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 public class Item extends AppCompatActivity {
@@ -57,7 +69,7 @@ public class Item extends AppCompatActivity {
     public TextView tex_Desc,tex_Prec,text_sub,tex_ve,text_descontado,text_nom,text_descri;
     public TextView rating_can;
     public TextView item_puntos;
-    public ProductoX prod;
+
     public CardView card,card_nuevo;
     public RatingBar rating;
     private RecyclerView recycler;
@@ -81,33 +93,51 @@ public class Item extends AppCompatActivity {
     public TextView cantidad;
     public int cont2=1;
 
+    /*----------Variables Nuevas------------*/
+    int idProductoRecuperado=0;
+    Producto ProductoSeleccionado;
+
+    CarouselView carruselProducto;
+    AlertDialog imagenVista;
+    String[] Rutas;
+    List<Galeria> ListaGalerias;
+    TextView nombreProducto,verificadoProducto,precioProducto,descripcioProducto;
+
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        Bundle extras=getIntent().getExtras();
-        prod=extras.getParcelable("Producto");
-        temp_lista_p=ListaTemp2();
-
-
         scroll=(ScrollView)findViewById(R.id.scroll_Item);
+        nombreProducto=findViewById(R.id.txtNombreProducto);
+        verificadoProducto=findViewById(R.id.txtVerificadoPor);
+        carruselProducto = findViewById(R.id.pictureplay);
+        precioProducto=findViewById(R.id.txtPrecioProducto);
+        descripcioProducto=findViewById(R.id.txtDescripcionProducto);
 
-        final CarouselView papv = (CarouselView)findViewById(R.id.pictureplay);
-        final int[] resIds = {R.drawable.cel2,R.drawable.cel3,R.drawable.cel4,R.drawable.cel7};
-        papv.setImageResources(resIds);
-        papv.setOnPageClickListener(new CarouselView.OnPageClickListener() {
-            @Override
-            public void onPageClick(int position) {
 
-                System.out.println("Posicion:"+position);
+        Bundle extras=getIntent().getExtras();
+        idProductoRecuperado=extras.getInt("idProducto");
 
-            }
-        });
+
+        ProductoSeleccionado=BuscarProductoSeleccionado(idProductoRecuperado);
+
+        GenerarCarrusel(ProductoSeleccionado);
+
+
+        /*------------- Seteando Datos-----------*/
+        nombreProducto.setText(ProductoSeleccionado.getNombreProducto());
+        verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
+        precioProducto.setText("Alquiler: S/."+ProductoSeleccionado.getPrecioAlquiler());
+        descripcioProducto.setText(ProductoSeleccionado.getDescripcionProducto());
+
+
+        // temp_lista_p=ListaTemp2();
+
 
         variables();
-        toolbar_opciones();
+
         cards_acciones();
         Setear_datos();
         recycler_similares();
@@ -208,7 +238,91 @@ public class Item extends AppCompatActivity {
                     }
                 });
 
+    }
 
+    private void GenerarCarrusel(Producto productoSeleccionado) {
+        /*----------Carrusel----------------*/
+
+         ListaGalerias=productoSeleccionado.getGaleriaProducto();
+        if(ListaGalerias==null){
+            Rutas=new String[1];
+            Rutas[0]=Constantes.PATH_IMAGEN+productoSeleccionado.getImagenProducto();
+            carruselProducto.setImageResources(Rutas);
+            carruselProducto.setOnPageClickListener(new CarouselView.OnPageClickListener() {
+                @Override
+                public void onPageClick(int position) {
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
+                    final ImageView ImagenVista=dialoglayout4.findViewById(R.id.iv_imagen_zoom);
+
+
+                    Picasso.get()
+                            .load(Rutas[0])
+                            .placeholder(R.drawable.default_imagen)
+                            .error(R.drawable.default_imagen)
+                            .into(ImagenVista);
+
+                    ImagenVista.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            imagenVista.dismiss();
+                        }
+                    });
+
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
+                    builder4.setView(dialoglayout4);
+                    imagenVista=builder4.show();
+                }
+            });
+        }else{
+            Rutas=new String[ListaGalerias.size()];
+
+            for(int i=0;i<ListaGalerias.size();i++){
+                Rutas[i]=Constantes.PATH_IMAGEN+ListaGalerias.get(i).getImagenGaleria();
+            }
+
+            Collections.reverse(ListaGalerias);
+
+            carruselProducto.setImageResources(Rutas);
+            carruselProducto.setOnPageClickListener(new CarouselView.OnPageClickListener() {
+                @Override
+                public void onPageClick(int position) {
+
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
+                    final ImageView ImagenVista=dialoglayout4.findViewById(R.id.iv_imagen_zoom);
+
+
+                    Picasso.get()
+                            .load(Constantes.PATH_IMAGEN+ListaGalerias.get(position).getImagenGaleria())
+                            .placeholder(R.drawable.default_imagen)
+                            .error(R.drawable.default_imagen)
+                            .into(ImagenVista);
+
+                    ImagenVista.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            imagenVista.dismiss();
+                        }
+                    });
+
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
+                    builder4.setView(dialoglayout4);
+                    imagenVista=builder4.show();
+                }
+            });
+        }
+    }
+
+    private Producto BuscarProductoSeleccionado(int idProductoRecuperado) {
+        Producto temp=new Producto();
+
+        for(int i=0;i< Constantes.Base_Producto_Todo.size();i++){
+            if(Constantes.Base_Producto_Todo.get(i).getIdProducto()==idProductoRecuperado){
+                temp=Constantes.Base_Producto_Todo.get(i);
+            }
+        }
+        return temp;
     }
 
     private void Mostrar_Fechas() {
@@ -220,7 +334,7 @@ public class Item extends AppCompatActivity {
         fecha=monthDay+"/"+month+"/"+year;
     }
     private void Mostrar_Reseñas() {
-        temp=ListaTemp();
+        //temp=ListaTemp();
         if(temp.size()==0){
             rating_can.setText("(0) RESEÑAS");
             rating.setRating(0);
@@ -231,11 +345,11 @@ public class Item extends AppCompatActivity {
         }
     }
     private void Boton_Comprar() {
-        btn_comprar.setOnClickListener(new View.OnClickListener() {
+        /*btn_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(Sesion.USUARIO.getId()==null){
+                 if(Sesion.USUARIO.getId()==null){
                     Intent intent = new Intent(Item.this,ActivityPrincipal.class);
                     intent.putExtra("o","o5");
                     startActivity(intent);
@@ -246,7 +360,7 @@ public class Item extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });
+        });*/
     }
     private void Boton_Favorito() {
         favorito_opcion.setOnClickListener(new View.OnClickListener() {
@@ -260,7 +374,7 @@ public class Item extends AppCompatActivity {
 
                 }else{
 
-                    if(ItemFavorito.ListaFavoritos.size()!=0){
+                    /*if(ItemFavorito.ListaFavoritos.size()!=0){
                         for(int i=0;i<ItemFavorito.ListaFavoritos.size();i++){
                             if(ItemFavorito.ListaFavoritos.get(i).getP().getId()==prod.getId()){
                                 resp=true;
@@ -268,14 +382,14 @@ public class Item extends AppCompatActivity {
                                 resp=false;
                             }
                         }
-                    }
+                    }*/
                     if(resp==true){
                         mensaje="Ya agrego el Producto en Favoritos";
                     }
                     if(resp==false){
-                        ItemFav=new ItemFavorito(cont+1,prod,"Jesus Inca Cardenas",fecha);
+                        /*ItemFav=new ItemFavorito(cont+1,prod,"Jesus Inca Cardenas",fecha);
                         ItemFavorito.ListaFavoritos.add(ItemFav);
-                        mensaje="Producto Agregado a Favoritos!!";
+                        mensaje="Producto Agregado a Favoritos!!";*/
 
                     }
                     Toast.makeText(Item.this,mensaje, Toast.LENGTH_SHORT).show();
@@ -290,7 +404,7 @@ public class Item extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(ListCarrito.CARRITO_LISTA.size()!=0){
+                /*if(ListCarrito.CARRITO_LISTA.size()!=0){
                     for(int i=0;i<ListCarrito.CARRITO_LISTA.size();i++){
                         if(ListCarrito.CARRITO_LISTA.get(i).getP().getId()==prod.getId()){
                             resp=true;
@@ -298,16 +412,16 @@ public class Item extends AppCompatActivity {
                             resp=false;
                         }
                     }
-                }
+                }*/
                 if(resp==true){
                     mensaje="Ya agrego el Producto en Carrito";
                 }
                 if(resp==false){
-                    ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),cont2,prod.getPrecio());
+                    /*ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),cont2,prod.getPrecio());
                     ListCarrito.CARRITO_LISTA.add(ItemProducto);
                     ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,cont2,prod.getPrecio());
                     ListCompra.CARRITO_COMPRA.add(ItemProducto2);
-                    mensaje="Producto Agregado con Exito!!";
+                    mensaje="Producto Agregado con Exito!!";*/
                 }
                 Snackbar.make(v,mensaje, Snackbar.LENGTH_LONG)
                         .show();
@@ -318,11 +432,11 @@ public class Item extends AppCompatActivity {
 
         if(ItemFavorito.ListaFavoritos.size()!=0){
             for(int i=0;i<ItemFavorito.ListaFavoritos.size();i++){
-                if(ItemFavorito.ListaFavoritos.get(i).getP().getId()==prod.getId()){
+               /* if(ItemFavorito.ListaFavoritos.get(i).getP().getId()==prod.getId()){
 
                 }else{
 
-                }
+                }*/
             }
         }
 
@@ -351,7 +465,7 @@ public class Item extends AppCompatActivity {
     private void Setear_datos() {
 
         //MOSTRAR DATA
-        text_nom.setText(prod.getNom_producto());
+        /*text_nom.setText(prod.getNom_producto());
         tex_ve.setText(prod.getVendedor());
         tex_Desc.setText("Precio Promoción S/ "+String.valueOf(prod.getPrecio()));
         tex_Prec.setText("Precio miCumple S/ "+String.valueOf(prod.getPrecio()));
@@ -359,7 +473,7 @@ public class Item extends AppCompatActivity {
         double resu=(100*prod.getPrecio())/(100+prod.getDescuentos());
         text_descontado.setText("Precio normal S/ "+formateador.format(resu));
         item_puntos.setText("Acumulas: "+prod.getDescuentos()+" Puntos");
-        text_descri.setText(prod.getDescripcion());
+        text_descri.setText(prod.getDescripcion());*/
     }
     private void cards_acciones() {
 
@@ -398,50 +512,7 @@ public class Item extends AppCompatActivity {
             }
         });
     }
-    private void toolbar_opciones() {
 
-        o1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                intent.putExtra("o","o1");
-                startActivity(intent);
-            }
-        });
-        o2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                intent.putExtra("o","o2");
-                startActivity(intent);
-            }
-        });
-        o3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                intent.putExtra("o","o3");
-                startActivity(intent);
-            }
-        });
-        o4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                intent.putExtra("o","o4");
-                startActivity(intent);
-            }
-        });
-        o5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                intent.putExtra("o","o5");
-                startActivity(intent);
-            }
-        });
-    }
     private void variables() {
         mas=(Button)findViewById(R.id.mas);
         menos=(Button)findViewById(R.id.menos);
@@ -449,32 +520,25 @@ public class Item extends AppCompatActivity {
         colores=(RecyclerView)findViewById(R.id.recycler_colores);
         tamanos=(RecyclerView)findViewById(R.id.recycler_tallas);
         recycler10=(RecyclerView)findViewById(R.id.recycler_proveedor);
-        item_puntos=(TextView)findViewById(R.id.item_puntos);
+
         card=(CardView)findViewById(R.id.card_resena);
         card_nuevo=(CardView)findViewById(R.id.card_nueva_resena);
         agregarCarrito=(Button)findViewById(R.id.item_boton_add_carrito);
         btn_comprar=(Button)findViewById(R.id.boton_comprar);
-        o1=(ImageButton)findViewById(R.id.ope_1);
-        o2=(ImageButton)findViewById(R.id.ope_2);
-        o3=(ImageButton)findViewById(R.id.ope_3);
-        o4=(ImageButton)findViewById(R.id.ope_4);
-        o5=(ImageButton)findViewById(R.id.ope_5);
+
         favorito_opcion=(Button)findViewById(R.id.boton_Deseos);
-        tex_ve=(TextView)findViewById(R.id.text_vendedor);
+
         recycler=(RecyclerView)findViewById(R.id.recycler_item);
         rating=(RatingBar)findViewById(R.id.item_resena_rating);
         rating_can=(TextView)findViewById(R.id.item_resena_cantidad);
-        tex_Desc=(TextView)findViewById(R.id.item_desc);
-        tex_Prec=(TextView)findViewById(R.id.item_precio);
-        text_descontado=(TextView)findViewById(R.id.item_descontado);
-        text_nom=(TextView)findViewById(R.id.item_det_nombreProd);
-        text_descri=(TextView)findViewById(R.id.item_descri);
-        text_sub=(TextView)findViewById(R.id.item_descontado);
-        tex_ve.setPaintFlags(tex_ve.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        text_descontado.setPaintFlags(text_descontado.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+
+       // tex_ve.setPaintFlags(tex_ve.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+       // text_descontado.setPaintFlags(text_descontado.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
 
     }
-    public List<Resenas> ListaTemp(){
+   /* public List<Resenas> ListaTemp(){
 
         List<Resenas> temp2=new ArrayList<Resenas>();
         if(ListResenas.ALMACEN_RESENAS!=null){
@@ -488,8 +552,8 @@ public class Item extends AppCompatActivity {
 
             return null;
         }
-    }
-    public List<ProductoX> ListaTemp2(){
+    }*/
+    /*public List<ProductoX> ListaTemp2(){
 
         List<ProductoX> temp2=new ArrayList<ProductoX>();
         if(ProductoX.TODO!=null){
@@ -508,7 +572,7 @@ public class Item extends AppCompatActivity {
 
             return null;
         }
-    }
+    }*/
     public float PromedioTotal(){
         float total;
         float suma=0;
