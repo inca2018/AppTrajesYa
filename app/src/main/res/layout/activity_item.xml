@@ -119,24 +119,7 @@
                                 android:textSize="10sp"
                                 android:inputType="textMultiLine"
                                 />
-                            <TextView
-                                android:id="@+id/boton_detalles"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Detalles del producto"
-                                android:textColor="@color/colorAccent"
-                                android:layout_margin="2dp"
-                                android:textSize="12sp"
-                                android:textAlignment="textStart"
-                                />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Tiempo de Entrega de 5 a 7 dias"
-                                android:textColor="@color/negro"
-                                android:textAlignment="textStart"
-                                android:textSize="12sp"
-                                android:layout_margin="2dp"/>
+
 
                         </LinearLayout>
 
@@ -248,7 +231,7 @@
                     android:textStyle="bold"
                     android:textSize="12sp"/>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_tallas"
+                    android:id="@+id/recycler_medidas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp">
@@ -304,7 +287,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="10"
+                                android:text="0"
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:textSize="16sp"
@@ -341,12 +324,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="center"
-                    android:text="CARRITO"
+                    android:text="AGREGAR "
                     android:textSize="16dp"
                     android:textColor="@color/blanco"
                     android:background="@android:color/transparent"
                     android:layout_margin="2dp"
-                    android:drawableLeft="@drawable/ic_carrito_blanco_ofi"
+                    android:drawableRight="@drawable/add_reserva_nueva"
                     android:padding="8dp"
                     />
                 </androidx.cardview.widget.CardView>
@@ -371,28 +354,7 @@
                     android:layout_margin="2dp"
                     />
                 </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/deseo"
-                    android:background="@color/deseo"
-                    app:cardBackgroundColor="@color/deseo"
-                    app:cardCornerRadius="12dp"
-                    android:layout_margin="2dp">
-                    <Button
-                        android:id="@+id/boton_Deseos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:text="Agregar a mis Deseos"
-                        android:textSize="16dp"
-                        android:textColor="@color/blanco"
-                        android:background="@android:color/transparent"
-                        android:layout_margin="2dp"
-                        android:visibility="gone"
-                        />
-                </androidx.cardview.widget.CardView>
+
             </LinearLayout>
 
 
@@ -410,20 +372,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textSize="12sp"
-                android:text="Disponibles en :"
+                android:text="Disponibles:"
                 android:textColor="@color/negro"
                 android:gravity="center"
                 android:layout_marginTop="2dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Retirado de Tienda"
-                    android:textSize="12sp"
-                    android:textColor="@color/negro"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:drawableLeft="@drawable/ic_inicio3"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -448,117 +401,37 @@
 
 
                 <TextView
+                    android:id="@+id/txtNombreCategoria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="ARTICULOS RELACIONADOS"
+                    android:text=""
                     android:textColor="@color/negro"
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_item"
+                    android:id="@+id/recycler_similares1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"></androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
+                    android:id="@+id/txtNombreSubCategoria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="ARTICULOS VENDIDOS POR PROVEEDOR"
+                    android:text=""
                     android:textColor="@color/negro"
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_proveedor"
+                    android:id="@+id/recycler_similares2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/card_resena"
-                app:cardBackgroundColor="@color/blanco"
-                android:layout_margin="4dp"
-                android:visibility="gone">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
-                    <RatingBar
-                        android:id="@+id/item_resena_rating"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:clickable="true"
-                        android:isIndicator="true"
-                        android:progressTint="#FDDB39"
-                        android:progressBackgroundTint="@color/colorAccent"
-                        android:rating="5"
-                        android:secondaryProgressTint="#FDDB39"
-                        android:layout_margin="5dp"
-                        />
-                    <TextView
-                        android:id="@+id/item_resena_cantidad"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:textAlignment="textStart"
-                        android:text="(14) CALIFICACIONES"
-                        android:textSize="14dp"
-                        android:layout_margin="5dp"
-                        />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_boton_adelante"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/card_nueva_resena"
-                app:cardBackgroundColor="@color/blanco"
-                android:layout_margin="4dp"
-                android:visibility="gone">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/pencil"
-                        android:layout_margin="2dp"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.5"
-                        android:textAlignment="textStart"
-                        android:text="NUEVA CALIFICACIÓN"
-                        android:textSize="14dp"
-                        android:layout_margin="4dp"
-                        android:paddingLeft="15dp"
-                        />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_boton_adelante"/>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

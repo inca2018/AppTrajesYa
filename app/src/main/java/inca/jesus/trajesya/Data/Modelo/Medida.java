@@ -3,13 +3,15 @@ package inca.jesus.trajesya.Data.Modelo;
 public class Medida {
     int idMedida;
     String nombreMedida;
+    String simboloMedida;
     String fechaRegistro;
     String fechaUpdate;
     Estado estadoMedida;
 
+    public boolean select;
+    public int color;
+
     public Medida(){
-
-
     }
 
     public int getIdMedida() {
@@ -50,5 +52,29 @@ public class Medida {
 
     public void setEstadoMedida(Estado estadoMedida) {
         this.estadoMedida = estadoMedida;
+    }
+
+    public String getSimboloMedida() {
+        return simboloMedida;
+    }
+
+    public void setSimboloMedida(String simboloMedida) {
+        this.simboloMedida = simboloMedida;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

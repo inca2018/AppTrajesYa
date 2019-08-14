@@ -10,25 +10,24 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import inca.jesus.trajesya.Clases.TiposProductos;
+import inca.jesus.trajesya.Data.Modelo.Medida;
 import inca.jesus.trajesya.R;
 
 /**
  * Created by Jesus on 01/06/2017.
  */
 
-public class AdapterTamanos extends RecyclerView.Adapter<AdapterTamanos.ViewHolder> {
+public class AdapterMedida extends RecyclerView.Adapter<AdapterMedida.ViewHolder> {
 
     private Context context;
-    private List<TiposProductos> my_Data;
+    private List<Medida> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
 
-    public AdapterTamanos(Context context, List<TiposProductos> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterMedida(Context context, List<Medida> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
         this.recyclerViewOnItemClickListener = recyclerViewOnItemClickListener;
-
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -53,14 +52,14 @@ public class AdapterTamanos extends RecyclerView.Adapter<AdapterTamanos.ViewHold
         }
     }
 
-    public AdapterTamanos.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterMedida.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_tam,parent,false);
-        return new AdapterTamanos.ViewHolder(itemView);
+        return new AdapterMedida.ViewHolder(itemView);
 
     }
     @Override
-    public void onBindViewHolder(final AdapterTamanos.ViewHolder holder, final int position) {
-        holder.nom.setText(my_Data.get(position).getNombre());
+    public void onBindViewHolder(final AdapterMedida.ViewHolder holder, final int position) {
+        holder.nom.setText(my_Data.get(position).getSimboloMedida());
 
         if(my_Data.get(position).isSelect()==true){
             holder.nom.setTextColor(context.getResources().getColor(R.color.deseo));
@@ -82,8 +81,6 @@ public class AdapterTamanos extends RecyclerView.Adapter<AdapterTamanos.ViewHold
                 notifyDataSetChanged();
             }
         });
-
-
 
     }
 

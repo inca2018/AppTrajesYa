@@ -305,6 +305,7 @@ public class Splash extends AppCompatActivity {
                                             Medida medida=new Medida();
                                             medida.setIdMedida(objetoMedida.getInt("idProductoMedida"));
                                             medida.setNombreMedida(objetoMedida.getString("NombreMedida"));
+                                            medida.setSimboloMedida(objetoMedida.getString("simbolo"));
 
                                             ListaMedidaTemp.add(medida);
                                         }
