@@ -183,7 +183,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:text="Alquiler:"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:layout_margin="2dp"
                         android:textAlignment="textStart"
@@ -223,9 +223,10 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
                 <TextView
+                    android:id="@+id/tituloTalla"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tallas:"
+                    android:text=""
                     android:layout_margin="2dp"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"

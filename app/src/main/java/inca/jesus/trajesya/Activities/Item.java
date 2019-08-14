@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,6 +76,7 @@ public class Item extends AppCompatActivity {
     TextView descripcioProducto;
     TextView categoriaSimiliar;
     TextView subcategoriaSimilar;
+    TextView tituloTalla;
 
     ScrollView scroll;
 
@@ -105,6 +107,7 @@ public class Item extends AppCompatActivity {
         recycler_similares2=findViewById(R.id.recycler_similares2);
         recycler_medidas=findViewById(R.id.recycler_medidas);
         agregarCarrito=findViewById(R.id.item_boton_add_carrito);
+        tituloTalla=findViewById(R.id.tituloTalla);
         mas=findViewById(R.id.mas);
         menos=findViewById(R.id.menos);
         cantidad=findViewById(R.id.cantidad);
@@ -122,8 +125,6 @@ public class Item extends AppCompatActivity {
         verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
         precioProducto.setText("Alquiler: S/."+ProductoSeleccionado.getPrecioAlquiler());
         descripcioProducto.setText(ProductoSeleccionado.getDescripcionProducto());
-
-
 
         GenerarTamanos(ProductoSeleccionado);
 
@@ -165,18 +166,16 @@ public class Item extends AppCompatActivity {
        MenuAcciones();
 
     }
-
     private void RecuperarSubCategoria(Producto productoSeleccionado) {
         subcategoriaSimilar=findViewById(R.id.txtNombreSubCategoria);
         String Temp="";
         for(int i=0;i<Constantes.Base_Categorias_Todo.size();i++){
-            if(Constantes.Base_Categorias_Todo.get(i).getIdCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
-                Temp=Constantes.Base_Categorias_Todo.get(i).getNombreCategoria();
+            if(Constantes.Base_SubCategorias_Todo.get(i).getIdSubCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
+                Temp=Constantes.Base_SubCategorias_Todo.get(i).getNombreSubCategoria();
             }
         }
-        subcategoriaSimilar.setText("MÁS TRAJES DE "+Temp);
+        subcategoriaSimilar.setText("Más de "+Temp);
     }
-
     private void RecuperarCategoria(Producto productoSeleccionado) {
 
         categoriaSimiliar=findViewById(R.id.txtNombreCategoria);
@@ -186,9 +185,8 @@ public class Item extends AppCompatActivity {
                 Temp=Constantes.Base_Categorias_Todo.get(i).getNombreCategoria();
             }
         }
-        categoriaSimiliar.setText("MÁS TRAJES DE "+Temp);
+        categoriaSimiliar.setText("Más de "+Temp);
     }
-
     private void MenuAcciones() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -222,40 +220,48 @@ public class Item extends AppCompatActivity {
                     }
                 });
     }
-
     private void MostrarProductosSimilares(Producto productoSeleccionado) {
 
         List<Producto> ProductosSimilares=RecuperarSimilares(productoSeleccionado);
 
-        linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
-        adapterProductosSimilares = new AdapterItemProductos(Item.this, ProductosSimilares, new RecyclerViewOnItemClickListener2() {
-            @Override
-            public void onClick(View v, int position) {
-            }
-        });
-        recycler_similares1.setAdapter(adapterProductosSimilares);
-        recycler_similares1.setLayoutManager(linearLayout);
-    }
+        if(ProductosSimilares!=null){
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+            adapterProductosSimilares = new AdapterItemProductos(Item.this, ProductosSimilares, new RecyclerViewOnItemClickListener2() {
+                @Override
+                public void onClick(View v, int position) {
+                }
+            });
+            recycler_similares1.setAdapter(adapterProductosSimilares);
+            recycler_similares1.setLayoutManager(linearLayout);
+        }else{
+            Log.i("Inca","No tiene productos similares 1");
+        }
 
+
+    }
     private void MostrarProductosSimilares2(Producto productoSeleccionado) {
 
-        List<Producto> ProductosSimilares2=RecuperarSimilares2(productoSeleccionado);
+            List<Producto> ProductosSimilares2=RecuperarSimilares2(productoSeleccionado);
 
-        linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
-        adapterProductosSimilares2 = new AdapterItemProductos(Item.this, ProductosSimilares2, new RecyclerViewOnItemClickListener2() {
-            @Override
-            public void onClick(View v, int position) {
-            }
-        });
-        recycler_similares2.setAdapter(adapterProductosSimilares2);
-        recycler_similares2.setLayoutManager(linearLayout);
+        if(ProductosSimilares2!=null){
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+            adapterProductosSimilares2 = new AdapterItemProductos(Item.this, ProductosSimilares2, new RecyclerViewOnItemClickListener2() {
+                @Override
+                public void onClick(View v, int position) {
+                }
+            });
+            recycler_similares2.setAdapter(adapterProductosSimilares2);
+            recycler_similares2.setLayoutManager(linearLayout);
+        }else{
+            Log.i("Inca","No tiene productos similares 2");
+        }
+
     }
-
     private List<Producto> RecuperarSimilares(Producto productoSeleccionado) {
         List<Producto> Temp=new ArrayList<>();
 
         for(int i=0;i<Constantes.Base_Producto_Todo.size();i++){
-            if(Constantes.Base_Producto_Todo.get(i).getCategoriaProducto()==productoSeleccionado.getCategoriaProducto()){
+            if(Constantes.Base_Producto_Todo.get(i).getCategoriaProducto().getIdCategoria()==productoSeleccionado.getCategoriaProducto().getIdCategoria()){
                 Temp.add(Constantes.Base_Producto_Todo.get(i));
             }
         }
@@ -265,30 +271,35 @@ public class Item extends AppCompatActivity {
         List<Producto> Temp=new ArrayList<>();
 
         for(int i=0;i<Constantes.Base_Producto_Todo.size();i++){
-            if(Constantes.Base_Producto_Todo.get(i).getSubCategoriaProducto()==productoSeleccionado.getSubCategoriaProducto()){
+            if(Constantes.Base_Producto_Todo.get(i).getSubCategoriaProducto().getIdSubCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
                 Temp.add(Constantes.Base_Producto_Todo.get(i));
             }
         }
         return Temp;
     }
-
     private void GenerarTamanos(Producto productoSeleccionado) {
 
         List<Medida> Medidas;
         Medidas=productoSeleccionado.getMedidaProducto();
 
-        //Recylcer de TAMAÑOS
-        linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
-        adapter3 = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
-            @Override
-            public void onClick(View v, int position) {
-            }
-        });
-        recycler_medidas.setAdapter(adapter3);
-        recycler_medidas.setLayoutManager(linearLayout);
+        if(Medidas!=null){
+            tituloTalla.setText("Tallas Disponibles:");
+            //Recylcer de TAMAÑOS
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+            adapter3 = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
+                @Override
+                public void onClick(View v, int position) {
+                }
+            });
+            recycler_medidas.setAdapter(adapter3);
+            recycler_medidas.setLayoutManager(linearLayout);
+
+        }else{
+            tituloTalla.setText("Sin Tallas Disponibles");
+            Log.i("Inca","No se encontraron Medidas");
+        }
 
     }
-
     private void GenerarCarrusel(Producto productoSeleccionado) {
         /*----------Carrusel----------------*/
 
@@ -362,7 +373,6 @@ public class Item extends AppCompatActivity {
             });
         }
     }
-
     private Producto BuscarProductoSeleccionado(int idProductoRecuperado) {
         Producto temp=new Producto();
 
@@ -373,9 +383,6 @@ public class Item extends AppCompatActivity {
         }
         return temp;
     }
-
-
-
     private void Boton_Comprar() {
         /*btn_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -394,13 +401,12 @@ public class Item extends AppCompatActivity {
             }
         });*/
     }
-
     private void Boton_Agregar_Carrito() {
-        agregarCarrito.setOnClickListener(new View.OnClickListener() {
+       /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                /*if(ListCarrito.CARRITO_LISTA.size()!=0){
+                if(ListCarrito.CARRITO_LISTA.size()!=0){
                     for(int i=0;i<ListCarrito.CARRITO_LISTA.size();i++){
                         if(ListCarrito.CARRITO_LISTA.get(i).getP().getId()==prod.getId()){
                             resp=true;
@@ -408,29 +414,27 @@ public class Item extends AppCompatActivity {
                             resp=false;
                         }
                     }
-                }*/
+                }
                 if(resp==true){
                     mensaje="Ya agrego el Producto en Carrito";
                 }
                 if(resp==false){
-                    /*ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),cont2,prod.getPrecio());
+                    ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),cont2,prod.getPrecio());
                     ListCarrito.CARRITO_LISTA.add(ItemProducto);
                     ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,cont2,prod.getPrecio());
                     ListCompra.CARRITO_COMPRA.add(ItemProducto2);
-                    mensaje="Producto Agregado con Exito!!";*/
+                    mensaje="Producto Agregado con Exito!!";
                 }
                 Snackbar.make(v,mensaje, Snackbar.LENGTH_LONG)
                         .show();
             }
-        });
+        });*/
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
         scroll.scrollTo(0,0);
-
     }
     @Override
     protected void onRestart() {
