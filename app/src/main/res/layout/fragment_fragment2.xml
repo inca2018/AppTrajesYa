@@ -4,16 +4,12 @@
     android:layout_height="match_parent"
     android:background="@color/blanco">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="4dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -41,20 +37,12 @@
                     android:id="@+id/titulo_categoria"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:fontFamily="sans-serif-condensed"
                     android:text=""
-                    android:textSize="18sp"
-                    android:textColor="@color/negro"
-                    android:textStyle="italic"
-                    android:layout_margin="4dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Ver Todo"
-                    android:layout_margin="4dp"
-                    android:textSize="12dp"
-                    android:textColor="@color/negro"
-                    android:textAlignment="textEnd"
-                    />
+                    android:textColor="@color/base2"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -62,6 +50,7 @@
                     android:layout_weight="1"
                     android:id="@+id/recycler_categorias2">
                 </androidx.recyclerview.widget.RecyclerView>
+
             </LinearLayout>
 
 
@@ -70,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
                 <LinearLayout
                     android:id="@+id/linear_atras"
                     android:layout_width="match_parent"
@@ -101,14 +91,6 @@
                     android:inputType="textMultiLine"
                     android:textColor="@color/negro"
                     android:layout_margin="10dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Ver Todo"
-                    android:layout_margin="10dp"
-                    android:textSize="16dp"
-                    android:textColor="@color/negro"
-                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -125,6 +107,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+
 
 </FrameLayout>

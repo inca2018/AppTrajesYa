@@ -16,6 +16,7 @@ import inca.jesus.trajesya.Activities.Item;
 import inca.jesus.trajesya.Adapters.AdapterBuscar;
 import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.Clases.ProductoX;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 
@@ -46,15 +47,13 @@ public class FragmentBuscando extends Fragment {
         View view= inflater.inflate(R.layout.fragment_fragment_buscando, container, false);
         recycler=(RecyclerView)view.findViewById(R.id.recycler_buscando);
 
-        if(ProductoX.BUSCADOR.size()!=0){
+        if(Constantes.PRODUCTOS_BUSCADOS.size()!=0){
 
         linearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
-        adapter = new AdapterBuscar(getActivity(), ProductoX.BUSCADOR, new RecyclerViewOnItemClickListener2() {
+        adapter = new AdapterBuscar(getActivity(), Constantes.PRODUCTOS_BUSCADOS, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(getActivity(),Item.class);
-                intent.putExtra("Producto",ProductoX.BUSCADOR.get(position));
-                startActivity(intent);
+                //not required
             }
         });
         recycler.setAdapter(adapter);

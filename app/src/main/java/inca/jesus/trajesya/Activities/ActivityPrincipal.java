@@ -8,11 +8,16 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +28,21 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import inca.jesus.trajesya.Clases.CarouselView;
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Clases.Sesion;
 
+import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.Fragmentos.Fragment1;
 import inca.jesus.trajesya.Fragmentos.Fragment2;
 import inca.jesus.trajesya.Fragmentos.Fragment3;
@@ -42,19 +52,20 @@ import inca.jesus.trajesya.Fragmentos.SesionFragment;
 import inca.jesus.trajesya.R;
 
 public class ActivityPrincipal extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    Toolbar toolbar = null;
-    ImageButton o1,o2,o3,o4,o5;
-    TextView opt1,opt2,opt3,opt4,opt5;
-    LinearLayout l1,l2,l3,l4,l5;
-    ProductoX p;
-    CardView boton_video,boton_kids,boton_fotos;
+
+
     private FragmentManager fragmentManager;
     private Fragment fragment = null;
     private SearchView search;
-
+    public Constantes P;
     private CardView linear_search;
     public ProfileTracker profileTracker;
     BottomNavigationView bottomNavigationView;
+    Context context;
+
+
+    String[] Rutas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +73,16 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         setContentView(R.layout.activity_principal);
         fragmentManager = getSupportFragmentManager();
         linear_search= findViewById(R.id.card_linear_2);
+        context=getApplicationContext();
 
         if(Sesion.USUARIO.getId()==null){
             System.out.println("INKA: USUARIO VACIO");
         }else{
             System.out.println("INKA: USUARIO"+Sesion.USUARIO.getNombre());
         }
+
+
+
 
         bottomNavigationView =  findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -81,9 +96,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                             case R.id.action_2:
                                 Opcion2();
                                 return true;
-                            //case R.id.action_3:
-                              //  Opcion3();
-                               // return true;
+
                             case R.id.action_4:
                                 Opcion4();
                                 return true;
@@ -99,22 +112,13 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(ActivityPrincipal.this, "Buscador por Linear", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ActivityPrincipal.this, "Buscador por Linear", Toast.LENGTH_SHORT).show();
                 search.setIconified(false);
             }
         });
-        //boton_video=(CardView)findViewById(R.id.panel_boton_videos);
-        /*boton_video.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(Activity_Principal.this,Videos.class);
-                startActivity(intent);
-            }
-        });*/
-        search=(SearchView)findViewById(R.id.search_datos);
+        search=findViewById(R.id.search_datos);
         search.setOnQueryTextListener(this);
-
 
         if(getIntent().getStringExtra("o")==null){
             fragment = new Fragment1();
@@ -132,7 +136,45 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             Opcion5();
         }
         set_Datos_fb();
+
+        Mostrar_Publicidad();
     }
+
+    private void Mostrar_Publicidad() {
+
+        if(Constantes.Base_ListaPublicidad!=null){
+
+            Rutas=new String[Constantes.Base_ListaPublicidad.size()];
+
+            for(int i=0;i<Constantes.Base_ListaPublicidad.size();i++){
+                Rutas[i]=Constantes.PATH_IMAGEN+Constantes.Base_ListaPublicidad.get(i).getImagenPublicidad();
+            }
+
+            Collections.reverse(Constantes.Base_ListaPublicidad);
+
+
+            final LayoutInflater inflater = (LayoutInflater) ActivityPrincipal.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final View dialoglayout4 = inflater.inflate(R.layout.dialog_publicidad, null);
+                    final CarouselView carruselPublicidad=dialoglayout4.findViewById(R.id.carruselPublicidad);
+
+                    carruselPublicidad.setImageResources(Rutas);
+                    carruselPublicidad.setOnPageClickListener(new CarouselView.OnPageClickListener() {
+                        @Override
+                        public void onPageClick(int position) {
+                            Uri uri = Uri.parse(Constantes.Base_ListaPublicidad.get(position).getLinkPublicidad());
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            context.startActivity(intent);
+                        }
+                    });
+
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(ActivityPrincipal.this);
+                    builder4.setView(dialoglayout4);
+                    builder4.show();
+                } 
+
+    }
+
+
     private void set_Datos_fb() {
 
         profileTracker = new ProfileTracker() {
@@ -177,18 +219,16 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     return false;
                 }
 
-                List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-                for (ProductoX value : ProductoX.TODO) {
-                    if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                         filteredValues.remove(value);
                     }
                 }
-                p.setBUSCADOR(filteredValues);
+                Constantes.PRODUCTOS_BUSCADOS=filteredValues;
 
                 fragment = new FragmentBuscando();
                 fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-
-
 
                 return false;
             }
@@ -215,18 +255,16 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     return false;
                 }
 
-                List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-                for (ProductoX value : ProductoX.TODO) {
-                    if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                         filteredValues.remove(value);
                     }
                 }
-                p.setBUSCADOR(filteredValues);
+                Constantes.PRODUCTOS_BUSCADOS=filteredValues;
 
                 fragment = new FragmentBuscando();
                 fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-
-
 
                 return false;
             }
@@ -253,19 +291,16 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     return false;
                 }
 
-                List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-                for (ProductoX value : ProductoX.TODO) {
-                    if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                         filteredValues.remove(value);
                     }
                 }
-                p.setBUSCADOR(filteredValues);
+                Constantes.PRODUCTOS_BUSCADOS=filteredValues;
 
                 fragment = new FragmentBuscando();
                 fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-
-
-
 
                 return false;
             }
@@ -274,8 +309,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     public void Opcion4() {
-
-
 
         fragment = new Fragment4();
         fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
@@ -293,19 +326,16 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     return false;
                 }
 
-                List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-                for (ProductoX value : ProductoX.TODO) {
-                    if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                         filteredValues.remove(value);
                     }
                 }
-                p.setBUSCADOR(filteredValues);
+                Constantes.PRODUCTOS_BUSCADOS=filteredValues;
 
                 fragment = new FragmentBuscando();
                 fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-
-
-
 
                 return false;
             }
@@ -314,13 +344,8 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
     public void Opcion5() {
 
-        /*if(Sesion.USUARIO.getId()==null){
-            fragment = new Fragment5();
-            fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-        }else{*/
         fragment = new SesionFragment();
         fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
-        /*}*/
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -334,13 +359,14 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
                     return false;
                 }
-                List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-                for (ProductoX value : ProductoX.TODO) {
-                    if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                         filteredValues.remove(value);
                     }
                 }
-                p.setBUSCADOR(filteredValues);
+                Constantes.PRODUCTOS_BUSCADOS=filteredValues;
+
                 fragment = new FragmentBuscando();
                 fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();
                 return false;
@@ -357,13 +383,13 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             resetSearch();
             return false;
         }
-        List<ProductoX> filteredValues = new ArrayList<ProductoX>(ProductoX.TODO);
-        for (ProductoX value : ProductoX.TODO) {
-            if (!value.getNom_producto().toLowerCase().contains(newText.toLowerCase())) {
+        List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+        for (Producto value : Constantes.Base_Producto_Todo) {
+            if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
                 filteredValues.remove(value);
             }
         }
-        p.setBUSCADOR(filteredValues);
+        Constantes.PRODUCTOS_BUSCADOS=filteredValues;
 
         fragment = new FragmentBuscando();
         fragmentManager.beginTransaction().replace(R.id.contenedor,fragment).commit();

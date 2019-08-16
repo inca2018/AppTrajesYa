@@ -86,7 +86,6 @@ public class Splash extends AppCompatActivity {
        Constantes.Base_Categorias_Todo.clear();
        Constantes.Base_SubCategorias_Todo.clear();
        Constantes.Base_Producto_Todo.clear();
-
        Constantes.Base_ListaPromociones.clear();
        Constantes.Base_ListaProductoMasVisto.clear();
        Constantes.Base_ListaProductoNuevo.clear();
@@ -275,7 +274,8 @@ public class Splash extends AppCompatActivity {
                                     temp.setEstadoProducto(estadoProducto);
 
                                     temp.setVerificadoProducto(objeto.getString("verificado"));
-
+                                    temp.setPrecioAlquiler(objeto.getDouble("precioAlquiler"));
+                                    temp.setPrecioVenta(objeto.getDouble("precioVenta"));
                                     /*------Recuperar Galerias-----------*/
 
                                     if(!objeto.isNull("galeria")){

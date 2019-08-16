@@ -29,4 +29,5 @@ public class Constantes {
     public final static List<Producto> Base_ListaProductoTendencias = new ArrayList<>();
 
 
+    public  static List<Producto> PRODUCTOS_BUSCADOS=new ArrayList<>();
 }

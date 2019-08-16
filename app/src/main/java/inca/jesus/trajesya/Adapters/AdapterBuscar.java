@@ -2,6 +2,8 @@ package inca.jesus.trajesya.Adapters;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import inca.jesus.trajesya.Activities.Item;
 import inca.jesus.trajesya.Clases.ProductoX;
+import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
 /**
@@ -22,10 +27,10 @@ import inca.jesus.trajesya.R;
 
 public class AdapterBuscar extends RecyclerView.Adapter<AdapterBuscar.ViewHolder> {
     private Context context;
-    private List<ProductoX> my_Data;
+    private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
 
-    public AdapterBuscar(Context context, List<ProductoX> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterBuscar(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -59,14 +64,42 @@ public class AdapterBuscar extends RecyclerView.Adapter<AdapterBuscar.ViewHolder
     @Override
     public void onBindViewHolder(AdapterBuscar.ViewHolder holder, final int position) {
 
-        holder.nom.setText(my_Data.get(position).getNom_producto());
-        holder.vendedor.setText(my_Data.get(position).getVendedor());
+        holder.nom.setText(my_Data.get(position).getNombreProducto());
+        holder.vendedor.setText("Verificado por: "+my_Data.get(position).getVerificadoProducto());
 
         Picasso.get()
-                .load(my_Data.get(position).getNom_producto())
+                .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenProducto())
                 .placeholder(R.drawable.default_imagen)
                 .error(R.drawable.default_imagen)
                 .into(holder.foto);
+
+        holder.foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
+            }
+        });
+        holder.nom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
+            }
+        });
+        holder.vendedor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
+            }
+        });
 
     }
     @Override
