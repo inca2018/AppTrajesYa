@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -161,6 +162,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     carruselPublicidad.setOnPageClickListener(new CarouselView.OnPageClickListener() {
                         @Override
                         public void onPageClick(int position) {
+                            Log.i("Inca","Posicion:"+position);
                             Uri uri = Uri.parse(Constantes.Base_ListaPublicidad.get(position).getLinkPublicidad());
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             context.startActivity(intent);
