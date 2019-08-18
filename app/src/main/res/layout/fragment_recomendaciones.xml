@@ -10,69 +10,71 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="4dp">
+            android:layout_margin="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TRAJES VISTOS RECIENTEMENTE"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
+                android:text="TRAJES VISTOS RECIENTEMENTE"
+                android:textSize="16sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler1">
+                android:id="@+id/recycler1"
+                android:layout_margin="2dp">
             </androidx.recyclerview.widget.RecyclerView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TRAJES EN PROMOCIÓN"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler2">
+                android:id="@+id/recycler2"
+                android:layout_margin="2dp">
             </androidx.recyclerview.widget.RecyclerView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MáS ALQUILADOS EN TRAJES TRADICIONALES"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:text="MÁS ALQUILADOS EN TRAJES TRADICIONALES"
+                android:textColor="@color/SinCheck"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler3">
+                android:id="@+id/recycler3"
+                android:layout_margin="2dp">
             </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MÁS ALQUILADOS EN OTROS TRAJES"
-                android:textColor="@color/negro"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
                 android:layout_margin="4dp"
                 android:textSize="16sp"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler4">
+                android:id="@+id/recycler4"
+                android:layout_margin="2dp">
             </androidx.recyclerview.widget.RecyclerView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TENDENCIAS"
-                android:textColor="@color/negro"
-                android:layout_margin="4dp"
-                android:textSize="16sp"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler5">
-            </androidx.recyclerview.widget.RecyclerView>
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

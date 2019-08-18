@@ -47,8 +47,8 @@ import inca.jesus.trajesya.R;
  */
 public class Recomendaciones extends Fragment {
 
-    private RecyclerView recycler1,recycler2,recycler3,recycler4,recycler5;
-    private LinearLayoutManager linearLayout1,linearLayout2,linearLayout3,linearLayout4,linearLayout5;
+    private RecyclerView recycler1,recycler2,recycler3,recycler4;
+    private LinearLayoutManager linearLayout1,linearLayout2,linearLayout3,linearLayout4;
     private Adapter3 adapterT;
 
     private AdapterItemProductos adapterVistosRecien,adapterPromocion,adapterMasTradicionales,adapterMasOtros,adapterTendencias;
@@ -59,7 +59,7 @@ public class Recomendaciones extends Fragment {
     List<Producto> ListaPromocion;
     List<Producto> ListaMasTradicionales;
     List<Producto> ListaMasOtros;
-    List<Producto> ListaTendencias;
+
 
     public Recomendaciones() {
         // Required empty public constructor
@@ -74,13 +74,13 @@ public class Recomendaciones extends Fragment {
         recycler2=(RecyclerView)view.findViewById(R.id.recycler2);
         recycler3=(RecyclerView)view.findViewById(R.id.recycler3);
         recycler4=(RecyclerView)view.findViewById(R.id.recycler4);
-        recycler5=(RecyclerView)view.findViewById(R.id.recycler5);
+
 
         ListaVistosRecien=new ArrayList<>();
         ListaPromocion=new ArrayList<>();
         ListaMasTradicionales=new ArrayList<>();
         ListaMasOtros=new ArrayList<>();
-        ListaTendencias=new ArrayList<>();
+
 
         linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
         adapterVistosRecien = new AdapterItemProductos(getActivity(), ListaVistosRecien, new RecyclerViewOnItemClickListener2() {
@@ -94,7 +94,7 @@ public class Recomendaciones extends Fragment {
 
 
         linearLayout2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterPromocion = new AdapterItemProductos(getActivity(),ListaPromocion, new RecyclerViewOnItemClickListener2() {
+        adapterPromocion = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoPromociones, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
             }
@@ -103,7 +103,7 @@ public class Recomendaciones extends Fragment {
         recycler2.setLayoutManager(linearLayout2);
 
         linearLayout3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterMasTradicionales = new AdapterItemProductos(getActivity(),ListaMasTradicionales, new RecyclerViewOnItemClickListener2() {
+        adapterMasTradicionales = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductosTopTradicionales, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
@@ -113,7 +113,7 @@ public class Recomendaciones extends Fragment {
         recycler3.setLayoutManager(linearLayout3);
 
         linearLayout4 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterMasOtros = new AdapterItemProductos(getActivity(),ListaMasOtros, new RecyclerViewOnItemClickListener2() {
+        adapterMasOtros = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductosTopOtros, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
 
@@ -122,15 +122,7 @@ public class Recomendaciones extends Fragment {
         recycler4.setAdapter(adapterMasOtros);
         recycler4.setLayoutManager(linearLayout4);
 
-        linearLayout5 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterTendencias = new AdapterItemProductos(getActivity(), ListaTendencias, new RecyclerViewOnItemClickListener2() {
-            @Override
-            public void onClick(View v, int position) {
 
-            }
-        });
-        recycler5.setAdapter(adapterTendencias);
-        recycler5.setLayoutManager(linearLayout5);
 
         ListarProductosNuevos(context);
         return view;
@@ -189,19 +181,19 @@ public class Recomendaciones extends Fragment {
                                     temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
 
                                     ListaVistosRecien.add(temp);
-                                    ListaPromocion.add(temp);
+
                                     ListaMasTradicionales.add(temp);
                                     ListaMasOtros.add(temp);
-                                    ListaTendencias.add(temp);
+
 
                                     Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
                                 }
                                 Log.e("Inca","Servidor Listar Productos");
                                 adapterVistosRecien.notifyDataSetChanged();
-                                adapterPromocion.notifyDataSetChanged();
+
                                 adapterMasTradicionales.notifyDataSetChanged();
                                 adapterMasOtros.notifyDataSetChanged();
-                                adapterTendencias.notifyDataSetChanged();
+
 
 
                             } else {

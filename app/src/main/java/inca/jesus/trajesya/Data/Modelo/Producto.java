@@ -1,5 +1,6 @@
 package inca.jesus.trajesya.Data.Modelo;
 
+import java.util.Date;
 import java.util.List;
 
 public class Producto {
@@ -8,6 +9,7 @@ public class Producto {
     String descripcionProducto;
     String imagenProducto;
     String fechaRegistro;
+    Date fechaRegistroDate;
     String fechaUpdate;
     Categoria categoriaProducto;
     SubCategoria subCategoriaProducto;
@@ -18,9 +20,14 @@ public class Producto {
     double precioAlquiler;
     double precioVenta;
     String verificadoProducto;
+    int NumeroVisitas;
 
     List<Galeria> GaleriaProducto;
     List<Medida> MedidaProducto;
+    Grupo grupo;
+
+    double precioPromocion;
+
 
 
     public Producto(){
@@ -161,5 +168,37 @@ public class Producto {
 
     public void setVerificadoProducto(String verificadoProducto) {
         this.verificadoProducto = verificadoProducto;
+    }
+
+    public double getPrecioPromocion() {
+        return precioPromocion;
+    }
+
+    public void setPrecioPromocion(double precioPromocion) {
+        this.precioPromocion = precioPromocion;
+    }
+
+    public int getNumeroVisitas() {
+        return NumeroVisitas;
+    }
+
+    public void setNumeroVisitas(int numeroVisitas) {
+        NumeroVisitas = numeroVisitas;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Date getFechaRegistroDate() {
+        return fechaRegistroDate;
+    }
+
+    public void setFechaRegistroDate(Date fechaRegistroDate) {
+        this.fechaRegistroDate = fechaRegistroDate;
     }
 }

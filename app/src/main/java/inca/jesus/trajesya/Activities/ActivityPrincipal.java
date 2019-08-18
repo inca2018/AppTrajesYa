@@ -3,24 +3,23 @@ package inca.jesus.trajesya.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -28,6 +27,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -39,10 +39,10 @@ import java.util.Collections;
 import java.util.List;
 
 import inca.jesus.trajesya.Clases.CarouselView;
-import inca.jesus.trajesya.Clases.ProductoX;
-import inca.jesus.trajesya.Clases.Sesion;
+
 
 import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Modelo.Sesion;
 import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.Fragmentos.Fragment1;
 import inca.jesus.trajesya.Fragmentos.Fragment2;
@@ -63,27 +63,25 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     public ProfileTracker profileTracker;
     BottomNavigationView bottomNavigationView;
     Context context;
-
+    Sesion sesion;
 
     String[] Rutas;
+
+
+    SharedPreferences.Editor editor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        sesion=new Sesion();
         fragmentManager = getSupportFragmentManager();
-        linear_search= findViewById(R.id.card_linear_2);
+        linear_search=
+                findViewById(R.id.card_linear_2);
         context=getApplicationContext();
-
-        if(Sesion.USUARIO.getId()==null){
-            System.out.println("INKA: USUARIO VACIO");
-        }else{
-            System.out.println("INKA: USUARIO"+Sesion.USUARIO.getNombre());
-        }
-
-
-
+        SharedPreferences pref = context.getSharedPreferences("Sesion", context.MODE_PRIVATE);
+        editor = pref.edit();
 
         bottomNavigationView =  findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -136,8 +134,8 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         }else  if(getIntent().getStringExtra("o").equalsIgnoreCase("o5")){
             Opcion5();
         }
-        set_Datos_fb();
 
+        set_Datos_fb();  
         Mostrar_Publicidad();
     }
 
@@ -163,9 +161,10 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                         @Override
                         public void onPageClick(int position) {
                             Log.i("Inca","Posicion:"+position);
+                            Log.i("Inca","Link Recuperado"+Constantes.Base_ListaPublicidad.get(position).getLinkPublicidad());
                             Uri uri = Uri.parse(Constantes.Base_ListaPublicidad.get(position).getLinkPublicidad());
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            context.startActivity(intent);
+                            startActivity(intent);
                         }
                     });
 
@@ -175,8 +174,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                 } 
 
     }
-
-
     private void set_Datos_fb() {
 
         profileTracker = new ProfileTracker() {
@@ -424,7 +421,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         request.executeAsync();
     }
     private void setEmail(String email) {
-        Sesion.USUARIO.setCorreo(email);
+        sesion.RegistrarVariable(editor,context,"Correo","String",email);
     }
     @Override
     protected void onDestroy() {
@@ -433,23 +430,38 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent=new Intent(ActivityPrincipal.this,LoginActivity.class);
-        startActivity(intent);
+       // super.onBackPressed();
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("SALIR")
+                .setMessage("¿Desea Cerrar Sesión?")
+                .setPositiveButton("SI",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                sesion.EliminarSesion(context);
+                                Intent intent=new Intent(ActivityPrincipal.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                .setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+        builder.show();
+
+
     }
     private void displayProfileInfo(Profile profile) {
-        System.out.println("INKA: entro display");
-        Sesion.USUARIO.setId(profile.getId());
-        Sesion.USUARIO.setFoto(profile.getProfilePictureUri(100,100));
-        Sesion.USUARIO.setCorreo(profile.getLastName());
-        Sesion.USUARIO.setNombre(profile.getName());
-
-        System.out.println(Sesion.USUARIO.getNombre());
-        System.out.println(Sesion.USUARIO.getCorreo());
-        System.out.println( "INKA : Bienvenido: "+profile.getName());
-        System.out.println( "INKA : Bienvenido ID: "+profile.getId());
-        System.out.println( "INKA : USUARIO ID: "+Sesion.USUARIO.getId());
-        System.out.println( "INKA : USUARIO NOMBRE: "+Sesion.USUARIO.getNombre());
+        sesion.RegistrarVariable(editor,context,"Login","boolean","true");
+        sesion.RegistrarVariable(editor,context,"KeyFacebook","String",profile.getId());
+        sesion.RegistrarVariable(editor,context,"nombres","String",profile.getName());
+        sesion.RegistrarVariable(editor,context,"apellidos ","String",profile.getLastName());
+        sesion.RegistrarVariable(editor,context,"imagen","String", String.valueOf(profile.getProfilePictureUri(100,100)));
 
     }
 }

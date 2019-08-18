@@ -17,6 +17,7 @@ public class Usuario {
     String ImagenUsuario;
     Perfil perfilUsuario;
     Estado estadoUsuario;
+    boolean Sesion;
 
     public Usuario() {
     }
@@ -133,5 +134,11 @@ public class Usuario {
         this.estadoUsuario = estadoUsuario;
     }
 
+    public boolean isSesion() {
+        return Sesion;
+    }
 
+    public void setSesion(boolean sesion) {
+        Sesion = sesion;
+    }
 }

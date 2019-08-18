@@ -4,17 +4,29 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import inca.jesus.trajesya.Activities.Item;
+import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Producto;
 
 import inca.jesus.trajesya.Data.Utils.Constantes;
@@ -80,7 +92,16 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
+                Intent intent = new Intent(context, Item.class);
+                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
+                context.startActivity(intent);
+            }
+        });
+        holder.nom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
                 Intent intent = new Intent(context, Item.class);
                 intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
                 context.startActivity(intent);
@@ -94,4 +115,49 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
     public void LimpiarDatos(){
         my_Data.clear();
     }
+
+    private void RegistrarVisitaProductoSeleccion(final int idProductoE,final Context context) {
+
+        final String idProducto=String.valueOf(idProductoE);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                Log.i("Inca","Servidor Registrar Visita ID:"+idProducto);
+
+                            } else {
+                                Log.e("Inca","No se Pudo Registrar Visita ID:"+idProducto);
+                            }
+                        } catch (
+                                JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca","Error JSON:"+e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "RegistrarVisitaProducto");
+                params.put("idProducto", idProducto);
+                params.put("origen", "3");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+    }
+
 }

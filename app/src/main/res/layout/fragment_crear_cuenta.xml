@@ -30,20 +30,6 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/botonSesion2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="GOOGLE +"
-                            android:textStyle="italic"
-                            android:textColor="@color/blanco"
-                            android:textSize="20sp"
-                            android:background="@color/google"
-                            android:backgroundTint="@color/google"
-                            android:drawableLeft="@drawable/goo"
-                            android:layout_margin="4dp"
-                            android:padding="4dp"/>
-                        <Button
                             android:id="@+id/boton_sesion_Fb2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -56,6 +42,19 @@
                             android:drawableLeft="@drawable/fb"
                             android:layout_margin="4dp"
                             android:padding="4dp"/>
+                        <com.facebook.login.widget.LoginButton
+                            android:id="@+id/loginFb"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:elevation="2dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:textAlignment="center"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
                     <TextView

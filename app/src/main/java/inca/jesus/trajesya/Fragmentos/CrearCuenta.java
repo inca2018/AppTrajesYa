@@ -71,10 +71,10 @@ public class CrearCuenta extends Fragment {
 
 
 
-        signInButton=(Button)view.findViewById(R.id.botonSesion2);
+        //signInButton=(Button)view.findViewById(R.id.botonSesion2);
 
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
+       /* signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -83,7 +83,7 @@ public class CrearCuenta extends Fragment {
                 startActivity(intent);
             }
         });
-
+*/
         return view;
     }
 

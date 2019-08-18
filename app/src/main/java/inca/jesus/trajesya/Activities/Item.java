@@ -25,14 +25,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import inca.jesus.trajesya.Adapters.Adapter3;
 import inca.jesus.trajesya.Adapters.AdapterColores;
@@ -46,6 +56,7 @@ import inca.jesus.trajesya.Clases.ItemFavorito;
 import inca.jesus.trajesya.Clases.ProductoX;
 import inca.jesus.trajesya.Clases.Resenas;
 import inca.jesus.trajesya.Clases.Sesion;
+import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Galeria;
 import inca.jesus.trajesya.Data.Modelo.Medida;
 import inca.jesus.trajesya.Data.Modelo.Producto;
@@ -88,7 +99,7 @@ public class Item extends AppCompatActivity {
     public Button mas,menos;
     public TextView cantidad;
     public int cont2=1;
-
+    Context context;
 
     BottomNavigationView bottomNavigationView;
 
@@ -96,6 +107,7 @@ public class Item extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+        context=getApplicationContext();
 
         scroll=findViewById(R.id.scroll_Item);
         nombreProducto=findViewById(R.id.txtNombreProducto);
@@ -166,10 +178,12 @@ public class Item extends AppCompatActivity {
        MenuAcciones();
 
     }
+
+
     private void RecuperarSubCategoria(Producto productoSeleccionado) {
         subcategoriaSimilar=findViewById(R.id.txtNombreSubCategoria);
         String Temp="";
-        for(int i=0;i<Constantes.Base_Categorias_Todo.size();i++){
+        for(int i=0;i<Constantes.Base_SubCategorias_Todo.size();i++){
             if(Constantes.Base_SubCategorias_Todo.get(i).getIdSubCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
                 Temp=Constantes.Base_SubCategorias_Todo.get(i).getNombreSubCategoria();
             }

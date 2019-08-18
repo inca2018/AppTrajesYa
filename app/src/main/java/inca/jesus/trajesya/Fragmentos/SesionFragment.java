@@ -1,9 +1,9 @@
 package inca.jesus.trajesya.Fragmentos;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,29 +11,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
-import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-
-
+import com.squareup.picasso.Picasso;
 import inca.jesus.trajesya.Activities.LoginActivity;
-import inca.jesus.trajesya.Clases.Sesion;
+import inca.jesus.trajesya.Data.Modelo.Sesion;
+import inca.jesus.trajesya.Data.Modelo.Usuario;
 import inca.jesus.trajesya.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SesionFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class SesionFragment extends Fragment {
     ImageView foto;
     TextView nombre;
     Button logout;
@@ -45,7 +35,11 @@ public class SesionFragment extends Fragment implements GoogleApiClient.OnConnec
 
     TextView correo_user;
 
-    private GoogleApiClient googleApliClient;
+    /*-------------------*/
+    Sesion sesion;
+    Context context;
+    Usuario usuarioRecuperado;
+
 
     public SesionFragment() {
         // Required empty public constructor
@@ -54,6 +48,10 @@ public class SesionFragment extends Fragment implements GoogleApiClient.OnConnec
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vie =inflater.inflate(R.layout.fragment_sesion, container, false);
+        context=getActivity();
+        sesion = new Sesion();
+        usuarioRecuperado=sesion.RecuperarSesion(context);
+
         regreso=(Button)vie.findViewById(R.id.regresar);
         regreso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,78 +129,63 @@ public class SesionFragment extends Fragment implements GoogleApiClient.OnConnec
             }
         });
 
-       if(Sesion.USUARIO.getId()==null){
+
+       if(!usuarioRecuperado.isSesion()){
            nombre.setText("Bienvenido");
            correo_user.setText("Invitado");
            logout.setVisibility(View.GONE);
        }else{
-           Glide.with(this).load(Sesion.USUARIO.getFoto()).into(foto);
-           nombre.setText(Sesion.USUARIO.getNombre());
-           correo_user.setText(Sesion.USUARIO.getCorreo());
+
+           Picasso.get()
+                   .load(usuarioRecuperado.getImagenUsuario())
+                   .placeholder(R.drawable.default_imagen)
+                   .error(R.drawable.default_imagen)
+                   .into(foto);
+           nombre.setText(usuarioRecuperado.getNombreUsuario()+usuarioRecuperado.getApellidoUsuario());
+           correo_user.setText(usuarioRecuperado.getCorreoUsuario());
            logout.setVisibility(View.VISIBLE);
        }
-
-
-
-        GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        googleApliClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
-
-
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Auth.GoogleSignInApi.signOut(googleApliClient).setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        if(status.isSuccess()){
-                            System.out.println( "INKA: Si cerro sesion");
-                            inicieSesion();
-                        }else{
-                            System.out.println( "INKA: NO cerro sesion");
-                            Toast.makeText(getActivity(), "Error al cerrar sesión", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                CerrarSesion();
             }
         });
 
         return vie;
     }
+
+    private void CerrarSesion() {
+        final androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("SALIR")
+                .setMessage("¿Desea Cerrar Sesión?")
+                .setPositiveButton("SI",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                sesion.EliminarSesion(context);
+                                Intent intent=new Intent(context, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                .setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+        builder.show();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        googleApliClient.stopAutoManage(getActivity());
-        googleApliClient.disconnect();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-    private void inicieSesion() {
-
-        LoginManager.getInstance().logOut();
-
-        System.out.println("INKA: CERRO_SESION"+Sesion.USUARIO.getNombre());
-        Sesion.USUARIO.setId(null);
-        Sesion.USUARIO.setNombre(null);
-        Sesion.USUARIO.setCorreo(null);
-        Sesion.USUARIO.setFoto(null);
-        System.out.println("INKA: CERRO_SESION"+Sesion.USUARIO.getNombre());
-
-        Intent intent=new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-    }
-
 
 
 

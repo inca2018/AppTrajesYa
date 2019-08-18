@@ -368,15 +368,6 @@
                 android:orientation="horizontal"
                 android:layout_margin="4dp"
                 android:padding="6dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="12sp"
-                android:text="Disponibles:"
-                android:textColor="@color/negro"
-                android:gravity="center"
-                android:layout_marginTop="2dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -387,7 +378,17 @@
                     android:textSize="12sp"
                     android:gravity="center"
                     android:layout_margin="2dp"
-                    android:drawableLeft="@drawable/ic_envio"/>
+                    android:drawableLeft="@drawable/delivery"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Contraentrega"
+                    android:textColor="@color/negro"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_margin="2dp"
+                    android:drawableLeft="@drawable/contraentrega"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -9,52 +9,64 @@
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+            android:layout_margin="2dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ULTIMOS TRAJES"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
+                android:text="ULTIMOS TRAJES"
+                android:textSize="16sp" />
        <androidx.recyclerview.widget.RecyclerView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:id="@+id/recycler1">
        </androidx.recyclerview.widget.RecyclerView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOS MAS VISTOS"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
+                android:text="LOS MÁS VISTOS"
+                android:textSize="16sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler2">
             </androidx.recyclerview.widget.RecyclerView>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOS MAS ALQUILADOS"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
+                android:text="LOS MÁS ALQUILADOS"
+                android:textSize="16sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler3">
             </androidx.recyclerview.widget.RecyclerView>
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TENDENCIAS"
-                android:textColor="@color/negro"
                 android:layout_margin="4dp"
-                android:textSize="16sp"/>
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/SinCheck"
+                android:textStyle="bold"
+                android:text="TENDENCIAS"
+                android:textSize="16sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
