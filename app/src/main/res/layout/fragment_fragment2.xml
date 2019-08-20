@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,18 +20,20 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
+            android:id="@+id/SectorDerechoA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_margin="8dp">
 
             <LinearLayout
                 android:id="@+id/linear_categoria"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
 
                 <TextView
@@ -45,11 +48,10 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_categorias2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/recycler_categorias2">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -59,50 +61,98 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <LinearLayout
                     android:id="@+id/linear_atras"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_margin="10dp">
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="8"
-                        android:src="@drawable/ic_boton_atras"
-                        />
+                        android:src="@drawable/ic_boton_atras" />
+
                     <TextView
                         android:id="@+id/titulo_categoria2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed"
                         android:text="Ferreteriaaaaa"
-                        android:textSize="15dp"/>
+                        android:textSize="16dp" />
 
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/titulo_sub_categoria"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TITULO DE CATEGORIAS"
-                    android:textSize="18dp"
+                    android:layout_margin="10dp"
+                    android:fontFamily="sans-serif-condensed"
                     android:inputType="textMultiLine"
+                    android:text="TITULO DE CATEGORIAS"
                     android:textColor="@color/negro"
-                    android:layout_margin="10dp"/>
+                    android:textSize="18dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_categorias3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/recycler_categorias3">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
 
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/SectorDerechoB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imagenArrow"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/arrow_left" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Seleccione una Categoria"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imagenArrow" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         </LinearLayout>

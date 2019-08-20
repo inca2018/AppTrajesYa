@@ -83,6 +83,7 @@ public class AdapterCategoriasDisponibles extends RecyclerView.Adapter<AdapterCa
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 for(int i=0;i<my_Data.size();i++){
                     my_Data.get(i).setSelect(false);
                     my_Data.get(i).setColor(context.getResources().getColor(R.color.blanco));
@@ -97,6 +98,7 @@ public class AdapterCategoriasDisponibles extends RecyclerView.Adapter<AdapterCa
         holder.nom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 for(int i=0;i<my_Data.size();i++){
                     my_Data.get(i).setSelect(false);
                     my_Data.get(i).setColor(context.getResources().getColor(R.color.blanco));

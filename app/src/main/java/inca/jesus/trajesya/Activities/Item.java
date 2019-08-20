@@ -8,55 +8,31 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.format.Time;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import inca.jesus.trajesya.Adapters.Adapter3;
-import inca.jesus.trajesya.Adapters.AdapterColores;
 import inca.jesus.trajesya.Adapters.AdapterItemProductos;
 import inca.jesus.trajesya.Adapters.AdapterMedida;
 import inca.jesus.trajesya.Adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.Clases.CarouselView;
-import inca.jesus.trajesya.Clases.ItemCarrito;
-import inca.jesus.trajesya.Clases.ItemCompra;
-import inca.jesus.trajesya.Clases.ItemFavorito;
-import inca.jesus.trajesya.Clases.ProductoX;
-import inca.jesus.trajesya.Clases.Resenas;
-import inca.jesus.trajesya.Clases.Sesion;
-import inca.jesus.trajesya.Data.Conexion.VolleySingleton;
 import inca.jesus.trajesya.Data.Modelo.Galeria;
 import inca.jesus.trajesya.Data.Modelo.Medida;
 import inca.jesus.trajesya.Data.Modelo.Producto;
@@ -98,7 +74,7 @@ public class Item extends AppCompatActivity {
     public boolean resp;
     public Button mas,menos;
     public TextView cantidad;
-    public int cont2=1;
+    public int contadorStock =1;
     Context context;
 
     BottomNavigationView bottomNavigationView;
@@ -151,14 +127,14 @@ public class Item extends AppCompatActivity {
         Boton_Comprar();
 
 
-         cantidad.setText(String.valueOf(cont2));
+         cantidad.setText(String.valueOf(contadorStock));
          mas.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  int tem=Integer.parseInt(cantidad.getText().toString());
-                 if(tem<10){
-                     cont2=cont2+1;
-                     cantidad.setText(String.valueOf(cont2));
+                 if(tem<Constantes.CANTIDAD_MAX_STOCK){
+                     contadorStock = contadorStock +1;
+                     cantidad.setText(String.valueOf(contadorStock));
                  }else{
                      Toast.makeText(Item.this, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
                  }
@@ -169,8 +145,8 @@ public class Item extends AppCompatActivity {
             public void onClick(View v) {
                  int tem=Integer.parseInt(cantidad.getText().toString());
                  if(tem!=0){
-                     cont2=cont2-1;
-                     cantidad.setText(String.valueOf(cont2));
+                     contadorStock = contadorStock -1;
+                     cantidad.setText(String.valueOf(contadorStock));
                  }
             }
         });
@@ -433,9 +409,9 @@ public class Item extends AppCompatActivity {
                     mensaje="Ya agrego el Producto en Carrito";
                 }
                 if(resp==false){
-                    ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),cont2,prod.getPrecio());
+                    ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),contadorStock,prod.getPrecio());
                     ListCarrito.CARRITO_LISTA.add(ItemProducto);
-                    ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,cont2,prod.getPrecio());
+                    ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,contadorStock,prod.getPrecio());
                     ListCompra.CARRITO_COMPRA.add(ItemProducto2);
                     mensaje="Producto Agregado con Exito!!";
                 }

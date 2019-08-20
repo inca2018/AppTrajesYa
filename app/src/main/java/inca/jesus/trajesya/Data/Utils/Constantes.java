@@ -20,13 +20,15 @@ public class Constantes {
     public final static int TIEMPO_PUBLICIDAD=20000;
     public static boolean CANTIDAD_PUBLICIDAD=false;
 
+    public static boolean SECTOR_VACIO=true;
+    public final static int CANTIDAD_MAX_STOCK=10;
+
     public final static List<Categoria> Base_Categorias_Todo = new ArrayList<>();
     public final static List<SubCategoria> Base_SubCategorias_Todo = new ArrayList<>();
     public final static List<Producto> Base_Producto_Todo = new ArrayList<>();
 
     public final static List<Promocion> Base_ListaPromociones = new ArrayList<>();
     public final static List<Publicidad> Base_ListaPublicidad = new ArrayList<>();
-
 
 
     public final static List<Producto> Base_ListaProductoRecientes= new ArrayList<>();// FALTA

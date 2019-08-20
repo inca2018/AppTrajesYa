@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,16 +52,20 @@ public class Fragment2 extends Fragment {
     private AdapterProductosDisponibles adapterProducto;
     private RecyclerView recyclerSubCategorias;
     private AdapterSubCategoriasDisponibles adapterSubCategoria;
-    List<Segmento_Categorias> tempSub;
-    List<Segmento_SubCategorias> tempSub2;
-    TextView titulo_segmento,titulo_segmento2,titulo_categoria;
-    LinearLayout panelSubCategoria, panelProductos,l3;
+    public List<Segmento_Categorias> tempSub;
+    public List<Segmento_SubCategorias> tempSub2;
+    public TextView titulo_segmento,titulo_segmento2,titulo_categoria;
+    public LinearLayout panelSubCategoria, panelProductos,l3;
 
     /* Listados */
-    List<Categoria> ListaCategoria;
-    List<SubCategoria> ListaSubCategoria;
-    List<Producto> ListaProducto;
+    public List<Categoria> ListaCategoria;
+    public List<SubCategoria> ListaSubCategoria;
+    public List<Producto> ListaProducto;
     public Context context;
+    public LinearLayout SectorData,SectorVacio;
+
+    TranslateAnimation moveLefttoRight;
+    ImageView imagenArrow;
 
     public Fragment2() {
         // Required empty public constructor
@@ -76,10 +83,30 @@ public class Fragment2 extends Fragment {
         titulo_categoria=view.findViewById(R.id.titulo_sub_categoria);
         panelSubCategoria =view.findViewById(R.id.linear_categoria);
         panelProductos =view.findViewById(R.id.linear_sub_categoria);
+        imagenArrow=view.findViewById(R.id.imagenArrow);
         l3=view.findViewById(R.id.linear_atras);
         tempSub=new ArrayList<>();
         tempSub2=new ArrayList<>();
         panelSubCategoria.setVisibility(View.VISIBLE);
+        SectorData=view.findViewById(R.id.SectorDerechoA);
+        SectorVacio=view.findViewById(R.id.SectorDerechoB);
+
+        //SectorData.setVisibility(View.GONE);
+        //SectorVacio.setVisibility(View.VISIBLE);
+        Constantes.SECTOR_VACIO=true;
+
+        /**** Animacion de Arrow ****/
+
+
+        moveLefttoRight = new TranslateAnimation(50.0f, 0.0f,
+                0.0f, 0.0f);          //  new TranslateAnimation(xFrom,xTo, yFrom,yTo)
+        moveLefttoRight.setDuration(1000);  // animation duration
+        moveLefttoRight.setRepeatCount(Animation.INFINITE);  // animation repeat count
+        moveLefttoRight.setRepeatMode(2);
+        moveLefttoRight.setFillAfter(true);
+        imagenArrow.startAnimation(moveLefttoRight);
+
+        /**** FIN Animacion de Arrow ****/
 
         l3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +146,11 @@ public class Fragment2 extends Fragment {
             @Override
             public void onChanged() {
                 super.onChanged();
+
+                SectorData.setVisibility(View.VISIBLE);
+                SectorVacio.setVisibility(View.GONE);
+                moveLefttoRight.cancel();
+
                 /*-------Setear Valores -----------*/
                 int idCategoria= adapterCategoria.RecuperarIdCategoria();
                 String nom_Titu= adapterCategoria.RecuperarNombreCategoria();

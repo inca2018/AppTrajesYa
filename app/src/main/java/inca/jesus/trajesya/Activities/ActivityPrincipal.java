@@ -15,11 +15,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -29,7 +31,6 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +70,8 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
 
     SharedPreferences.Editor editor;
+    public int counter;
+    AlertDialog alerta;
 
 
     @Override
@@ -135,8 +138,12 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             Opcion5();
         }
 
-        set_Datos_fb();  
-        Mostrar_Publicidad();
+        set_Datos_fb();
+        if(!Constantes.CANTIDAD_PUBLICIDAD){
+            //Mostrar_Publicidad();
+            Constantes.CANTIDAD_PUBLICIDAD=true;
+        }
+
     }
 
     private void Mostrar_Publicidad() {
@@ -155,6 +162,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             final LayoutInflater inflater = (LayoutInflater) ActivityPrincipal.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_publicidad, null);
                     final CarouselView carruselPublicidad=dialoglayout4.findViewById(R.id.carruselPublicidad);
+                    final TextView contador=dialoglayout4.findViewById(R.id.contador);
 
                     carruselPublicidad.setImageResources(Rutas);
                     carruselPublicidad.setOnPageClickListener(new CarouselView.OnPageClickListener() {
@@ -170,7 +178,18 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
                     AlertDialog.Builder builder4 = new AlertDialog.Builder(ActivityPrincipal.this);
                     builder4.setView(dialoglayout4);
-                    builder4.show();
+                    alerta=builder4.show();
+
+
+            new CountDownTimer(Constantes.TIEMPO_PUBLICIDAD, 1000){
+                public void onTick(long millisUntilFinished){
+                    contador.setText(String.valueOf(counter));
+                    counter++;
+                }
+                public  void onFinish(){
+                    alerta.dismiss();
+                }
+            }.start();
                 } 
 
     }
