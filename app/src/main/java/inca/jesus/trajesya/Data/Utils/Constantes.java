@@ -16,6 +16,10 @@ public class Constantes {
     public final static String GESTION=PATH+"/App/Gestion/CGestion.php";
     public final static String PATH_IMAGEN="http://admin.trajesya.com/assets/images/";
 
+
+    public final static int TIEMPO_PUBLICIDAD=20000;
+    public static boolean CANTIDAD_PUBLICIDAD=false;
+
     public final static List<Categoria> Base_Categorias_Todo = new ArrayList<>();
     public final static List<SubCategoria> Base_SubCategorias_Todo = new ArrayList<>();
     public final static List<Producto> Base_Producto_Todo = new ArrayList<>();
