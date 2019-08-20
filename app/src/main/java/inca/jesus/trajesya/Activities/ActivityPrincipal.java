@@ -54,7 +54,6 @@ import inca.jesus.trajesya.R;
 
 public class ActivityPrincipal extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-
     private FragmentManager fragmentManager;
     private Fragment fragment = null;
     private SearchView search;
@@ -135,7 +134,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             Opcion5();
         }
 
-        set_Datos_fb();  
+        set_Datos_fb();
         Mostrar_Publicidad();
     }
 
@@ -421,6 +420,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         request.executeAsync();
     }
     private void setEmail(String email) {
+        Log.i("Inca","Email Recuperado de Facebook: "+email);
         sesion.RegistrarVariable(editor,context,"Correo","String",email);
     }
     @Override
@@ -457,6 +457,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     private void displayProfileInfo(Profile profile) {
+        Log.i("Inca","ID de facebook recuperado: "+profile.getId());
         sesion.RegistrarVariable(editor,context,"Login","boolean","true");
         sesion.RegistrarVariable(editor,context,"KeyFacebook","String",profile.getId());
         sesion.RegistrarVariable(editor,context,"nombres","String",profile.getName());

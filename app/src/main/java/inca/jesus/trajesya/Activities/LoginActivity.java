@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Nuevo.setNombreUsuario(jsonResponse.getString("nombres"));
                                 Nuevo.setApellidoUsuario(jsonResponse.getString("apellidos"));
                                 Nuevo.setImagenUsuario(jsonResponse.getString("imagen"));
+                                Nuevo.setCorreoUsuario(jsonResponse.getString("correo"));
                                 Nuevo.setSesion(true);
                                 Perfil perfil=new Perfil();
                                 perfil.setIdPerfil(jsonResponse.getInt("idPerfil"));
