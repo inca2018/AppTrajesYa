@@ -14,181 +14,164 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-
     <LinearLayout
-        android:id="@+id/modulo1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
+            android:id="@+id/modulo1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/celeste_bjo">
-
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/celeste_bjo">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/sesion_imagen"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        tools:ignore="RtlHardcoded"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp">
+
+                    <TextView
+                        android:id="@+id/sesion_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Jesus Inca Cardenas"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:layout_margin="4dp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/correo_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:textSize="16sp"
+                        android:text="jic_D12@hotmail.com"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/sesion_imagen"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    tools:ignore="RtlHardcoded"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/bt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Mi Perfil"
+                    android:textSize="16sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
+                <Button
+                    android:id="@+id/bt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Mis Ubicaciones de Entrega"
+                    android:textSize="16sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/SinCheck">
+
+                </LinearLayout>
+
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/perfil_op1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Terminos y Condiciones de Usuario"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
+                <Button
+                    android:id="@+id/perfil_op2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Politica General de Alquiler"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
+                <Button
+                    android:id="@+id/perfil_op3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Privacidad y Confidencialidad"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
+
+                <Button
+                    android:id="@+id/perfil_op4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:text="Preguntas Frecuentes"
+                    android:textSize="12sp"
+                    android:textAlignment="textStart"
+                    android:padding="15dp"/>
 
 
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_margin="4dp">
-
-                <TextView
-                android:id="@+id/sesion_nombre"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Jesus Inca Cardenas"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="4dp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/correo_user"
+                android:gravity="bottom">
+                <Button
+                    android:id="@+id/boton_cerrar_sesion"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent"
+                    android:text="CERRAR SESIÓN"
+                    android:textColor="@color/blanco"
                     android:textSize="16sp"
-                    android:text="jic_D12@hotmail.com"
-                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:padding="15dp"
+                    android:layout_marginTop="5dp"
                     />
-
             </LinearLayout>
-
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/bt1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Mi Perfil"
-                android:textSize="16sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/bt2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Mis Pedidos"
-                android:textSize="16sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/SinCheck">
-
-            </LinearLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/perfil_op1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Terminos y Condiciones de Usuario"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/perfil_op2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Politica General de Devoluciones"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/perfil_op3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Privacidad y Confidencialidad"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/perfil_op4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Terminos y Condiciones del sistema de Puntos"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/perfil_op5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Terminos y Condiciones de Campaña"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-            <Button
-                android:id="@+id/perfil_op6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:text="Preguntas Frecuentes"
-                android:textSize="12sp"
-                android:textAlignment="textStart"
-                android:padding="15dp"/>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="bottom">
-            <Button
-                android:id="@+id/boton_cerrar_sesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:text="CERRAR SESION"
-                android:textColor="@color/blanco"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:padding="15dp"
-                android:layout_marginTop="5dp"
-                />
-        </LinearLayout>
-    </LinearLayout>
-
-    </ScrollView>
-
 
         <LinearLayout
             android:id="@+id/modulo2"
@@ -198,33 +181,47 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/tituloOpcion"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:text="TITULO DE OPCION:"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="center"
-                android:textSize="16sp"/>
+                android:text="TITULO DE OPCION:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tituloDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+
+                android:inputType="textMultiLine"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed eiusmod tempor incidunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aiquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:inputType="textMultiLine"
-                android:layout_margin="10dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed eiusmod tempor incidunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aiquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+                android:orientation="vertical"
+                android:gravity="bottom">
+                <Button
+                    android:id="@+id/regresar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-        <Button
-            android:id="@+id/regresar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:background="@color/colorAccent"
-            android:backgroundTint="@color/colorAccent"
-            android:text="REGRESAR"
-            android:textColor="@color/blanco"/>
+                    android:background="@color/colorAccent"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="REGRESAR"
+                    android:textColor="@color/blanco" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    </ScrollView>
 
     </LinearLayout>
 </FrameLayout>

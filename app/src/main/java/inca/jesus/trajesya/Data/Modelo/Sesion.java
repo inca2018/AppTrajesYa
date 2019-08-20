@@ -2,6 +2,7 @@ package inca.jesus.trajesya.Data.Modelo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Switch;
 
 import inca.jesus.trajesya.Clases.Perfil;
@@ -22,6 +23,7 @@ public class Sesion {
         editor.putInt("idUsuario", usuario.getIdUsuario());
         editor.putString("KeyFacebook",usuario.getKeyFacebook());
         editor.putString("usuario", usuario.getUsuario());
+        editor.putString("Correo",usuario.getCorreoUsuario());
         editor.putString("nombres", usuario.getNombreUsuario());
         editor.putString("apellidos", usuario.getApellidoUsuario());
         editor.putString("imagen", usuario.getImagenUsuario());
@@ -34,15 +36,22 @@ public class Sesion {
         switch(tipo){
             case "int":
                 int dato=Integer.parseInt(Datos);
+                Log.i("Inca","Agregado Int Shared:"+dato);
                 editor.putInt(variables,dato);
+                editor.commit();
                 break;
             case "String":
+                Log.i("Inca","Agregado String Shared:"+Datos);
                 editor.putString(variables,Datos);
+                editor.commit();
                 break;
             case "boolean":
                 boolean datoB=Boolean.parseBoolean(Datos);
+                Log.i("Inca","Agregado Boolean Shared:"+Datos);
                 editor.putBoolean(variables,datoB);
+                editor.commit();
                 break;
+
         }
     }
 
@@ -54,6 +63,7 @@ public class Sesion {
         Temporal.setKeyFacebook(pref.getString("KeyFacebook",""));
         Temporal.setUsuario(pref.getString("usuario", ""));
         Temporal.setNombreUsuario(pref.getString("nombres", ""));
+        Temporal.setCorreoUsuario(pref.getString("Correo",""));
         Temporal.setApellidoUsuario(pref.getString("apellidos", ""));
         Temporal.setImagenUsuario(pref.getString("imagen", ""));
         Perfil perfil = new Perfil();
