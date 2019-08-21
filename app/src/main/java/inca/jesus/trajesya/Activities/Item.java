@@ -36,6 +36,8 @@ import inca.jesus.trajesya.Clases.CarouselView;
 import inca.jesus.trajesya.Data.Modelo.Galeria;
 import inca.jesus.trajesya.Data.Modelo.Medida;
 import inca.jesus.trajesya.Data.Modelo.Producto;
+import inca.jesus.trajesya.Data.Modelo.Sesion;
+import inca.jesus.trajesya.Data.Modelo.Usuario;
 import inca.jesus.trajesya.Data.Utils.Constantes;
 import inca.jesus.trajesya.R;
 
@@ -75,9 +77,13 @@ public class Item extends AppCompatActivity {
     public Button mas,menos;
     public TextView cantidad;
     public int contadorStock =1;
-    Context context;
 
     BottomNavigationView bottomNavigationView;
+
+
+    Sesion sesion;
+    Usuario usuarioRecuperado;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,8 @@ public class Item extends AppCompatActivity {
         mas=findViewById(R.id.mas);
         menos=findViewById(R.id.menos);
         cantidad=findViewById(R.id.cantidad);
+
+        usuarioRecuperado=sesion.RecuperarSesion(context);
 
 
         Bundle extras=getIntent().getExtras();
@@ -374,6 +382,12 @@ public class Item extends AppCompatActivity {
         return temp;
     }
     private void Boton_Comprar() {
+
+        if(!usuarioRecuperado.isSesion()){
+            Toast.makeText(context, "Para Continuar ,debe Iniciar Sesión!", Toast.LENGTH_SHORT).show();
+        }else{
+
+        }
         /*btn_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -392,6 +406,9 @@ public class Item extends AppCompatActivity {
         });*/
     }
     private void Boton_Agregar_Carrito() {
+
+
+
        /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
