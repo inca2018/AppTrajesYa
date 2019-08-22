@@ -8,7 +8,7 @@ public class Usuario {
     String Password;
     String NombreUsuario;
     String ApellidoUsuario;
-    char DniUsuario;
+    String DniUsuario;
     String CorreoUsuario;
     String keyFacebook;
     String keyGoogle;
@@ -18,6 +18,7 @@ public class Usuario {
     Perfil perfilUsuario;
     Estado estadoUsuario;
     boolean Sesion;
+    boolean SesionFB;
 
     public Usuario() {
     }
@@ -62,11 +63,11 @@ public class Usuario {
         ApellidoUsuario = apellidoUsuario;
     }
 
-    public char getDniUsuario() {
+    public String getDniUsuario() {
         return DniUsuario;
     }
 
-    public void setDniUsuario(char dniUsuario) {
+    public void setDniUsuario(String dniUsuario) {
         DniUsuario = dniUsuario;
     }
 
@@ -140,5 +141,13 @@ public class Usuario {
 
     public void setSesion(boolean sesion) {
         Sesion = sesion;
+    }
+
+    public boolean isSesionFB() {
+        return SesionFB;
+    }
+
+    public void setSesionFB(boolean sesionFB) {
+        SesionFB = sesionFB;
     }
 }

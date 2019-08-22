@@ -89,4 +89,15 @@ public class AdapterMedida extends RecyclerView.Adapter<AdapterMedida.ViewHolder
         return my_Data.size();
     }
 
+    public Medida RecuperarTallaSeleccion(){
+        Medida temp=new Medida();
+
+        for(int i=0;i<my_Data.size();i++){
+            if(my_Data.get(i).isSelect()){
+                temp=my_Data.get(i);
+            }
+        }
+        return temp;
+    }
+
 }

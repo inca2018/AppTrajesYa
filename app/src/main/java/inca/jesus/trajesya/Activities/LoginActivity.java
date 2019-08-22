@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
 
@@ -134,14 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public boolean emailValidator(String email) {
-        Pattern pattern;
-        Matcher matcher;
-        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 
     public void IniciarSesion(View view) {
         String mensaje=VerificarCampos();
@@ -180,6 +172,8 @@ public class LoginActivity extends AppCompatActivity {
                                 perfil.setIdPerfil(jsonResponse.getInt("idPerfil"));
                                 perfil.setNombrePrefil(jsonResponse.getString("perfil"));
                                 Nuevo.setPerfilUsuario(perfil);
+                                Nuevo.setSesion(true);
+                                Nuevo.setSesionFB(false);
                                 sesion.RegistrarSesion(context,Nuevo);
 
                                 String Mensaje=jsonResponse.getString("mensaje");

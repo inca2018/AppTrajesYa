@@ -55,7 +55,6 @@ import inca.jesus.trajesya.R;
 
 public class ActivityPrincipal extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-
     private FragmentManager fragmentManager;
     private Fragment fragment = null;
     private SearchView search;
@@ -65,14 +64,10 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     BottomNavigationView bottomNavigationView;
     Context context;
     Sesion sesion;
-
     String[] Rutas;
-
-
     SharedPreferences.Editor editor;
     public int counter;
     AlertDialog alerta;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +78,10 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         linear_search=
                 findViewById(R.id.card_linear_2);
         context=getApplicationContext();
+
         SharedPreferences pref = context.getSharedPreferences("Sesion", context.MODE_PRIVATE);
         editor = pref.edit();
+
 
         bottomNavigationView =  findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -98,7 +95,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                             case R.id.action_2:
                                 Opcion2();
                                 return true;
-
                             case R.id.action_4:
                                 Opcion4();
                                 return true;
@@ -143,9 +139,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             //Mostrar_Publicidad();
             Constantes.CANTIDAD_PUBLICIDAD=true;
         }
-
     }
-
     private void Mostrar_Publicidad() {
 
         if(Constantes.Base_ListaPublicidad!=null){
@@ -205,8 +199,9 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         };
 
         if (AccessToken.getCurrentAccessToken() == null) {
-            //Intent intent = new Intent(Activity_Principal.this, LoginGeneral.class);
-            //startActivity(intent);
+            sesion.RegistrarVariable(editor,context,"Sesion","boolean","false");
+            sesion.RegistrarVariable(editor,context,"SesionFB","boolean","false");
+
         } else {
             requestEmail(AccessToken.getCurrentAccessToken());
 
@@ -476,7 +471,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
     private void displayProfileInfo(Profile profile) {
-        sesion.RegistrarVariable(editor,context,"Login","boolean","true");
+        sesion.RegistrarVariable(editor,context,"SesionFB","boolean","true");
         sesion.RegistrarVariable(editor,context,"KeyFacebook","String",profile.getId());
         sesion.RegistrarVariable(editor,context,"nombres","String",profile.getName());
         sesion.RegistrarVariable(editor,context,"apellidos ","String",profile.getLastName());
