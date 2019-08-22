@@ -19,7 +19,6 @@ public class Sesion {
         // Registrar Informacion de usuario en SharedPreferences  para reutilizacion
         SharedPreferences pref = context.getSharedPreferences("Sesion", context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("Login",usuario.isSesion());
         editor.putInt("idUsuario", usuario.getIdUsuario());
         editor.putString("KeyFacebook",usuario.getKeyFacebook());
         editor.putString("usuario", usuario.getUsuario());
@@ -29,6 +28,8 @@ public class Sesion {
         editor.putString("imagen", usuario.getImagenUsuario());
         editor.putInt("idPerfil", usuario.getPerfilUsuario().getIdPerfil());
         editor.putString("perfil", usuario.getPerfilUsuario().getNombrePrefil());
+        editor.putBoolean("Sesion",usuario.isSesion());
+        editor.putBoolean("SesionFB",usuario.isSesionFB());
         editor.commit();
     }
     public void RegistrarVariable(SharedPreferences.Editor editor, Context context, String variables, String tipo, String Datos){
@@ -54,6 +55,12 @@ public class Sesion {
 
         }
     }
+    public String RecuperarValor(Context context,String Dato){
+        String temp="";
+        SharedPreferences pref = context.getSharedPreferences("Sesion", context.MODE_PRIVATE);
+        temp=pref.getString(Dato,"");
+        return temp;
+    }
 
     public Usuario RecuperarSesion(Context context) {
         // Recuperar Informacion de SharedPreferences y Setear a un Objeto Usuario para reusar sus valores
@@ -70,7 +77,8 @@ public class Sesion {
         perfil.setIdPerfil(pref.getInt("idPerfil", -1));
         perfil.setNombrePrefil(pref.getString("perfil", ""));
         Temporal.setPerfilUsuario(perfil);
-        Temporal.setSesion(pref.getBoolean("Login",false));
+        Temporal.setSesion(pref.getBoolean("Sesion",false));
+        Temporal.setSesionFB(pref.getBoolean("SesionFB",false));
         return Temporal;
     }
 

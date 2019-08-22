@@ -83,7 +83,7 @@ public class Fragment2 extends Fragment {
         titulo_categoria=view.findViewById(R.id.titulo_sub_categoria);
         panelSubCategoria =view.findViewById(R.id.linear_categoria);
         panelProductos =view.findViewById(R.id.linear_sub_categoria);
-        imagenArrow=view.findViewById(R.id.imageArrow);
+        imagenArrow=view.findViewById(R.id.imagenArrow);
         l3=view.findViewById(R.id.linear_atras);
         tempSub=new ArrayList<>();
         tempSub2=new ArrayList<>();

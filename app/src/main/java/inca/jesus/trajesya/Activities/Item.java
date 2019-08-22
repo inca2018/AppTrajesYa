@@ -70,26 +70,35 @@ public class Item extends AppCompatActivity {
     ScrollView scroll;
 
     public Button agregarCarrito;
-    private AdapterMedida adapter3;
+    private AdapterMedida adapterMedida;
     private LinearLayoutManager linearLayout;
-    public String mensaje="";
-    public boolean resp;
+
     public Button mas,menos;
     public TextView cantidad;
     public int contadorStock =1;
+
 
     BottomNavigationView bottomNavigationView;
 
 
     Sesion sesion;
-    Usuario usuarioRecuperado;
     Context context;
+    Usuario usuarioRecuperado;
+
+    Medida MedidaSeleccionada;
+
+    Button btnComprar,btnAgregar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+
         context=getApplicationContext();
+        sesion = new Sesion();
+        usuarioRecuperado=sesion.RecuperarSesion(context);
+
+        MedidaSeleccionada=new Medida();
 
         scroll=findViewById(R.id.scroll_Item);
         nombreProducto=findViewById(R.id.txtNombreProducto);
@@ -105,8 +114,8 @@ public class Item extends AppCompatActivity {
         mas=findViewById(R.id.mas);
         menos=findViewById(R.id.menos);
         cantidad=findViewById(R.id.cantidad);
-
-        usuarioRecuperado=sesion.RecuperarSesion(context);
+        btnComprar=findViewById(R.id.boton_comprar);
+        btnAgregar=findViewById(R.id.item_boton_add_carrito);
 
 
         Bundle extras=getIntent().getExtras();
@@ -162,7 +171,6 @@ public class Item extends AppCompatActivity {
        MenuAcciones();
 
     }
-
 
     private void RecuperarSubCategoria(Producto productoSeleccionado) {
         subcategoriaSimilar=findViewById(R.id.txtNombreSubCategoria);
@@ -284,13 +292,22 @@ public class Item extends AppCompatActivity {
             tituloTalla.setText("Tallas Disponibles:");
             //Recylcer de TAMAÑOS
             linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
-            adapter3 = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
+            adapterMedida = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
                 }
             });
-            recycler_medidas.setAdapter(adapter3);
+            recycler_medidas.setAdapter(adapterMedida);
             recycler_medidas.setLayoutManager(linearLayout);
+
+            adapterMedida.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    MedidaSeleccionada=adapterMedida.RecuperarTallaSeleccion();
+                    Log.i("Inca","Medida Seleccionada: "+MedidaSeleccionada.getNombreMedida());
+                }
+            });
 
         }else{
             tituloTalla.setText("Sin Tallas Disponibles");
@@ -383,10 +400,14 @@ public class Item extends AppCompatActivity {
     }
     private void Boton_Comprar() {
 
-        if(!usuarioRecuperado.isSesion()){
-            Toast.makeText(context, "Para Continuar ,debe Iniciar Sesión!", Toast.LENGTH_SHORT).show();
-        }else{
+        if(usuarioRecuperado.isSesion()){
+            int CantidadRecuperada=contadorStock;
+            Medida MedidaRecuperad=MedidaSeleccionada;
+            Producto ProductoRecuperado=ProductoSeleccionado;
 
+
+        }else{
+            Toast.makeText(context, "Complete su Información para Continuar", Toast.LENGTH_SHORT).show();
         }
         /*btn_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -406,9 +427,6 @@ public class Item extends AppCompatActivity {
         });*/
     }
     private void Boton_Agregar_Carrito() {
-
-
-
        /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
