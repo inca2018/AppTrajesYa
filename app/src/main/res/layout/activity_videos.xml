@@ -20,7 +20,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        class="inca.jesus.trajesya.Activities.Videos$VideoListFragment"
+        class="inca.jesus.trajesya.activities.Videos$VideoListFragment"
         android:id="@+id/list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -41,7 +41,7 @@
             android:onClick="onClickClose"/>
 
         <fragment
-            class="inca.jesus.trajesya.Activities.Videos$VideoFragment"
+            class="inca.jesus.trajesya.activities.Videos$VideoFragment"
             android:id="@+id/video_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -37,7 +37,7 @@
 
     </LinearLayout>
 
-    <inca.jesus.trajesya.Clases.CarouselView
+    <inca.jesus.trajesya.clases.CarouselView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/carruselPublicidad"
         android:orientation="vertical"
@@ -75,5 +75,5 @@
 
         </LinearLayout>
 
-    </inca.jesus.trajesya.Clases.CarouselView>
+    </inca.jesus.trajesya.clases.CarouselView>
 </LinearLayout>

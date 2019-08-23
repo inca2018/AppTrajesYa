@@ -13,24 +13,24 @@
         android:roundIcon="@drawable/logo_celular"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ActivityPrincipal"
+        <activity android:name=".activities.ActivityPrincipal"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".Sesion.SesionGoogleLogin"
+        <activity android:name=".sesion.SesionGoogleLogin"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.LoginActivity"
+        <activity android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Item"
+        <activity android:name=".activities.Item"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.CompraActivity"
+        <activity android:name=".activities.CompraActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Splash"
+        <activity android:name=".activities.Splash"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -48,10 +48,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Categorias_Sub"
+        <activity android:name=".activities.Categorias_Sub"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.ListaProductos"
+            android:name=".activities.ListaProductos"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -61,7 +61,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <receiver android:name=".Conectividad.NetworkStateChecker">
+        <receiver android:name=".conectividad.NetworkStateChecker">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>

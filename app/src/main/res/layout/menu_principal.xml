@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/gradiente"
     android:orientation="vertical"
-    tools:context="inca.jesus.trajesya.Activities.PruebaMenu">
+    tools:context="inca.jesus.trajesya.activities.PruebaMenu">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

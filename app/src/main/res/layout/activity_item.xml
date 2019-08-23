@@ -60,7 +60,7 @@
                 android:orientation="vertical"
                 android:layout_margin="4dp"
                 android:layout_weight="1.2">
-                <inca.jesus.trajesya.Clases.CarouselView
+                <inca.jesus.trajesya.clases.CarouselView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/pictureplay"
                     android:orientation="vertical"
@@ -126,7 +126,7 @@
 
                     </LinearLayout>
 
-                </inca.jesus.trajesya.Clases.CarouselView>
+                </inca.jesus.trajesya.clases.CarouselView>
 
 
 

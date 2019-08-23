@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="inca.jesus.trajesya.Activities.SesionFBLogin">
+    tools:context="inca.jesus.trajesya.activities.SesionFBLogin">
 
 
     <include layout="@layout/toolbar_base"
