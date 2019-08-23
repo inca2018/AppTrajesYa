@@ -95,26 +95,33 @@
                 android:id="@+id/OpcionesUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                 >
 
                 <Button
                     android:id="@+id/bt1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif-condensed"
                     android:text="Mi Perfil"
-                    android:textSize="16sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/base2"/>
                 <Button
                     android:id="@+id/bt2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif-condensed"
                     android:text="Mis Ubicaciones de Entrega"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:layout_marginLeft="4dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/base2"/>
 
 
                 <LinearLayout
@@ -129,34 +136,38 @@
                 android:id="@+id/OpcionesUsuarioExtras"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="4dp">
                 <Button
                     android:id="@+id/perfil_op1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Terminos y Condiciones de Usuario"
-                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:layout_margin="2dp"/>
                 <Button
                     android:id="@+id/perfil_op2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Politica General de Alquiler"
-                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:layout_margin="2dp"/>
                 <Button
                     android:id="@+id/perfil_op3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Privacidad y Confidencialidad"
-                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:layout_margin="2dp"/>
 
                 <Button
                     android:id="@+id/perfil_op4"
@@ -164,9 +175,11 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:text="Preguntas Frecuentes"
-                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
                     android:textAlignment="textStart"
-                    android:padding="15dp"/>
+                    android:layout_margin="2dp"
+                    />
 
 
             </LinearLayout>
@@ -179,11 +192,11 @@
                     android:id="@+id/boton_cerrar_sesion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
+                    android:background="@drawable/gradiente"
                     android:text="CERRAR SESIÓN"
                     android:textColor="@color/blanco"
                     android:textSize="16sp"
-                    android:textStyle="bold"
+
                     android:textAlignment="center"
                     android:padding="15dp"
                     android:layout_marginTop="5dp"
@@ -223,9 +236,7 @@
                     android:id="@+id/regresar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:background="@color/colorAccent"
-                    android:backgroundTint="@color/colorAccent"
+                    android:background="@drawable/gradiente"
                     android:text="REGRESAR"
                     android:textColor="@color/blanco" />
 

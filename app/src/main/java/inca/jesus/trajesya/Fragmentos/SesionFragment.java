@@ -176,6 +176,7 @@ public class SesionFragment extends Fragment {
                    temp.setCorreoUsuario(etRegistroCorreo.getText().toString());
                    temp.setUsuario(etRegistroUsuario.getText().toString());
                    temp.setPassword(etRegistroPassword.getText().toString());
+                   temp.setImagenUsuario(usuarioRecuperado.getImagenUsuario());
 
                    RegistrarUsuarioServidor(context,temp);
                }else{
@@ -302,6 +303,7 @@ public class SesionFragment extends Fragment {
                 nombre.setText("Bienvenido");
                 correo_user.setText("Invitado");
                 logout.setVisibility(View.GONE);
+                OpcionCompletarInformacion.setVisibility(View.GONE);
                 break;
             case 2:
                 /*Ingreso con Cuenta de FB pero no esta registrado*/
@@ -322,6 +324,7 @@ public class SesionFragment extends Fragment {
                 correo_user.setText(correo);
 
                 logout.setVisibility(View.VISIBLE);
+                OpcionCompletarInformacion.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 /*Ingreso con cuenta ya registrada para compras*/
@@ -341,6 +344,7 @@ public class SesionFragment extends Fragment {
                 nombre.setText(Nombres+" "+Apellido);
                 correo_user.setText(correo);
                 logout.setVisibility(View.VISIBLE);
+                OpcionCompletarInformacion.setVisibility(View.GONE);
                 break;
         }
 
@@ -478,6 +482,7 @@ public class SesionFragment extends Fragment {
                 params.put("RegistroApellido", usuario.getApellidoUsuario());
                 params.put("RegistroDni", usuario.getDniUsuario());
                 params.put("RegistroCorreo", usuario.getCorreoUsuario());
+                params.put("ImagenUsuario", usuario.getImagenUsuario());
                 params.put("KeyFb",KeyFB);
                 return params;
             }
@@ -560,12 +565,13 @@ public class SesionFragment extends Fragment {
     }
     private void setEmail(String email) {
         sesion.RegistrarVariable(editor,context,"Correo","String",email);
+        correo_user.setText(email);
     }
     private void displayProfileInfo(Profile profile) {
         sesion.RegistrarVariable(editor,context,"SesionFB","boolean","true");
         sesion.RegistrarVariable(editor,context,"KeyFacebook","String",profile.getId());
-        sesion.RegistrarVariable(editor,context,"nombres","String",profile.getName());
-        sesion.RegistrarVariable(editor,context,"apellidos ","String",profile.getLastName());
+        sesion.RegistrarVariable(editor,context,"nombres","String",profile.getFirstName());
+        sesion.RegistrarVariable(editor,context,"apellidos","String",profile.getLastName());
         sesion.RegistrarVariable(editor,context,"imagen","String", String.valueOf(profile.getProfilePictureUri(100,100)));
 
         SesionFiltro(2); 

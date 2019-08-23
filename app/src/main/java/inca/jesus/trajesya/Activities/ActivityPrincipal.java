@@ -66,7 +66,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     Sesion sesion;
     String[] Rutas;
     SharedPreferences.Editor editor;
-    public int counter;
+    public int counter=18;
     AlertDialog alerta;
 
     @Override
@@ -178,7 +178,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             new CountDownTimer(Constantes.TIEMPO_PUBLICIDAD, 1000){
                 public void onTick(long millisUntilFinished){
                     contador.setText(String.valueOf(counter));
-                    counter++;
+                    counter--;
                 }
                 public  void onFinish(){
                     alerta.dismiss();
@@ -473,7 +473,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     private void displayProfileInfo(Profile profile) {
         sesion.RegistrarVariable(editor,context,"SesionFB","boolean","true");
         sesion.RegistrarVariable(editor,context,"KeyFacebook","String",profile.getId());
-        sesion.RegistrarVariable(editor,context,"nombres","String",profile.getName());
+        sesion.RegistrarVariable(editor,context,"nombres","String",profile.getFirstName());
         sesion.RegistrarVariable(editor,context,"apellidos ","String",profile.getLastName());
         sesion.RegistrarVariable(editor,context,"imagen","String", String.valueOf(profile.getProfilePictureUri(100,100)));
 

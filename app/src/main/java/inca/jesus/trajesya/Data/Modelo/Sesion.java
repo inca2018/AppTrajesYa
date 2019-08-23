@@ -37,18 +37,18 @@ public class Sesion {
         switch(tipo){
             case "int":
                 int dato=Integer.parseInt(Datos);
-                Log.i("Inca","Agregado Int Shared:"+dato);
+                Log.i("Inca","Agregado Int :"+dato);
                 editor.putInt(variables,dato);
                 editor.commit();
                 break;
             case "String":
-                Log.i("Inca","Agregado String Shared:"+Datos);
+                Log.i("Inca","Agregado String :"+Datos);
                 editor.putString(variables,Datos);
                 editor.commit();
                 break;
             case "boolean":
                 boolean datoB=Boolean.parseBoolean(Datos);
-                Log.i("Inca","Agregado Boolean Shared:"+Datos);
+                Log.i("Inca","Agregado Boolean :"+Datos);
                 editor.putBoolean(variables,datoB);
                 editor.commit();
                 break;
