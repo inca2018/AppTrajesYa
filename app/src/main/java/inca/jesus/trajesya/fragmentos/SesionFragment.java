@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -66,6 +67,7 @@ public class SesionFragment extends Fragment {
     Button logout;
     LinearLayout modulo1;
     LinearLayout modulo2;
+    LinearLayout SectorUbicaciones;
     TextView op1, op2, op3, op4;
     boolean menu;
     Button regreso;
@@ -80,12 +82,14 @@ public class SesionFragment extends Fragment {
     Button btnRegistrarUsuario;
     ProgressDialog progressDialog;
     TextView OpcionCompletarInformacion;
+    TextView txtUbicaciones;
     private CallbackManager callbackManager;
     LoginButton loginButton;
     public ProfileTracker profileTracker;
     ImageView ivRegistroImagen;
     String KeyFB = "";
     SharedPreferences.Editor editor;
+    RecyclerView recyclerMisUbicaciones;
 
     public SesionFragment() {
         // Required empty public constructor
@@ -124,7 +128,9 @@ public class SesionFragment extends Fragment {
         ivRegistroImagen = vie.findViewById(R.id.ivRegistroImagen);
         OpcionCompletarInformacion = vie.findViewById(R.id.OpcionCompletarInformacion);
         loginButton = vie.findViewById(R.id.loginFbSesion);
-        regreso = (Button) vie.findViewById(R.id.regresar);
+        regreso = vie.findViewById(R.id.regresar);
+        txtUbicaciones=vie.findViewById(R.id.txtUbicaciones);
+        SectorUbicaciones=vie.findViewById(R.id.SectorUbicaciones);
         menu = false;
         /*---------------------SETEAR TEXTO SUBRAYADO--------------------------*/
         SpannableString mitextoU = new SpannableString("COMPLETAR INFORMACIÓN");
@@ -145,7 +151,25 @@ public class SesionFragment extends Fragment {
         opcionRegistrarUsuario();
         sesionFacebook(context);
         opcionCompletarInformacion();
+        opcionUbicaciones();
         return vie;
+    }
+
+    private void opcionUbicaciones() {
+        txtUbicaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               String idUsuario="";
+                idUsuario=sesion.RecuperarValor(context,"idUsuario");
+                RecuperarUbicacionesUsuario(context,idUsuario);
+            }
+        });
+
+    }
+
+    private void RecuperarUbicacionesUsuario(Context context, String idUsuario) {
+
+
     }
 
     private void opcionCompletarInformacion() {

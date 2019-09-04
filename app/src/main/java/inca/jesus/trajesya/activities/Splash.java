@@ -355,6 +355,8 @@ public class Splash extends AppCompatActivity {
                 listaGaleriaTemp.add(galeria);
             }
             temp.setGaleriaProducto(listaGaleriaTemp);
+        }else{
+            Log.e("Inca", "Error de encontrar galerias");
         }
 
         /*------Recuperar Medidas-----------*/

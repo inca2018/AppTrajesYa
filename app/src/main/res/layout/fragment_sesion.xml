@@ -25,7 +25,8 @@
                     android:id="@+id/modulo1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                     android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/SectorLogo"
@@ -120,7 +121,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/bt2"
+                            android:id="@+id/txtUbicaciones"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -480,6 +481,31 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/SectorUbicaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="@color/SinCheck"
+                        android:textStyle="bold"
+                        android:text="MIS UBICACIONES REGISTRADAS"
+                        android:textSize="16sp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recyclerMisUbicaciones"
+                        android:layout_margin="2dp">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
