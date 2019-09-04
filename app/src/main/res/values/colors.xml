@@ -22,5 +22,9 @@
     <color name="base1">#FEDA3B</color>
     <color name="base2">#F9C441</color>
     <color name="sombra">#b1975c</color>
+    <color name="sombra_base">#ffe19e</color>
+    <color name="sombra_base_light">#ffe19e</color>
+
+    <color name="rojo_oscuro">#ab0505</color>
 
 </resources>

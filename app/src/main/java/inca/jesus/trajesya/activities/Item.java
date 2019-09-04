@@ -1,12 +1,13 @@
 package inca.jesus.trajesya.activities;
 
-import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +46,7 @@ public class Item extends AppCompatActivity {
 
 
     /*----------Variables Nuevas------------*/
-    int idProductoRecuperado=0;
+    int idProductoRecuperado = 0;
     Producto ProductoSeleccionado;
 
     private AdapterItemProductos adapterProductosSimilares;
@@ -73,9 +74,9 @@ public class Item extends AppCompatActivity {
     private AdapterMedida adapterMedida;
     private LinearLayoutManager linearLayout;
 
-    public Button mas,menos;
+    public Button mas, menos;
     public TextView cantidad;
-    public int contadorStock =1;
+    public int contadorStock = 1;
 
 
     BottomNavigationView bottomNavigationView;
@@ -87,48 +88,49 @@ public class Item extends AppCompatActivity {
 
     Medida MedidaSeleccionada;
 
-    Button btnComprar,btnAgregar;
+    Button btnReservar, btnAgregar;
+    AlertDialog alerta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        context=getApplicationContext();
+        context = getApplicationContext();
         sesion = new Sesion();
-        usuarioRecuperado=sesion.RecuperarSesion(context);
+        usuarioRecuperado = sesion.RecuperarSesion(context);
 
-        MedidaSeleccionada=new Medida();
+        MedidaSeleccionada = new Medida();
 
-        scroll=findViewById(R.id.scroll_Item);
-        nombreProducto=findViewById(R.id.txtNombreProducto);
-        verificadoProducto=findViewById(R.id.txtVerificadoPor);
+        scroll = findViewById(R.id.scroll_Item);
+        nombreProducto = findViewById(R.id.txtNombreProducto);
+        verificadoProducto = findViewById(R.id.txtVerificadoPor);
         carruselProducto = findViewById(R.id.pictureplay);
-        precioProducto=findViewById(R.id.txtPrecioProducto);
-        descripcioProducto=findViewById(R.id.txtDescripcionProducto);
-        recycler_similares1=findViewById(R.id.recycler_similares1);
-        recycler_similares2=findViewById(R.id.recycler_similares2);
-        recycler_medidas=findViewById(R.id.recycler_medidas);
-        agregarCarrito=findViewById(R.id.item_boton_add_carrito);
-        tituloTalla=findViewById(R.id.tituloTalla);
-        mas=findViewById(R.id.mas);
-        menos=findViewById(R.id.menos);
-        cantidad=findViewById(R.id.cantidad);
-        btnComprar=findViewById(R.id.boton_comprar);
-        btnAgregar=findViewById(R.id.item_boton_add_carrito);
+        precioProducto = findViewById(R.id.txtPrecioProducto);
+        descripcioProducto = findViewById(R.id.txtDescripcionProducto);
+        recycler_similares1 = findViewById(R.id.recycler_similares1);
+        recycler_similares2 = findViewById(R.id.recycler_similares2);
+        recycler_medidas = findViewById(R.id.recycler_medidas);
+
+        tituloTalla = findViewById(R.id.tituloTalla);
+        mas = findViewById(R.id.mas);
+        menos = findViewById(R.id.menos);
+        cantidad = findViewById(R.id.cantidad);
+        btnReservar = findViewById(R.id.btnReservar);
+        btnAgregar = findViewById(R.id.btnAgregarReserva);
 
 
-        Bundle extras=getIntent().getExtras();
-        idProductoRecuperado=extras.getInt("idProducto");
+        Bundle extras = getIntent().getExtras();
+        idProductoRecuperado = extras.getInt("idProducto");
 
-        ProductoSeleccionado=BuscarProductoSeleccionado(idProductoRecuperado);
+        ProductoSeleccionado = BuscarProductoSeleccionado(idProductoRecuperado);
 
         GenerarCarrusel(ProductoSeleccionado);
 
         /*------------- Seteando Datos-----------*/
         nombreProducto.setText(ProductoSeleccionado.getNombreProducto());
         verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
-        precioProducto.setText("Alquiler: S/."+ProductoSeleccionado.getPrecioAlquiler());
+        precioProducto.setText("Alquiler: S/." + ProductoSeleccionado.getPrecioAlquiler());
         descripcioProducto.setText(ProductoSeleccionado.getDescripcionProducto());
 
         GenerarTamanos(ProductoSeleccionado);
@@ -141,58 +143,60 @@ public class Item extends AppCompatActivity {
 
 
         Boton_Agregar_Carrito();
-        Boton_Comprar();
+        accionesBotones();
 
 
-         cantidad.setText(String.valueOf(contadorStock));
-         mas.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 int tem=Integer.parseInt(cantidad.getText().toString());
-                 if(tem<Constantes.CANTIDAD_MAX_STOCK){
-                     contadorStock = contadorStock +1;
-                     cantidad.setText(String.valueOf(contadorStock));
-                 }else{
-                     Toast.makeText(Item.this, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
-                 }
-             }
-         });
+        cantidad.setText(String.valueOf(contadorStock));
+        mas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tem = Integer.parseInt(cantidad.getText().toString());
+                if (tem < Constantes.CANTIDAD_MAX_STOCK) {
+                    contadorStock = contadorStock + 1;
+                    cantidad.setText(String.valueOf(contadorStock));
+                } else {
+                    Toast.makeText(Item.this, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         menos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 int tem=Integer.parseInt(cantidad.getText().toString());
-                 if(tem!=0){
-                     contadorStock = contadorStock -1;
-                     cantidad.setText(String.valueOf(contadorStock));
-                 }
+                int tem = Integer.parseInt(cantidad.getText().toString());
+                if (tem != 0) {
+                    contadorStock = contadorStock - 1;
+                    cantidad.setText(String.valueOf(contadorStock));
+                }
             }
         });
 
-       MenuAcciones();
+        MenuAcciones();
 
     }
 
     private void RecuperarSubCategoria(Producto productoSeleccionado) {
-        subcategoriaSimilar=findViewById(R.id.txtNombreSubCategoria);
-        String Temp="";
-        for(int i=0;i<Constantes.Base_SubCategorias_Todo.size();i++){
-            if(Constantes.Base_SubCategorias_Todo.get(i).getIdSubCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
-                Temp=Constantes.Base_SubCategorias_Todo.get(i).getNombreSubCategoria();
+        subcategoriaSimilar = findViewById(R.id.txtNombreSubCategoria);
+        String Temp = "";
+        for (int i = 0; i < Constantes.Base_SubCategorias_Todo.size(); i++) {
+            if (Constantes.Base_SubCategorias_Todo.get(i).getIdSubCategoria() == productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()) {
+                Temp = Constantes.Base_SubCategorias_Todo.get(i).getNombreSubCategoria();
             }
         }
-        subcategoriaSimilar.setText("Más de "+Temp);
+        subcategoriaSimilar.setText("Más de " + Temp);
     }
+
     private void RecuperarCategoria(Producto productoSeleccionado) {
 
-        categoriaSimiliar=findViewById(R.id.txtNombreCategoria);
-        String Temp="";
-        for(int i=0;i<Constantes.Base_Categorias_Todo.size();i++){
-            if(Constantes.Base_Categorias_Todo.get(i).getIdCategoria()==productoSeleccionado.getCategoriaProducto().getIdCategoria()){
-                Temp=Constantes.Base_Categorias_Todo.get(i).getNombreCategoria();
+        categoriaSimiliar = findViewById(R.id.txtNombreCategoria);
+        String Temp = "";
+        for (int i = 0; i < Constantes.Base_Categorias_Todo.size(); i++) {
+            if (Constantes.Base_Categorias_Todo.get(i).getIdCategoria() == productoSeleccionado.getCategoriaProducto().getIdCategoria()) {
+                Temp = Constantes.Base_Categorias_Todo.get(i).getNombreCategoria();
             }
         }
-        categoriaSimiliar.setText("Más de "+Temp);
+        categoriaSimiliar.setText("Más de " + Temp);
     }
+
     private void MenuAcciones() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -202,23 +206,23 @@ public class Item extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_1:
-                                Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                                intent.putExtra("o","o1");
+                                Intent intent = new Intent(Item.this, ActivityPrincipal.class);
+                                intent.putExtra("o", "o1");
                                 startActivity(intent);
                                 return true;
                             case R.id.action_2:
-                                Intent intent2 = new Intent(Item.this,ActivityPrincipal.class);
-                                intent2.putExtra("o","o2");
+                                Intent intent2 = new Intent(Item.this, ActivityPrincipal.class);
+                                intent2.putExtra("o", "o2");
                                 startActivity(intent2);
                                 return true;
                             case R.id.action_4:
-                                Intent intent4 = new Intent(Item.this,ActivityPrincipal.class);
-                                intent4.putExtra("o","o4");
+                                Intent intent4 = new Intent(Item.this, ActivityPrincipal.class);
+                                intent4.putExtra("o", "o4");
                                 startActivity(intent4);
                                 return true;
                             case R.id.action_5:
-                                Intent intent5 = new Intent(Item.this,ActivityPrincipal.class);
-                                intent5.putExtra("o","o5");
+                                Intent intent5 = new Intent(Item.this, ActivityPrincipal.class);
+                                intent5.putExtra("o", "o5");
                                 startActivity(intent5);
                                 return true;
                         }
@@ -226,12 +230,13 @@ public class Item extends AppCompatActivity {
                     }
                 });
     }
+
     private void MostrarProductosSimilares(Producto productoSeleccionado) {
 
-        List<Producto> ProductosSimilares=RecuperarSimilares(productoSeleccionado);
+        List<Producto> ProductosSimilares = RecuperarSimilares(productoSeleccionado);
 
-        if(ProductosSimilares!=null){
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+        if (ProductosSimilares != null) {
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
             adapterProductosSimilares = new AdapterItemProductos(Item.this, ProductosSimilares, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
@@ -239,18 +244,19 @@ public class Item extends AppCompatActivity {
             });
             recycler_similares1.setAdapter(adapterProductosSimilares);
             recycler_similares1.setLayoutManager(linearLayout);
-        }else{
-            Log.i("Inca","No tiene productos similares 1");
+        } else {
+            Log.i("Inca", "No tiene productos similares 1");
         }
 
 
     }
+
     private void MostrarProductosSimilares2(Producto productoSeleccionado) {
 
-            List<Producto> ProductosSimilares2=RecuperarSimilares2(productoSeleccionado);
+        List<Producto> ProductosSimilares2 = RecuperarSimilares2(productoSeleccionado);
 
-        if(ProductosSimilares2!=null){
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+        if (ProductosSimilares2 != null) {
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
             adapterProductosSimilares2 = new AdapterItemProductos(Item.this, ProductosSimilares2, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
@@ -258,40 +264,43 @@ public class Item extends AppCompatActivity {
             });
             recycler_similares2.setAdapter(adapterProductosSimilares2);
             recycler_similares2.setLayoutManager(linearLayout);
-        }else{
-            Log.i("Inca","No tiene productos similares 2");
+        } else {
+            Log.i("Inca", "No tiene productos similares 2");
         }
 
     }
+
     private List<Producto> RecuperarSimilares(Producto productoSeleccionado) {
-        List<Producto> Temp=new ArrayList<>();
+        List<Producto> Temp = new ArrayList<>();
 
-        for(int i=0;i<Constantes.Base_Producto_Todo.size();i++){
-            if(Constantes.Base_Producto_Todo.get(i).getCategoriaProducto().getIdCategoria()==productoSeleccionado.getCategoriaProducto().getIdCategoria()){
-                Temp.add(Constantes.Base_Producto_Todo.get(i));
-            }
-        }
-     return Temp;
-    }
-    private List<Producto> RecuperarSimilares2(Producto productoSeleccionado) {
-        List<Producto> Temp=new ArrayList<>();
-
-        for(int i=0;i<Constantes.Base_Producto_Todo.size();i++){
-            if(Constantes.Base_Producto_Todo.get(i).getSubCategoriaProducto().getIdSubCategoria()==productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()){
+        for (int i = 0; i < Constantes.Base_Producto_Todo.size(); i++) {
+            if (Constantes.Base_Producto_Todo.get(i).getCategoriaProducto().getIdCategoria() == productoSeleccionado.getCategoriaProducto().getIdCategoria()) {
                 Temp.add(Constantes.Base_Producto_Todo.get(i));
             }
         }
         return Temp;
     }
+
+    private List<Producto> RecuperarSimilares2(Producto productoSeleccionado) {
+        List<Producto> Temp = new ArrayList<>();
+
+        for (int i = 0; i < Constantes.Base_Producto_Todo.size(); i++) {
+            if (Constantes.Base_Producto_Todo.get(i).getSubCategoriaProducto().getIdSubCategoria() == productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()) {
+                Temp.add(Constantes.Base_Producto_Todo.get(i));
+            }
+        }
+        return Temp;
+    }
+
     private void GenerarTamanos(Producto productoSeleccionado) {
 
         List<Medida> Medidas;
-        Medidas=productoSeleccionado.getMedidaProducto();
+        Medidas = productoSeleccionado.getMedidaProducto();
 
-        if(Medidas!=null){
+        if (Medidas != null) {
             tituloTalla.setText("Tallas Disponibles:");
             //Recylcer de TAMAÑOS
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL,false);
+            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
             adapterMedida = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
@@ -304,31 +313,32 @@ public class Item extends AppCompatActivity {
                 @Override
                 public void onChanged() {
                     super.onChanged();
-                    MedidaSeleccionada=adapterMedida.RecuperarTallaSeleccion();
-                    Log.i("Inca","Medida Seleccionada: "+MedidaSeleccionada.getNombreMedida());
+                    MedidaSeleccionada = adapterMedida.RecuperarTallaSeleccion();
+                    Log.i("Inca", "Medida Seleccionada: " + MedidaSeleccionada.getNombreMedida());
                 }
             });
 
-        }else{
+        } else {
             tituloTalla.setText("Sin Tallas Disponibles");
-            Log.i("Inca","No se encontraron Medidas");
+            Log.i("Inca", "No se encontraron Medidas");
         }
 
     }
+
     private void GenerarCarrusel(Producto productoSeleccionado) {
         /*----------Carrusel----------------*/
 
-         ListaGalerias=productoSeleccionado.getGaleriaProducto();
-        if(ListaGalerias==null){
-            Rutas=new String[1];
-            Rutas[0]=Constantes.PATH_IMAGEN+productoSeleccionado.getImagenProducto();
+        ListaGalerias = productoSeleccionado.getGaleriaProducto();
+        if (ListaGalerias == null) {
+            Rutas = new String[1];
+            Rutas[0] = Constantes.PATH_IMAGEN + productoSeleccionado.getImagenProducto();
             carruselProducto.setImageResources(Rutas);
             carruselProducto.setOnPageClickListener(new CarouselView.OnPageClickListener() {
                 @Override
                 public void onPageClick(int position) {
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
-                    final ImageView ImagenVista=dialoglayout4.findViewById(R.id.iv_imagen_zoom);
+                    final ImageView ImagenVista = dialoglayout4.findViewById(R.id.iv_imagen_zoom);
 
 
                     Picasso.get()
@@ -346,14 +356,14 @@ public class Item extends AppCompatActivity {
 
                     AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
                     builder4.setView(dialoglayout4);
-                    imagenVista=builder4.show();
+                    imagenVista = builder4.show();
                 }
             });
-        }else{
-            Rutas=new String[ListaGalerias.size()];
+        } else {
+            Rutas = new String[ListaGalerias.size()];
 
-            for(int i=0;i<ListaGalerias.size();i++){
-                Rutas[i]=Constantes.PATH_IMAGEN+ListaGalerias.get(i).getImagenGaleria();
+            for (int i = 0; i < ListaGalerias.size(); i++) {
+                Rutas[i] = Constantes.PATH_IMAGEN + ListaGalerias.get(i).getImagenGaleria();
             }
 
             Collections.reverse(ListaGalerias);
@@ -363,13 +373,13 @@ public class Item extends AppCompatActivity {
                 @Override
                 public void onPageClick(int position) {
 
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
-                    final ImageView ImagenVista=dialoglayout4.findViewById(R.id.iv_imagen_zoom);
+                    final ImageView ImagenVista = dialoglayout4.findViewById(R.id.iv_imagen_zoom);
 
 
                     Picasso.get()
-                            .load(Constantes.PATH_IMAGEN+ListaGalerias.get(position).getImagenGaleria())
+                            .load(Constantes.PATH_IMAGEN + ListaGalerias.get(position).getImagenGaleria())
                             .placeholder(R.drawable.default_imagen)
                             .error(R.drawable.default_imagen)
                             .into(ImagenVista);
@@ -383,32 +393,101 @@ public class Item extends AppCompatActivity {
 
                     AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
                     builder4.setView(dialoglayout4);
-                    imagenVista=builder4.show();
+                    imagenVista = builder4.show();
                 }
             });
         }
     }
-    private Producto BuscarProductoSeleccionado(int idProductoRecuperado) {
-        Producto temp=new Producto();
 
-        for(int i=0;i< Constantes.Base_Producto_Todo.size();i++){
-            if(Constantes.Base_Producto_Todo.get(i).getIdProducto()==idProductoRecuperado){
-                temp=Constantes.Base_Producto_Todo.get(i);
+    private Producto BuscarProductoSeleccionado(int idProductoRecuperado) {
+        Producto temp = new Producto();
+
+        for (int i = 0; i < Constantes.Base_Producto_Todo.size(); i++) {
+            if (Constantes.Base_Producto_Todo.get(i).getIdProducto() == idProductoRecuperado) {
+                temp = Constantes.Base_Producto_Todo.get(i);
             }
         }
         return temp;
     }
-    private void Boton_Comprar() {
 
-        if(usuarioRecuperado.isSesion()){
-            int CantidadRecuperada=contadorStock;
-            Medida MedidaRecuperad=MedidaSeleccionada;
-            Producto ProductoRecuperado=ProductoSeleccionado;
+    private void accionesBotones() {
+
+        btnAgregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (usuarioRecuperado.isSesion()) {
+                    /*----------------PROCEDE CON RESERVA----------------------*/
+                    int CantidadRecuperada = contadorStock;
+                    Medida MedidaRecuperad = MedidaSeleccionada;
+                    Producto ProductoRecuperado = ProductoSeleccionado;
 
 
-        }else{
-            Toast.makeText(context, "Complete su Información para Continuar", Toast.LENGTH_SHORT).show();
-        }
+                } else {
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
+                    final Button seguirNavegandoAccion = dialoglayout4.findViewById(R.id.btnSeguirNavegando);
+                    final Button completarRegistroAccion = dialoglayout4.findViewById(R.id.btnCompletarRegistro);
+
+                    seguirNavegandoAccion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            imagenVista.dismiss();
+                        }
+                    });
+                    completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Item.this, ActivityPrincipal.class);
+                            intent.putExtra("o", "o5");
+                            startActivity(intent);
+                        }
+                    });
+
+                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(Item.this);
+                    builder4.setView(dialoglayout4);
+                    imagenVista = builder4.show();
+                }
+            }
+        });
+
+        btnReservar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (usuarioRecuperado.isSesion()) {
+                    /*----------------PROCEDE CON RESERVA----------------------*/
+                    int CantidadRecuperada = contadorStock;
+                    Medida MedidaRecuperad = MedidaSeleccionada;
+                    Producto ProductoRecuperado = ProductoSeleccionado;
+
+
+                } else {
+                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
+                    final Button seguirNavegandoAccion = dialoglayout4.findViewById(R.id.btnSeguirNavegando);
+                    final Button completarRegistroAccion = dialoglayout4.findViewById(R.id.btnCompletarRegistro);
+
+                    seguirNavegandoAccion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            imagenVista.dismiss();
+                        }
+                    });
+                    completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Item.this, ActivityPrincipal.class);
+                            intent.putExtra("o", "o5");
+                            startActivity(intent);
+                        }
+                    });
+
+                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(Item.this);
+                    builder4.setView(dialoglayout4);
+                    imagenVista = builder4.show();
+                }
+            }
+        });
+
         /*btn_comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -426,6 +505,7 @@ public class Item extends AppCompatActivity {
             }
         });*/
     }
+
     private void Boton_Agregar_Carrito() {
        /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -459,12 +539,13 @@ public class Item extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        scroll.scrollTo(0,0);
+        scroll.scrollTo(0, 0);
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
-        scroll.scrollTo(0,0);
+        scroll.scrollTo(0, 0);
 
     }
 }

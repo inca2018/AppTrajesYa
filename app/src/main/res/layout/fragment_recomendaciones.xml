@@ -60,14 +60,14 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MÁS ALQUILADOS EN OTROS TRAJES"
-                android:fontFamily="sans-serif-condensed"
-                android:textColor="@color/SinCheck"
-                android:textStyle="bold"
-                android:layout_margin="4dp"
-                android:textSize="16sp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MÁS ALQUILADOS EN OTROS TRAJES"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/SinCheck"
+            android:textStyle="bold"
+            android:layout_margin="4dp"
+            android:textSize="16sp"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

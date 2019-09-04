@@ -62,26 +62,23 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        context=this;
-        sesion=new Sesion();
+        context = this;
+        sesion = new Sesion();
         inicio_sesion = findViewById(R.id.inicio_sesion);
         usuario = findViewById(R.id.etUsuario);
         password = findViewById(R.id.etPassword);
         callbackManager = CallbackManager.Factory.create();
         loginButton = findViewById(R.id.loginFb);
-        sin_cuenta=findViewById(R.id.btnSinCuenta);
+        sin_cuenta = findViewById(R.id.btnSinCuenta);
         loginButton.setReadPermissions("email");
 
-        TextView sin_cuenta =findViewById(R.id.btnSinCuenta);
+        TextView sin_cuenta = findViewById(R.id.btnSinCuenta);
         SpannableString mitextoU = new SpannableString("SIN USUARIO");
         mitextoU.setSpan(new UnderlineSpan(), 0, mitextoU.length(), 0);
         sin_cuenta.setText(mitextoU);
 
         opciones();
         SesionFacebook();
-
-
-
         // Add code to print out the key hash
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -93,9 +90,9 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
-
+            //not required
         } catch (NoSuchAlgorithmException e) {
-
+            //not required
         }
     }
 
@@ -117,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,19 +130,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     public void IniciarSesion(View view) {
-        String mensaje=VerificarCampos();
-        if(mensaje.length()==0){
-            Usuario Temporal=new Usuario();
+        String mensaje = VerificarCampos();
+        if (mensaje.length() == 0) {
+            Usuario Temporal = new Usuario();
             Temporal.setUsuario(usuario.getText().toString());
             Temporal.setPassword(password.getText().toString());
-            VerificarUsuarioServidor(context,Temporal);
-        }else{
+            VerificarUsuarioServidor(context, Temporal);
+        } else {
             Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
         }
     }
-    private void VerificarUsuarioServidor(final Context context,final Usuario usuario){
+
+    private void VerificarUsuarioServidor(final Context context, final Usuario usuario) {
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setTitle("Login:");
         progressDialog.setMessage("Iniciando.......");
@@ -158,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
-                                Usuario Nuevo=new Usuario();
+                                Usuario Nuevo = new Usuario();
                                 Nuevo.setIdUsuario(jsonResponse.getInt("idUsuario"));
                                 Nuevo.setUsuario(jsonResponse.getString("usuario"));
                                 Nuevo.setNombreUsuario(jsonResponse.getString("nombres"));
@@ -166,22 +164,28 @@ public class LoginActivity extends AppCompatActivity {
                                 Nuevo.setImagenUsuario(jsonResponse.getString("imagen"));
                                 Nuevo.setCorreoUsuario(jsonResponse.getString("correo"));
                                 Nuevo.setSesion(true);
-                                Perfil perfil=new Perfil();
+                                Perfil perfil = new Perfil();
                                 perfil.setIdPerfil(jsonResponse.getInt("idPerfil"));
                                 perfil.setNombrePrefil(jsonResponse.getString("perfil"));
                                 Nuevo.setPerfilUsuario(perfil);
+                                Nuevo.setKeyFacebook(jsonResponse.getString("keyFacebook"));
+                                if(Nuevo.getKeyFacebook().length()>0){
+                                    Nuevo.setSesionFB(true);
+                                }else{
+                                    Nuevo.setSesionFB(false);
+                                }
                                 Nuevo.setSesion(true);
-                                Nuevo.setSesionFB(false);
-                                sesion.RegistrarSesion(context,Nuevo);
+                                sesion.RegistrarSesion(context, Nuevo);
 
-                                String Mensaje=jsonResponse.getString("mensaje");
+                                String Mensaje = jsonResponse.getString("mensaje");
                                 progressDialog.dismiss();
                                 Toast.makeText(context, Mensaje, Toast.LENGTH_SHORT).show();
+
                                 IrMenuPrincipal();
-                            }else{
+                            } else {
                                 LimpiarCampos();
                                 progressDialog.dismiss();
-                                String Mensaje=jsonResponse.getString("mensaje");
+                                String Mensaje = jsonResponse.getString("mensaje");
                                 Toast.makeText(context, Mensaje, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -207,25 +211,25 @@ public class LoginActivity extends AppCompatActivity {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
-    public String VerificarCampos(){
-        String mensaje="";
+    public String VerificarCampos() {
+        String mensaje = "";
         String etUsuario = usuario.getText().toString().trim();
         String etPassword = password.getText().toString().trim();
 
-        mensaje=(etUsuario.length()==0)?(mensaje+"- Ingrese Usuario.\n"):(mensaje+"");
-        mensaje=(etPassword.length()==0)?(mensaje+"- Ingrese Contraseña.\n"):(mensaje+"");
-        mensaje=(etUsuario.length()<6)?(mensaje+"- Ingrese Usuario mayor o igual a 6 caracteres.\n"):(mensaje+"");
-        mensaje=(etPassword.length()<6)?(mensaje+"- Ingrese Contraseña mayor o igual a a 6 caracteres.\n"):(mensaje+"");
-        return  mensaje;
+        mensaje = (etUsuario.length() == 0) ? (mensaje + "- Ingrese Usuario.\n") : (mensaje + "");
+        mensaje = (etPassword.length() == 0) ? (mensaje + "- Ingrese Contraseña.\n") : (mensaje + "");
+        mensaje = (etUsuario.length() < 6) ? (mensaje + "- Ingrese Usuario mayor o igual a 6 caracteres.\n") : (mensaje + "");
+        mensaje = (etPassword.length() < 6) ? (mensaje + "- Ingrese Contraseña mayor o igual a a 6 caracteres.\n") : (mensaje + "");
+        return mensaje;
     }
 
-    public void LimpiarCampos(){
+    public void LimpiarCampos() {
         usuario.setText("");
         password.setText("");
     }
 
-    public void IrMenuPrincipal(){
-        Intent intent=new Intent(LoginActivity.this, ActivityPrincipal.class);
+    public void IrMenuPrincipal() {
+        Intent intent = new Intent(LoginActivity.this, ActivityPrincipal.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

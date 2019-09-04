@@ -320,7 +320,7 @@
                     android:layout_margin="2dp">
 
                 <Button
-                    android:id="@+id/item_boton_add_carrito"
+                    android:id="@+id/btnAgregarReserva"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -343,7 +343,7 @@
                     app:cardCornerRadius="12dp"
                     android:layout_margin="2dp">
                 <Button
-                    android:id="@+id/boton_comprar"
+                    android:id="@+id/btnReservar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

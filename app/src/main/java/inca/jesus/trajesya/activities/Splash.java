@@ -40,8 +40,10 @@ import inca.jesus.trajesya.data.modelo.Medida;
 import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Promocion;
 import inca.jesus.trajesya.data.modelo.Publicidad;
+import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.SubCategoria;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
+import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
 
@@ -738,11 +740,20 @@ public class Splash extends AppCompatActivity {
     }
 
     void mover() {
-        Intent intent = new Intent(Splash.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
 
+        Sesion sesion=new Sesion();
+        Usuario usuarioRecuperado = sesion.RecuperarSesion(context);
+        if (usuarioRecuperado.isSesionFB()) {
+            Intent intent = new Intent(Splash.this, ActivityPrincipal.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(Splash.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
+    }
     public void Progreso(int tiempo) {
         p.setProgress(tiempo);
         txtProgress.setText("Cargando... " + tiempo + " %");
