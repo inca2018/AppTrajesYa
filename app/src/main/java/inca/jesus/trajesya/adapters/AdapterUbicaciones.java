@@ -17,6 +17,7 @@ import java.util.List;
 
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.data.modelo.Promocion;
+import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.utils.Constantes;
 
 
@@ -26,11 +27,11 @@ import inca.jesus.trajesya.data.utils.Constantes;
 
 public class AdapterUbicaciones extends RecyclerView.Adapter<AdapterUbicaciones.ViewHolder> {
     private Context context;
-    private List<Promocion> my_Data;
+    private List<UbicacionDireccion> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
 
 
-    public AdapterUbicaciones(Context context, List<Promocion> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterUbicaciones(Context context, List<UbicacionDireccion> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -60,24 +61,6 @@ public class AdapterUbicaciones extends RecyclerView.Adapter<AdapterUbicaciones.
     @Override
     public void onBindViewHolder(AdapterUbicaciones.ViewHolder holder, final int position) {
 
-        Picasso.get()
-                .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenPromocion())
-                .placeholder(R.drawable.default_imagen)
-                .error(R.drawable.default_imagen)
-                .into(holder.imagen);
-
-
-        holder.imagen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Uri uri = Uri.parse(my_Data.get(position).getLinkPromocion());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                context.startActivity(intent);
-
-                //Toast.makeText(context, my_Data.get(position).getNombrePromocion(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
     @Override
     public int getItemCount() {

@@ -1,5 +1,6 @@
 package inca.jesus.trajesya.fragmentos;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,15 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -41,30 +45,44 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.activities.LoginActivity;
+import inca.jesus.trajesya.adapters.AdapterItemProductos;
+import inca.jesus.trajesya.adapters.AdapterUbicaciones;
+import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.Perfil;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
+import inca.jesus.trajesya.data.modelo.Categoria;
+import inca.jesus.trajesya.data.modelo.Estado;
+import inca.jesus.trajesya.data.modelo.Grupo;
 import inca.jesus.trajesya.data.modelo.Sesion;
+import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
+import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
+
+import static inca.jesus.trajesya.data.utils.Constantes.SUCCESS;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SesionFragment extends Fragment {
-    ImageView foto;
-    TextView nombre;
-    Button logout;
+    public ImageView foto;
+    public TextView nombre;
+    public Button logout;
     LinearLayout modulo1;
     LinearLayout modulo2;
     LinearLayout SectorUbicaciones;
@@ -89,7 +107,18 @@ public class SesionFragment extends Fragment {
     ImageView ivRegistroImagen;
     String KeyFB = "";
     SharedPreferences.Editor editor;
-    RecyclerView recyclerMisUbicaciones;
+    ImageView ivRegresarPerfil;
+    Button btnAgregarUbicacion;
+    public List<UnidadTerritorial> ListaDistritos;
+    String[] spinnerDistritos;
+
+    public List<UbicacionDireccion> ListaUbicaciones;
+    public RecyclerView recyclerMisUbicaciones;
+    public LinearLayoutManager linearLayoutUbicaciones;
+    public AdapterUbicaciones adapterUbicaciones;
+
+
+    AlertDialog nuevaUbicacion;
 
     public SesionFragment() {
         // Required empty public constructor
@@ -105,6 +134,10 @@ public class SesionFragment extends Fragment {
         tituloDescripcion = vie.findViewById(R.id.tituloDescripcion);
         modulo1 = vie.findViewById(R.id.modulo1);
         modulo2 = vie.findViewById(R.id.modulo2);
+        SectorRegistro = vie.findViewById(R.id.SectorRegistro);
+        SectorFbRegistro = vie.findViewById(R.id.SectorLoginFB);
+        SectorUbicaciones=vie.findViewById(R.id.SectorUbicaciones);
+
         foto = vie.findViewById(R.id.sesion_imagen);
         nombre = vie.findViewById(R.id.sesion_nombre);
         logout = vie.findViewById(R.id.boton_cerrar_sesion);
@@ -123,15 +156,19 @@ public class SesionFragment extends Fragment {
         etRegistroPassword = vie.findViewById(R.id.etRegistroPassword);
         btnRegistrarUsuario = vie.findViewById(R.id.btnRegistrarUsuario);
         correo_user = vie.findViewById(R.id.correo_user);
-        SectorFbRegistro = vie.findViewById(R.id.SectorLoginFB);
-        SectorRegistro = vie.findViewById(R.id.SectorRegistro);
+
         ivRegistroImagen = vie.findViewById(R.id.ivRegistroImagen);
         OpcionCompletarInformacion = vie.findViewById(R.id.OpcionCompletarInformacion);
         loginButton = vie.findViewById(R.id.loginFbSesion);
         regreso = vie.findViewById(R.id.regresar);
         txtUbicaciones=vie.findViewById(R.id.txtUbicaciones);
-        SectorUbicaciones=vie.findViewById(R.id.SectorUbicaciones);
+        ivRegresarPerfil=vie.findViewById(R.id.ivRegresarPerfil);
+        btnAgregarUbicacion=vie.findViewById(R.id.btnAgregarUbicacion);
+
         menu = false;
+
+        ListaUbicaciones=new ArrayList<>();
+        ListaDistritos=new ArrayList<>();
         /*---------------------SETEAR TEXTO SUBRAYADO--------------------------*/
         SpannableString mitextoU = new SpannableString("COMPLETAR INFORMACIÓN");
         mitextoU.setSpan(new UnderlineSpan(), 0, mitextoU.length(), 0);
@@ -152,24 +189,175 @@ public class SesionFragment extends Fragment {
         sesionFacebook(context);
         opcionCompletarInformacion();
         opcionUbicaciones();
+        opcionRegresarPerfil();
+        opcionAgregarUbicacion();
+        GenerarAdapterListadoUbicaciones();
+        RecuperarDistritos();
         return vie;
+    }
+
+    private void RecuperarDistritos() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("distritos");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    UnidadTerritorial distrito=new UnidadTerritorial();
+
+                                    distrito.setIdUnidadTerritorial(objeto.getInt("idDistrito"));
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    ListaDistritos.add(distrito);
+                                }
+
+                            } else {
+                                Toast.makeText(context, "No se encuentran Ubicaciones Registradas.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca", "Error JSON EN Ubicaciones:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Constantes.OPERACION, "ListarDistritosLima");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+    private void opcionAgregarUbicacion() {
+        btnAgregarUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
+                final Spinner spDistrito = dialoglayout4.findViewById(R.id.spDistrito);
+
+                spinnerDistritos=new String[ListaDistritos.size()];
+                for (int i = 0; i < ListaDistritos.size(); i++) {
+                    spinnerDistritos[i] = ListaDistritos.get(i).getNombreUnidadTerritorial();
+                }
+                ArrayAdapter<String> adapter_arr = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerDistritos);
+                spDistrito.setAdapter(adapter_arr);
+
+
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
+                builder4.setView(dialoglayout4);
+                nuevaUbicacion = builder4.show();
+            }
+        });
+    }
+
+    private void opcionRegresarPerfil() {
+
+        ivRegresarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modulo1.setVisibility(View.VISIBLE);
+                SectorUbicaciones.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @SuppressLint("WrongConstant")
+    private void GenerarAdapterListadoUbicaciones() {
+
+        linearLayoutUbicaciones= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterUbicaciones = new AdapterUbicaciones(context, ListaUbicaciones, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+            }
+        });
+        recyclerMisUbicaciones.setAdapter(adapterUbicaciones);
+        recyclerMisUbicaciones.setLayoutManager(linearLayoutUbicaciones);
     }
 
     private void opcionUbicaciones() {
         txtUbicaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               String idUsuario="";
+                modulo1.setVisibility(View.GONE);
+                SectorUbicaciones.setVisibility(View.VISIBLE);
+
+                ListaUbicaciones.clear();
+                String idUsuario="";
                 idUsuario=sesion.RecuperarValor(context,"idUsuario");
                 RecuperarUbicacionesUsuario(context,idUsuario);
             }
         });
-
     }
 
-    private void RecuperarUbicacionesUsuario(Context context, String idUsuario) {
+    private void RecuperarUbicacionesUsuario(final Context context, final String idUsuario) {
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
 
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    UbicacionDireccion ubicacion=new UbicacionDireccion();
+                                    ubicacion.setIdUbicacionDireccion(objeto.getInt("idReservaUbicaciones"));
+                                    ubicacion.setDireccionEntrega(objeto.getString("DireccionEntrega"));
+                                    ubicacion.setReferenciaDireccion(objeto.getString("ReferenciaDireccion"));
+                                    UnidadTerritorial distrito=new UnidadTerritorial();
+                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    ubicacion.setDistrito(distrito);
+                                    ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    ListaUbicaciones.add(ubicacion);
+
+                                    adapterUbicaciones.notifyDataSetChanged();
+                                }
+                            } else {
+                                Toast.makeText(context, "No se encuentran Ubicaciones Registradas.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca", "Error JSON EN Ubicaciones:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Constantes.OPERACION, "RecuperarUbicaciones");
+                params.put("idUsuario", idUsuario);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
     private void opcionCompletarInformacion() {
@@ -672,6 +860,7 @@ public class SesionFragment extends Fragment {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
 
     }
+
     private void verificarUsuarioFbLogin(Context context) {
 
         final String KEY_FB=sesion.RecuperarValor(context,"KeyFacebook");
@@ -740,4 +929,5 @@ public class SesionFragment extends Fragment {
         };
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
+
 }
