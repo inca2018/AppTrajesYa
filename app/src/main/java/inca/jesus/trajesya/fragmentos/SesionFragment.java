@@ -164,6 +164,9 @@ public class SesionFragment extends Fragment {
         txtUbicaciones=vie.findViewById(R.id.txtUbicaciones);
         ivRegresarPerfil=vie.findViewById(R.id.ivRegresarPerfil);
         btnAgregarUbicacion=vie.findViewById(R.id.btnAgregarUbicacion);
+        recyclerMisUbicaciones=vie.findViewById(R.id.recyclerMisUbicaciones);
+
+        SectorUbicaciones.setVisibility(View.GONE);
 
         menu = false;
 
@@ -249,7 +252,7 @@ public class SesionFragment extends Fragment {
             public void onClick(View v) {
 
                 final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
+                final View dialoglayout4 = inflater.inflate(R.layout.dialog_nueva_ubicacion, null);
                 final Spinner spDistrito = dialoglayout4.findViewById(R.id.spDistrito);
 
                 spinnerDistritos=new String[ListaDistritos.size()];
@@ -299,15 +302,16 @@ public class SesionFragment extends Fragment {
                 SectorUbicaciones.setVisibility(View.VISIBLE);
 
                 ListaUbicaciones.clear();
-                String idUsuario="";
-                idUsuario=sesion.RecuperarValor(context,"idUsuario");
-                RecuperarUbicacionesUsuario(context,idUsuario);
+
+                Usuario usuarioRecu=sesion.RecuperarSesion(context);
+                Log.e("Inca","ID USUARIO:"+usuarioRecu.getIdUsuario());
+                RecuperarUbicacionesUsuario(context,usuarioRecu.getIdUsuario());
             }
         });
     }
 
-    private void RecuperarUbicacionesUsuario(final Context context, final String idUsuario) {
-
+    private void RecuperarUbicacionesUsuario(final Context context, final int idUsu) {
+        final String idUsuario=String.valueOf(idUsu);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
                 new Response.Listener<String>() {
                     @Override
@@ -317,22 +321,28 @@ public class SesionFragment extends Fragment {
                             boolean success = jsonResponse.getBoolean(SUCCESS);
 
                             if (success) {
-                                JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");
-                                for (int i = 0; i < categorias.length(); i++) {
-                                    JSONObject objeto = categorias.getJSONObject(i);
-                                    UbicacionDireccion ubicacion=new UbicacionDireccion();
-                                    ubicacion.setIdUbicacionDireccion(objeto.getInt("idReservaUbicaciones"));
-                                    ubicacion.setDireccionEntrega(objeto.getString("DireccionEntrega"));
-                                    ubicacion.setReferenciaDireccion(objeto.getString("ReferenciaDireccion"));
-                                    UnidadTerritorial distrito=new UnidadTerritorial();
-                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
-                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
-                                    ubicacion.setDistrito(distrito);
-                                    ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    ListaUbicaciones.add(ubicacion);
+                                if (!jsonResponse.isNull("ubicaciones")) {
+                                    JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");
 
-                                    adapterUbicaciones.notifyDataSetChanged();
+                                    for (int i = 0; i < categorias.length(); i++) {
+                                        JSONObject objeto = categorias.getJSONObject(i);
+                                        UbicacionDireccion ubicacion=new UbicacionDireccion();
+                                        ubicacion.setIdUbicacionDireccion(objeto.getInt("idReservaUbicaciones"));
+                                        ubicacion.setDireccionEntrega(objeto.getString("DireccionEntrega"));
+                                        ubicacion.setReferenciaDireccion(objeto.getString("ReferenciaDireccion"));
+                                        UnidadTerritorial distrito=new UnidadTerritorial();
+                                        distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                        distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                        ubicacion.setDistrito(distrito);
+                                        ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                        ListaUbicaciones.add(ubicacion);
+                                        adapterUbicaciones.notifyDataSetChanged();
+                                    }
+                                }else{
+                                    Log.e("Inca", "No se encuentran Ubicaciones Registradas.");
                                 }
+
+
                             } else {
                                 Toast.makeText(context, "No se encuentran Ubicaciones Registradas.", Toast.LENGTH_SHORT).show();
                             }

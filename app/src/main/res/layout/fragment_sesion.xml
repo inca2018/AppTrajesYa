@@ -319,7 +319,7 @@
                                 android:layout_height="match_parent"
                                 android:hint="Nombres"
                                 android:inputType="text"
-                                android:maxLength="25"
+                                android:maxLength="30"
                                 android:textSize="18sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -335,7 +335,7 @@
                                 android:layout_height="match_parent"
                                 android:hint="Apellidos"
                                 android:inputType="text"
-                                android:maxLength="25"
+                                android:maxLength="30"
                                 android:textSize="18sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -368,7 +368,7 @@
                                 android:layout_height="match_parent"
                                 android:hint="Correo Electrónico"
                                 android:inputType="textEmailAddress"
-                                android:maxLength="25"
+                                android:maxLength="50"
                                 android:textSize="18sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
