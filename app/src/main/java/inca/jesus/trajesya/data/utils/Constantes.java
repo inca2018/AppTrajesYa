@@ -8,6 +8,7 @@ import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Promocion;
 import inca.jesus.trajesya.data.modelo.Publicidad;
 import inca.jesus.trajesya.data.modelo.Reserva;
+import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.SubCategoria;
 
 public class Constantes {
@@ -53,6 +54,7 @@ public class Constantes {
     public final static String PREGUNTAS_PRECUENTES="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas \"Letraset\", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.";
 
     public static Reserva RESERVA_LOCAL=new Reserva();
+    public static List<ReservaItem> RESERVA_ITEMS=new ArrayList<>();
 
 
     public static final String SUCCESS ="success";

@@ -24,8 +24,8 @@
                  />
             <ImageView
                 android:id="@+id/card_imagen"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
                 android:src="@drawable/promo1"
                 android:layout_marginBottom="2dp"/>
 

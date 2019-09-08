@@ -37,6 +37,7 @@ import inca.jesus.trajesya.clases.CarouselView;
 import inca.jesus.trajesya.data.modelo.Galeria;
 import inca.jesus.trajesya.data.modelo.Medida;
 import inca.jesus.trajesya.data.modelo.Producto;
+import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
@@ -142,7 +143,7 @@ public class Item extends AppCompatActivity {
         RecuperarSubCategoria(ProductoSeleccionado);
 
 
-        Boton_Agregar_Carrito();
+        AccionesReserva();
         accionesBotones();
 
 
@@ -418,9 +419,17 @@ public class Item extends AppCompatActivity {
                 if (usuarioRecuperado.isSesion()) {
                     /*----------------PROCEDE CON RESERVA----------------------*/
                     int CantidadRecuperada = contadorStock;
-                    Medida MedidaRecuperad = MedidaSeleccionada;
+                    Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
 
+                    //Agregarndo Datos de Items
+                    ReservaItem item=new ReservaItem();
+                    item.setCantidad(CantidadRecuperada);
+                    item.setMedidaReservaItem(MedidaRecuperada);
+                    item.setProductoItem(ProductoRecuperado);
+                    Constantes.RESERVA_ITEMS.add(item);
+
+                    Toast.makeText(context, "Producto Agregado a la Reserva.", Toast.LENGTH_SHORT).show();
 
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -456,9 +465,21 @@ public class Item extends AppCompatActivity {
                 if (usuarioRecuperado.isSesion()) {
                     /*----------------PROCEDE CON RESERVA----------------------*/
                     int CantidadRecuperada = contadorStock;
-                    Medida MedidaRecuperad = MedidaSeleccionada;
+                    Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
 
+                    //Agregarndo Datos de Items
+                    ReservaItem item=new ReservaItem();
+                    item.setCantidad(CantidadRecuperada);
+                    item.setMedidaReservaItem(MedidaRecuperada);
+                    item.setProductoItem(ProductoRecuperado);
+                    Constantes.RESERVA_ITEMS.add(item);
+
+                    Intent intent = new Intent(Item.this, CompraActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //intent.putExtra("o", "o4");
+                    startActivity(intent);
+                    Toast.makeText(context, "Producto Agregado a la Reserva.", Toast.LENGTH_SHORT).show();
 
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -506,7 +527,7 @@ public class Item extends AppCompatActivity {
         });*/
     }
 
-    private void Boton_Agregar_Carrito() {
+    private void AccionesReserva() {
        /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

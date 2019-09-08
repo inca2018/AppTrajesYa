@@ -17,6 +17,8 @@ import java.util.List;
 
 import inca.jesus.trajesya.clases.ItemCarrito;
 import inca.jesus.trajesya.R;
+import inca.jesus.trajesya.data.modelo.ReservaItem;
+import inca.jesus.trajesya.data.utils.Constantes;
 
 /**
  * Created by Jesus on 01/06/2017.
@@ -24,11 +26,11 @@ import inca.jesus.trajesya.R;
 
 public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.ViewHolder>  {
     private Context context;
-    private List<ItemCarrito> my_Data;
+    private List<ReservaItem> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
 
 
-    public AdapterItemCarrito(Context context, List<ItemCarrito> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterItemCarrito(Context context, List<ReservaItem> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -36,12 +38,12 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView titulo;
-        public TextView precio;
-        public TextView desc;
+        public TextView nombreProducto;
+        public TextView precioProducto;
+        public TextView descuentoProducto;
         public TextView descontado;
-        public TextView vendedor;
-        public ImageView imagen;
+        public TextView revisadoProducto;
+        public ImageView imagenProducto;
         public Button  menos,mas;
         public TextView cantidad;
         public ImageButton eliminar;
@@ -49,16 +51,16 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            titulo = (TextView) itemView.findViewById(R.id.item_carrito_titulo);
-            precio = (TextView) itemView.findViewById(R.id.item_carrito_precio);
-            desc = (TextView) itemView.findViewById(R.id.item_carrito_desc);
-            descontado = (TextView) itemView.findViewById(R.id.item_carrito_descontado);
-            vendedor = (TextView) itemView.findViewById(R.id.item_carrito_cliente);
-            imagen = (ImageView) itemView.findViewById(R.id.item_carrito_foto);
-            menos=(Button)itemView.findViewById(R.id.item_carrito_boton_menos);
-            mas=(Button)itemView.findViewById(R.id.item_carrito_mas);
-            eliminar=(ImageButton)itemView.findViewById(R.id.item_carrito_eliminar);
-            cantidad=(TextView)itemView.findViewById(R.id.item_carrito_cantidad);
+            nombreProducto = (TextView) itemView.findViewById(R.id.tvItemNombre);
+            precioProducto = (TextView) itemView.findViewById(R.id.tvItemPrecio);
+            descuentoProducto = (TextView) itemView.findViewById(R.id.tvItemDescuento);
+
+            revisadoProducto = (TextView) itemView.findViewById(R.id.tvItemRevisado);
+            imagenProducto = (ImageView) itemView.findViewById(R.id.ivItemImagen);
+            menos=(Button)itemView.findViewById(R.id.btnItemAccionMenos);
+            mas=(Button)itemView.findViewById(R.id.btnItemAccionMas);
+            eliminar=(ImageButton)itemView.findViewById(R.id.ibItemEliminar);
+            cantidad=(TextView)itemView.findViewById(R.id.tvItemCantidad);
         }
         @Override
         public void onClick(View v) {
@@ -72,38 +74,38 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
     }
     @Override
     public void onBindViewHolder(AdapterItemCarrito.ViewHolder holder, final int position) {
-        DecimalFormat formateador = new DecimalFormat("###,###.##");
-        holder.titulo.setText(my_Data.get(position).getP().getNom_producto());
-        holder.precio.setText("Precio Promoción: S./ "+String.valueOf(my_Data.get(position).getP().getPrecio()));
-        holder.desc.setText("Precio Normal: S./ "+String.valueOf(my_Data.get(position).getP().getPrecio()));
-        double resu=(100*my_Data.get(position).getP().getPrecio())/(100+my_Data.get(position).getP().getDescuentos());
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        holder.nombreProducto.setText(my_Data.get(position).getProductoItem().getNombreProducto());
+        holder.precioProducto.setText("Precio : S./ "+String.valueOf(formateador.format(my_Data.get(position).getProductoItem().getPrecioAlquiler())));
+        holder.descuentoProducto.setText("- "+String.valueOf(formateador.format(my_Data.get(position).getProductoItem().getPrecioPromocion()))+" %");
 
-        holder.descontado.setText(String.valueOf("Precio miCumple: S/."+formateador.format(resu)));
-        holder.vendedor.setText("Enviado y Vendido por: "+my_Data.get(position).getP().getVendedor());
+        //double resu=(100*my_Data.get(position).getP().getPrecio())/(100+my_Data.get(position).getP().getDescuentos());
+
+        //holder.descontado.setText(String.valueOf("Precio miCumple: S/."+formateador.format(resu)));
+        holder.revisadoProducto.setText("Autentificado y Revisado por: "+my_Data.get(position).getProductoItem().getVerificadoProducto());
 
         Picasso.get()
-                .load(my_Data.get(position).getP().getIdDrawable())
+                .load(Constantes.PATH_IMAGEN+my_Data.get(position).getProductoItem().getImagenProducto())
                 .placeholder(R.drawable.default_imagen)
                 .error(R.drawable.default_imagen)
-                .into(holder.imagen);
+                .into(holder.imagenProducto);
 
         holder.eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     my_Data.remove(position);
                     notifyDataSetChanged();
-
               }
         });
         holder.cantidad.setText(String.valueOf(my_Data.get(position).getCantidad()));
         holder.mas.setOnClickListener(new View.OnClickListener() {
             @Override
              public void onClick(View v) {
-                if(my_Data.get(position).getCantidad()<10){
+                if(my_Data.get(position).getCantidad()<Constantes.CANTIDAD_MAX_STOCK){
 
                         int total=my_Data.get(position).getCantidad()+1;
                      my_Data.get(position).setCantidad(total);
-                     my_Data.get(position).setTotal(my_Data.get(position).getP().getPrecio()*my_Data.get(position).getCantidad());
+                     my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
 
                     notifyDataSetChanged();
                 }
@@ -118,7 +120,7 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
                     int total=my_Data.get(position).getCantidad()-1;
                     my_Data.get(position).setCantidad(total);
 
-                    my_Data.get(position).setTotal(my_Data.get(position).getP().getPrecio()*my_Data.get(position).getCantidad());
+                    my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
                     notifyDataSetChanged();
                 }
 

@@ -547,9 +547,27 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerMisUbicaciones"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"></androidx.recyclerview.widget.RecyclerView>
+                    <RelativeLayout
+                        android:id="@+id/MensajeUbicacionesVacias"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="Usted no tiene Ubicaciones registradas."
+                            android:textColor="@color/base2"
+                            android:textSize="18dp"
+                            android:textStyle="bold">
+
+                        </TextView>
+
+                    </RelativeLayout>
 
 
 

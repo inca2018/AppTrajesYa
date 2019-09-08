@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,10 +78,19 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
     @Override
     public void onBindViewHolder(AdapterItemProductos.ViewHolder holder, final int position) {
 
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        double precioAlquiler=my_Data.get(position).getPrecioAlquiler();
+        if(precioAlquiler==0){
+            holder.precio.setText("S/ 0.00");
+        }else{
 
+            String valor=formateador.format(my_Data.get(position).getPrecioAlquiler());
+            holder.precio.setText("S/ "+valor);
+        }
 
-        holder.precio.setText("S/ "+my_Data.get(position).getPrecioAlquiler());
         holder.nombre.setText(my_Data.get(position).getNombreProducto());
+
+
         if(my_Data.get(position).getPrecioPromocion()==0){
             holder.desc.setText(String.valueOf(""));
         }else{

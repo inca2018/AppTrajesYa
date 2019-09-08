@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,6 +118,8 @@ public class SesionFragment extends Fragment {
     public LinearLayoutManager linearLayoutUbicaciones;
     public AdapterUbicaciones adapterUbicaciones;
 
+    RelativeLayout MensajeUbicacionesVacias;
+
 
     AlertDialog nuevaUbicacion;
 
@@ -167,6 +170,7 @@ public class SesionFragment extends Fragment {
         recyclerMisUbicaciones=vie.findViewById(R.id.recyclerMisUbicaciones);
 
         SectorUbicaciones.setVisibility(View.GONE);
+        MensajeUbicacionesVacias=vie.findViewById(R.id.MensajeUbicacionesVacias);
 
         menu = false;
 
@@ -254,20 +258,101 @@ public class SesionFragment extends Fragment {
                 final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View dialoglayout4 = inflater.inflate(R.layout.dialog_nueva_ubicacion, null);
                 final Spinner spDistrito = dialoglayout4.findViewById(R.id.spDistrito);
+                final Button btnRegistrarUbicacion=dialoglayout4.findViewById(R.id.btnRegistrarUbicacion);
+                final EditText etDireccionUbicacion=dialoglayout4.findViewById(R.id.etDireccionUbicacion);
+                final EditText etReferenciaUbicacion=dialoglayout4.findViewById(R.id.etReferenciaUbicacion);
 
-                spinnerDistritos=new String[ListaDistritos.size()];
+                spinnerDistritos=new String[(ListaDistritos.size()+1)];
+                spinnerDistritos[0]="-- SELECIONE DISTRITO --";
                 for (int i = 0; i < ListaDistritos.size(); i++) {
                     spinnerDistritos[i] = ListaDistritos.get(i).getNombreUnidadTerritorial();
                 }
                 ArrayAdapter<String> adapter_arr = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerDistritos);
                 spDistrito.setAdapter(adapter_arr);
 
-
                 AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
                 builder4.setView(dialoglayout4);
                 nuevaUbicacion = builder4.show();
+
+                btnRegistrarUbicacion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Recuperando Valores
+
+                        String selectDistrito   = (String) spDistrito.getSelectedItem();
+                        String selectDireccion  =  etDireccionUbicacion.getText().toString().trim().toUpperCase();
+                        String selectReferencia = etReferenciaUbicacion.getText().toString().trim().toUpperCase();
+                        int idDistrito=0;
+                        for(int i=1;i<ListaDistritos.size();i++){
+                            if(ListaDistritos.get(i-1).getNombreUnidadTerritorial().equalsIgnoreCase(selectDistrito)){
+                                idDistrito=ListaDistritos.get(i-1).getIdUnidadTerritorial();
+                            }
+                        }
+
+                        String mensaje=VerificarCamposUbicacion(selectDireccion,selectReferencia,idDistrito);
+                        if(mensaje.length()==0){
+                           RegistrarUbicacionNueva(context,idDistrito,selectDireccion,selectReferencia,nuevaUbicacion);
+                        }else{
+                            Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+    }
+
+    private void RegistrarUbicacionNueva(final Context context, final int idDistritoRe, final String selectDireccion, final String selectReferencia, final AlertDialog nuevaUbicacion) {
+        Usuario usuarioTemp=sesion.RecuperarSesion(context);
+        final String idUsuario=String.valueOf(usuarioTemp.getIdUsuario());
+        final String idDistrito=String.valueOf(idDistritoRe);
+
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Registro:");
+        progressDialog.setMessage("Registrando Ubicación.......");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                nuevaUbicacion.dismiss();
+                                ListaUbicaciones.clear();
+                                Usuario usuarioRecu=sesion.RecuperarSesion(context);
+                                Log.e("Inca","ID USUARIO:"+usuarioRecu.getIdUsuario());
+                                RecuperarUbicacionesUsuario(context,usuarioRecu.getIdUsuario());
+                            }
+                            progressDialog.dismiss();
+                            String Mensaje = jsonResponse.getString("mensaje");
+                            Toast.makeText(context, Mensaje, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "RegistrarUbicacion");
+                params.put("idUsuario",idUsuario);
+                params.put("direccion", selectDireccion);
+                params.put("referencia", selectReferencia);
+                params.put("idDistrito", idDistrito);
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
     }
 
     private void opcionRegresarPerfil() {
@@ -292,6 +377,21 @@ public class SesionFragment extends Fragment {
         });
         recyclerMisUbicaciones.setAdapter(adapterUbicaciones);
         recyclerMisUbicaciones.setLayoutManager(linearLayoutUbicaciones);
+
+        adapterUbicaciones.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                int size=adapterUbicaciones.getItemCount();
+                if(size<0){
+                    recyclerMisUbicaciones.setVisibility(View.GONE);
+                    MensajeUbicacionesVacias.setVisibility(View.VISIBLE);
+                    }else{
+                    recyclerMisUbicaciones.setVisibility(View.VISIBLE);
+                    MensajeUbicacionesVacias.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void opcionUbicaciones() {
@@ -302,7 +402,6 @@ public class SesionFragment extends Fragment {
                 SectorUbicaciones.setVisibility(View.VISIBLE);
 
                 ListaUbicaciones.clear();
-
                 Usuario usuarioRecu=sesion.RecuperarSesion(context);
                 Log.e("Inca","ID USUARIO:"+usuarioRecu.getIdUsuario());
                 RecuperarUbicacionesUsuario(context,usuarioRecu.getIdUsuario());
@@ -383,7 +482,7 @@ public class SesionFragment extends Fragment {
                 SectorRegistro.setVisibility(View.VISIBLE);
                 String Nombres = sesion.RecuperarValor(context, "nombres");
                 String Apellidos = sesion.RecuperarValor(context, "apellidos");
-                String imagen = sesion.RecuperarValor(context, "imagen");
+                String imagen = sesion.RecuperarValor(context, "imagenProducto");
                 String correo = sesion.RecuperarValor(context, "Correo");
                 KeyFB = sesion.RecuperarValor(context, "KeyFacebook");
                 Picasso.get()
@@ -411,7 +510,7 @@ public class SesionFragment extends Fragment {
                     temp.setCorreoUsuario(etRegistroCorreo.getText().toString());
                     temp.setUsuario(etRegistroUsuario.getText().toString());
                     temp.setPassword(etRegistroPassword.getText().toString());
-                    temp.setImagenUsuario(sesion.RecuperarValor(context, "imagen"));
+                    temp.setImagenUsuario(sesion.RecuperarValor(context, "imagenProducto"));
 
                     RegistrarUsuarioServidor(context, temp);
                 } else {
@@ -505,7 +604,7 @@ public class SesionFragment extends Fragment {
 
         String Nombres = sesion.RecuperarValor(context, "nombres");
         String Apellido = sesion.RecuperarValor(context, "apellidos");
-        String imagen = sesion.RecuperarValor(context, "imagen");
+        String imagen = sesion.RecuperarValor(context, "imagenProducto");
         String correo = sesion.RecuperarValor(context, "Correo");
 
         String keyFB=sesion.RecuperarValor(context,"KeyFacebook");
@@ -633,6 +732,15 @@ public class SesionFragment extends Fragment {
         return mensaje;
     }
 
+    public String VerificarCamposUbicacion(String selectDireccion, String selectReferencia, int idDistrito) {
+        String mensaje = "";
+        mensaje = (idDistrito == 0) ? (mensaje + "- Seleccione Distrito.\n") : (mensaje + "");
+        mensaje = (selectDireccion.length() == 0) ? (mensaje + "- Ingrese Dirección.\n") : (mensaje + "");
+        mensaje = (selectReferencia.length() == 0) ? (mensaje + "- Ingrese Referencia.\n") : (mensaje + "");
+
+
+        return mensaje;
+    }
     public boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;
@@ -661,7 +769,7 @@ public class SesionFragment extends Fragment {
                                 Nuevo.setUsuario(jsonResponse.getString("usuario"));
                                 Nuevo.setNombreUsuario(jsonResponse.getString("nombres"));
                                 Nuevo.setApellidoUsuario(jsonResponse.getString("apellidos"));
-                                Nuevo.setImagenUsuario(jsonResponse.getString("imagen"));
+                                Nuevo.setImagenUsuario(jsonResponse.getString("imagenProducto"));
                                 Nuevo.setCorreoUsuario(jsonResponse.getString("correo"));
                                 Nuevo.setSesion(true);
                                 Perfil perfil = new Perfil();
@@ -818,7 +926,7 @@ public class SesionFragment extends Fragment {
                                 Nuevo.setUsuario(jsonResponse.getString("usuario"));
                                 Nuevo.setNombreUsuario(jsonResponse.getString("nombres"));
                                 Nuevo.setApellidoUsuario(jsonResponse.getString("apellidos"));
-                                Nuevo.setImagenUsuario(jsonResponse.getString("imagen"));
+                                Nuevo.setImagenUsuario(jsonResponse.getString("imagenProducto"));
                                 Nuevo.setCorreoUsuario(jsonResponse.getString("correo"));
                                 Nuevo.setSesion(true);
                                 Perfil perfil = new Perfil();
@@ -841,7 +949,7 @@ public class SesionFragment extends Fragment {
                                 sesion.RegistrarVariable(editor, context, "KeyFacebook", "String", profile.getId());
                                 sesion.RegistrarVariable(editor, context, "nombres", "String", profile.getFirstName());
                                 sesion.RegistrarVariable(editor, context, "apellidos", "String", profile.getLastName());
-                                sesion.RegistrarVariable(editor, context, "imagen", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
+                                sesion.RegistrarVariable(editor, context, "imagenProducto", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
                                 SesionFiltro(2);
 
                                 progressDialog.dismiss();

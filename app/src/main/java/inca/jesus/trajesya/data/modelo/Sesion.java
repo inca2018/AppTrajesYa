@@ -23,7 +23,7 @@ public class Sesion {
         editor.putString("Correo",usuario.getCorreoUsuario());
         editor.putString("nombres", usuario.getNombreUsuario());
         editor.putString("apellidos", usuario.getApellidoUsuario());
-        editor.putString("imagen", usuario.getImagenUsuario());
+        editor.putString("imagenProducto", usuario.getImagenUsuario());
         editor.putInt("idPerfil", usuario.getPerfilUsuario().getIdPerfil());
         editor.putString("perfil", usuario.getPerfilUsuario().getNombrePrefil());
         editor.putBoolean("Sesion",usuario.isSesion());
@@ -70,7 +70,7 @@ public class Sesion {
         Temporal.setNombreUsuario(pref.getString("nombres", ""));
         Temporal.setCorreoUsuario(pref.getString("Correo",""));
         Temporal.setApellidoUsuario(pref.getString("apellidos", ""));
-        Temporal.setImagenUsuario(pref.getString("imagen", ""));
+        Temporal.setImagenUsuario(pref.getString("imagenProducto", ""));
         Perfil perfil = new Perfil();
         perfil.setIdPerfil(pref.getInt("idPerfil", -1));
         perfil.setNombrePrefil(pref.getString("perfil", ""));

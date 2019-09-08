@@ -7,6 +7,7 @@ public class ReservaItem {
     int Cantidad;
     Medida medidaReservaItem;
     String fechaRegistro;
+    double total;
 
     public ReservaItem(){
 
@@ -58,5 +59,13 @@ public class ReservaItem {
 
     public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

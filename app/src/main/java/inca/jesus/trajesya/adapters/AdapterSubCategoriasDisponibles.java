@@ -42,7 +42,7 @@ public class AdapterSubCategoriasDisponibles extends RecyclerView.Adapter<Adapte
             itemView.setOnClickListener(this);
 
             nom = (TextView) itemView.findViewById(R.id.card_categoria_nom);
-            //imagen = (ImageView) itemView.findViewById(R.id.iv_subcategoria);
+            //imagenProducto = (ImageView) itemView.findViewById(R.id.iv_subcategoria);
 
         }
         @Override

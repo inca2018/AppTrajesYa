@@ -504,7 +504,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         sesion.RegistrarVariable(editor, context, "KeyFacebook", "String", profile.getId());
         sesion.RegistrarVariable(editor, context, "nombres", "String", profile.getFirstName());
         sesion.RegistrarVariable(editor, context, "apellidos ", "String", profile.getLastName());
-        sesion.RegistrarVariable(editor, context, "imagen", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
+        sesion.RegistrarVariable(editor, context, "imagenProducto", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
 
     }
 }
