@@ -121,18 +121,18 @@
 
                 <ImageView
                     android:id="@+id/imagenArrow"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
-                    android:scaleType="center"
+                    android:scaleType="fitEnd"
                     app:layout_constraintBottom_toTopOf="@+id/textView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_left" />
+                    app:srcCompat="@drawable/hand" />
 
                 <TextView
                     android:id="@+id/textView"

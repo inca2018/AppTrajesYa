@@ -21,7 +21,7 @@ import java.text.DecimalFormat;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
 import inca.jesus.trajesya.activities.CompraActivity;
 import inca.jesus.trajesya.activities.Item;
-import inca.jesus.trajesya.adapters.Adapter3;
+import inca.jesus.trajesya.adapters.AdapterItemReserva;
 import inca.jesus.trajesya.adapters.AdapterItemCarrito;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.ListCarrito;
@@ -33,7 +33,7 @@ public class Fragment4 extends Fragment {
     private RecyclerView recycler1ItemReserva,recycler2;
     private LinearLayoutManager linearLayout1,linearLayout2;
     private AdapterItemCarrito adapterItemReserva;
-    private Adapter3 adapter;
+    private AdapterItemReserva adapter;
     public LinearLayout sectorListaVacia, accionBotonReservar, sectorAccionSeguirComprando;
     TextView precio_total;
     Button btn_seguir,btn_compra;
@@ -144,7 +144,7 @@ public class Fragment4 extends Fragment {
     }
     private void ofertas() {
         linearLayout2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapter = new Adapter3(getActivity(),ProductoX.BLUSAx5, new RecyclerViewOnItemClickListener2() {
+        adapter = new AdapterItemReserva(getActivity(),ProductoX.BLUSAx5, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 Intent intent = new Intent(getActivity(),Item.class);

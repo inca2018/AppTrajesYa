@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -130,7 +131,11 @@ public class Item extends AppCompatActivity {
         /*------------- Seteando Datos-----------*/
         nombreProducto.setText(ProductoSeleccionado.getNombreProducto());
         verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
-        precioProducto.setText("Alquiler: S/." + ProductoSeleccionado.getPrecioAlquiler());
+
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        double precioAlquiler=ProductoSeleccionado.getPrecioAlquiler();
+        precioProducto.setText("Alquiler: S/." +precioAlquiler);
+
         descripcioProducto.setText(ProductoSeleccionado.getDescripcionProducto());
 
         GenerarTamanos(ProductoSeleccionado);
@@ -421,14 +426,20 @@ public class Item extends AppCompatActivity {
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
 
-                    //Agregarndo Datos de Items
-                    ReservaItem item=new ReservaItem();
-                    item.setCantidad(CantidadRecuperada);
-                    item.setMedidaReservaItem(MedidaRecuperada);
-                    item.setProductoItem(ProductoRecuperado);
-                    Constantes.RESERVA_ITEMS.add(item);
 
-                    Toast.makeText(context, "Producto Agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                    if(CantidadRecuperada>0){
+                        //Agregrando Datos de Items
+                        ReservaItem item=new ReservaItem();
+                        item.setCantidad(CantidadRecuperada);
+                        item.setMedidaReservaItem(MedidaRecuperada);
+                        item.setProductoItem(ProductoRecuperado);
+                        Constantes.RESERVA_ITEMS.add(item);
+
+                        Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -469,19 +480,21 @@ public class Item extends AppCompatActivity {
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
 
-                    //Agregarndo Datos de Items
-                    ReservaItem item=new ReservaItem();
-                    item.setCantidad(CantidadRecuperada);
-                    item.setMedidaReservaItem(MedidaRecuperada);
-                    item.setProductoItem(ProductoRecuperado);
-                    Constantes.RESERVA_ITEMS.add(item);
-
-                    Intent intent = new Intent(Item.this, CompraActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //intent.putExtra("o", "o4");
-                    startActivity(intent);
-                    Toast.makeText(context, "Producto Agregado a la Reserva.", Toast.LENGTH_SHORT).show();
-
+                    if(CantidadRecuperada>0){
+                        //Agregrando Datos de Items
+                        ReservaItem item=new ReservaItem();
+                        item.setCantidad(CantidadRecuperada);
+                        item.setMedidaReservaItem(MedidaRecuperada);
+                        item.setProductoItem(ProductoRecuperado);
+                        Constantes.RESERVA_ITEMS.add(item);
+                        Intent intent = new Intent(Item.this, CompraActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        //intent.putExtra("o", "o4");
+                        startActivity(intent);
+                        Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);

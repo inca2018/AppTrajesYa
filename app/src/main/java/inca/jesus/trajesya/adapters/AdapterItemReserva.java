@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import inca.jesus.trajesya.activities.Item;
@@ -24,12 +25,12 @@ import inca.jesus.trajesya.R;
  * Created by Jesus on 01/06/2017.
  */
 
-public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
+public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.ViewHolder> {
     private Context context;
     private List<ProductoX> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
 
-    public Adapter3(Context context, List<ProductoX> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterItemReserva(Context context, List<ProductoX> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -54,16 +55,22 @@ public class Adapter3 extends RecyclerView.Adapter<Adapter3.ViewHolder> {
         }
     }
 
-    public Adapter3.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterItemReserva.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card1,parent,false);
-        return new Adapter3.ViewHolder(itemView);
+        return new AdapterItemReserva.ViewHolder(itemView);
     }
     @Override
-    public void onBindViewHolder(Adapter3.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AdapterItemReserva.ViewHolder holder, final int position) {
 
-
-        holder.desc.setText(String.valueOf(my_Data.get(position).getDescuentos()+" %"));
-        holder.precio.setText("S/ "+my_Data.get(position).getPrecio());
+         DecimalFormat formateador = new DecimalFormat("###,###.00");
+        double precioAlquiler=my_Data.get(position).getPrecio();
+        if(my_Data.get(position).getDescuentos()==0){
+            holder.desc.setVisibility(View.GONE);
+        }else{
+            holder.desc.setVisibility(View.VISIBLE);
+            holder.desc.setText(String.valueOf(my_Data.get(position).getDescuentos()+" %"));
+        }
+        holder.precio.setText("S/ "+precioAlquiler);
 
 
         Picasso.get()

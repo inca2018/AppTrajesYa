@@ -85,7 +85,7 @@ public class Fragment2 extends Fragment {
         /**** Animacion de Arrow ****/
 
 
-        moveLefttoRight = new TranslateAnimation(50.0f, 0.0f,
+        moveLefttoRight = new TranslateAnimation(60.0f, 0.0f,
                 0.0f, 0.0f);          //  new TranslateAnimation(xFrom,xTo, yFrom,yTo)
         moveLefttoRight.setDuration(1000);  // animation duration
         moveLefttoRight.setRepeatCount(Animation.INFINITE);  // animation repeat count
