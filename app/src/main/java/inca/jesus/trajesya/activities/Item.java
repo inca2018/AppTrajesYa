@@ -98,8 +98,7 @@ public class Item extends AppCompatActivity {
         setContentView(R.layout.activity_item);
 
         context = getApplicationContext();
-        sesion = new Sesion();
-        usuarioRecuperado = sesion.RecuperarSesion(context);
+
 
         MedidaSeleccionada = new Medida();
 
@@ -142,8 +141,6 @@ public class Item extends AppCompatActivity {
         RecuperarCategoria(ProductoSeleccionado);
         RecuperarSubCategoria(ProductoSeleccionado);
 
-
-        AccionesReserva();
         accionesBotones();
 
 
@@ -155,7 +152,7 @@ public class Item extends AppCompatActivity {
                 if (tem < Constantes.CANTIDAD_MAX_STOCK) {
                     contadorStock = contadorStock + 1;
                     cantidad.setText(String.valueOf(contadorStock));
-                } else {
+                } else { 
                     Toast.makeText(Item.this, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -416,6 +413,8 @@ public class Item extends AppCompatActivity {
         btnAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sesion = new Sesion();
+                usuarioRecuperado = sesion.RecuperarSesion(context);
                 if (usuarioRecuperado.isSesion()) {
                     /*----------------PROCEDE CON RESERVA----------------------*/
                     int CantidadRecuperada = contadorStock;
@@ -462,6 +461,8 @@ public class Item extends AppCompatActivity {
         btnReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sesion = new Sesion();
+                usuarioRecuperado = sesion.RecuperarSesion(context);
                 if (usuarioRecuperado.isSesion()) {
                     /*----------------PROCEDE CON RESERVA----------------------*/
                     int CantidadRecuperada = contadorStock;
@@ -509,53 +510,8 @@ public class Item extends AppCompatActivity {
             }
         });
 
-        /*btn_comprar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                 if(Sesion.USUARIO.getId()==null){
-                    Intent intent = new Intent(Item.this,ActivityPrincipal.class);
-                    intent.putExtra("o","o5");
-                    startActivity(intent);
-                }else{
-                    ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,1,prod.getPrecio());
-                    ListCompra.CARRITO_COMPRA.add(ItemProducto2);
-                    Intent intent = new Intent(Item.this,CompraActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });*/
     }
 
-    private void AccionesReserva() {
-       /* agregarCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(ListCarrito.CARRITO_LISTA.size()!=0){
-                    for(int i=0;i<ListCarrito.CARRITO_LISTA.size();i++){
-                        if(ListCarrito.CARRITO_LISTA.get(i).getP().getId()==prod.getId()){
-                            resp=true;
-                        }else{
-                            resp=false;
-                        }
-                    }
-                }
-                if(resp==true){
-                    mensaje="Ya agrego el Producto en Carrito";
-                }
-                if(resp==false){
-                    ItemProducto=new ItemCarrito(cont+1,prod,fecha,Sesion.USUARIO.getNombre(),contadorStock,prod.getPrecio());
-                    ListCarrito.CARRITO_LISTA.add(ItemProducto);
-                    ItemProducto2=new ItemCompra(cont+1,"Envio "+cont+1,fecha,2,prod,contadorStock,prod.getPrecio());
-                    ListCompra.CARRITO_COMPRA.add(ItemProducto2);
-                    mensaje="Producto Agregado con Exito!!";
-                }
-                Snackbar.make(v,mensaje, Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        });*/
-    }
 
     @Override
     protected void onResume() {
