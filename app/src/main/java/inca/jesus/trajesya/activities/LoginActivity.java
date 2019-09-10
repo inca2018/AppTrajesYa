@@ -42,6 +42,7 @@ import inca.jesus.trajesya.clases.Perfil;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
+import inca.jesus.trajesya.fragmentos.fragmentSesion;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -233,4 +234,5 @@ public class LoginActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
 }

@@ -30,6 +30,7 @@ public class Sesion {
         editor.putBoolean("SesionFB",usuario.isSesionFB());
         editor.commit();
     }
+
     public void RegistrarVariable(SharedPreferences.Editor editor, Context context, String variables, String tipo, String Datos){
 
         switch(tipo){
@@ -53,6 +54,7 @@ public class Sesion {
 
         }
     }
+
     public String RecuperarValor(Context context,String Dato){
         String temp="";
         SharedPreferences pref = context.getSharedPreferences("Sesion", context.MODE_PRIVATE);
@@ -84,7 +86,20 @@ public class Sesion {
         SharedPreferences settings = context.getSharedPreferences("Sesion", MODE_PRIVATE);
         settings.edit().clear().commit();
     }
-
+    public void RegistrarProducto(Context context,Producto producto){
+        // Registrar Informacion de usuario en SharedPreferences  para reutilizacion
+        SharedPreferences pref = context.getSharedPreferences("ProductoTemporal", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("idProducto", producto.getIdProducto());
+        editor.commit();
+    }
+    public Producto RecuperarProducto(Context context){
+        // Recuperar Informacion de SharedPreferences y Setear a un Objeto Usuario para reusar sus valores
+        Producto Temporal = new Producto();
+        SharedPreferences pref = context.getSharedPreferences("ProductoTemporal", context.MODE_PRIVATE);
+        Temporal.setIdProducto(pref.getInt("idProducto", -1));
+        return Temporal;
+    }
 
 
 }

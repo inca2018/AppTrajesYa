@@ -44,7 +44,7 @@ import inca.jesus.trajesya.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Recomendaciones extends Fragment {
+public class fragmentInicioRecomendaciones extends Fragment {
 
     private RecyclerView recycler1,recycler2,recycler3,recycler4;
     private LinearLayoutManager linearLayout1,linearLayout2,linearLayout3,linearLayout4;
@@ -60,7 +60,7 @@ public class Recomendaciones extends Fragment {
     List<Producto> ListaMasOtros;
 
 
-    public Recomendaciones() {
+    public fragmentInicioRecomendaciones() {
         // Required empty public constructor
     }
 

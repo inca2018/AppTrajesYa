@@ -1,15 +1,14 @@
 package inca.jesus.trajesya.adapters;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,52 +20,51 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
-
+import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.utils.Constantes;
-import inca.jesus.trajesya.R;
+
 
 /**
  * Created by Jesus on 01/06/2017.
  */
 
-public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterProductosDisponibles.ViewHolder> {
-
+public class AdapterItemProductosMini extends RecyclerView.Adapter<AdapterItemProductosMini.ViewHolder> {
     private Context context;
     private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
+    public Sesion sesion=new Sesion();
+    public Producto producto=new Producto();
 
 
-    public AdapterProductosDisponibles(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterItemProductosMini(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
         this.recyclerViewOnItemClickListener = recyclerViewOnItemClickListener;
-
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-
-        public TextView nom;
+        public TextView desc;
+        public TextView precio;
+        public TextView nombre;
         public ImageView imagen;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             itemView.setOnClickListener(this);
-
-            nom = itemView.findViewById(R.id.card_producto);
-            imagen = itemView.findViewById(R.id.iv_producto);
-
+            desc = (TextView) itemView.findViewById(R.id.card_desc);
+            precio = (TextView) itemView.findViewById(R.id.card_precio);
+            imagen = (ImageView) itemView.findViewById(R.id.card_imagen);
+            nombre= itemView.findViewById(R.id.card_nombre_producto);
         }
         @Override
         public void onClick(View v) {
@@ -74,18 +72,29 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
         }
     }
 
-    public AdapterProductosDisponibles.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_producto,parent,false);
-        return new AdapterProductosDisponibles.ViewHolder(itemView);
-
+    public AdapterItemProductosMini.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_producto_disponible_mini,parent,false);
+        return new AdapterItemProductosMini.ViewHolder(itemView);
     }
     @Override
-    public void onBindViewHolder(AdapterProductosDisponibles.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AdapterItemProductosMini.ViewHolder holder, final int position) {
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        double precioAlquiler=my_Data.get(position).getPrecioAlquiler();
+        if(precioAlquiler==0){
+            holder.precio.setText("S/ 0.00");
+        }else{
 
-        holder.nom.setText(my_Data.get(position).getNombreProducto());
-
+            String valor=formateador.format(my_Data.get(position).getPrecioAlquiler());
+            holder.precio.setText("S/ "+valor);
+        }
+        holder.nombre.setText(my_Data.get(position).getNombreProducto());
+        if(my_Data.get(position).getPrecioPromocion()==0){
+            holder.desc.setText(String.valueOf(""));
+        }else{
+            holder.desc.setText(String.valueOf("-"+(int)my_Data.get(position).getPrecioPromocion()+"% Desc."));
+        }
         Picasso.get()
-                .load(Constantes.PATH_IMAGEN +my_Data.get(position).getImagenProducto())
+                .load(Constantes.PATH_IMAGEN+my_Data.get(position).getImagenProducto())
                 .placeholder(R.drawable.default_imagen)
                 .error(R.drawable.default_imagen)
                 .into(holder.imagen);
@@ -94,29 +103,33 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
             @Override
             public void onClick(View v) {
                 RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
-                /*Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);*/
                 ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
-        holder.nom.setOnClickListener(new View.OnClickListener() {
+        holder.desc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
-                /*Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);*/
                 ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
+            }
+        });
+        holder.precio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
     }
     @Override
     public int getItemCount() {
         return my_Data.size();
-    }
-    public void LimpiarDatos(){
-        my_Data.clear();
     }
 
     private void RegistrarVisitaProductoSeleccion(final int idProductoE,final Context context) {
@@ -155,7 +168,7 @@ public class AdapterProductosDisponibles extends RecyclerView.Adapter<AdapterPro
                 Map<String, String> params = new HashMap<>();
                 params.put("operacion", "RegistrarVisitaProducto");
                 params.put("idProducto", idProducto);
-                params.put("origen", "3");
+                params.put("origen", "1");
                 return params;
             }
         };

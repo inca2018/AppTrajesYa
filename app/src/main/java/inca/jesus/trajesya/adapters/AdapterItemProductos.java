@@ -1,7 +1,6 @@
 package inca.jesus.trajesya.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import inca.jesus.trajesya.activities.Item;
+import inca.jesus.trajesya.activities.ActivityPrincipal;
 
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
+import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
 
@@ -42,6 +42,8 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
     private Context context;
     private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
+    public Sesion sesion=new Sesion();
+    public Producto producto=new Producto();
 
 
     public AdapterItemProductos(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
@@ -64,6 +66,7 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
             precio = (TextView) itemView.findViewById(R.id.card_precio);
             imagen = (ImageView) itemView.findViewById(R.id.card_imagen);
             nombre= itemView.findViewById(R.id.card_nombre_producto);
+
         }
         @Override
         public void onClick(View v) {
@@ -72,14 +75,14 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
     }
 
     public AdapterItemProductos.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card1,parent,false);
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_producto_disponible,parent,false);
         return new AdapterItemProductos.ViewHolder(itemView);
     }
     @Override
     public void onBindViewHolder(AdapterItemProductos.ViewHolder holder, final int position) {
 
         DecimalFormat formateador = new DecimalFormat("###,###.00");
-        double precioAlquiler=my_Data.get(position).getPrecioAlquiler();
+        final double precioAlquiler=my_Data.get(position).getPrecioAlquiler();
         if(precioAlquiler==0){
             holder.precio.setText("S/ 0.00");
         }else{
@@ -107,27 +110,27 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
             @Override
             public void onClick(View v) {
                 RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
         holder.desc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
         holder.precio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegistrarVisitaProductoSeleccion(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
 

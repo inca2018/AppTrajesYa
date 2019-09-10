@@ -1,37 +1,30 @@
-package inca.jesus.trajesya.activities;
-
+package inca.jesus.trajesya.fragmentos;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import inca.jesus.trajesya.adapters.AdapterItemProductos;
+import inca.jesus.trajesya.R;
+import inca.jesus.trajesya.activities.ActivityPrincipal;
+import inca.jesus.trajesya.activities.CompraActivity;
+import inca.jesus.trajesya.adapters.AdapterItemProductosMini;
 import inca.jesus.trajesya.adapters.AdapterMedida;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.CarouselView;
@@ -42,22 +35,16 @@ import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
-import inca.jesus.trajesya.R;
 
-public class Item extends AppCompatActivity {
-
-
+public class fragmentItem extends Fragment {
     /*----------Variables Nuevas------------*/
     int idProductoRecuperado = 0;
     Producto ProductoSeleccionado;
-
-    private AdapterItemProductos adapterProductosSimilares;
-    private AdapterItemProductos adapterProductosSimilares2;
-
+    private AdapterItemProductosMini adapterProductosSimilares;
+    private AdapterItemProductosMini adapterProductosSimilares2;
     public RecyclerView recycler_similares1;
     public RecyclerView recycler_similares2;
     public RecyclerView recycler_medidas;
-
     CarouselView carruselProducto;
     AlertDialog imagenVista;
     String[] Rutas;
@@ -69,61 +56,60 @@ public class Item extends AppCompatActivity {
     TextView categoriaSimiliar;
     TextView subcategoriaSimilar;
     TextView tituloTalla;
-
     ScrollView scroll;
-
-    public Button agregarCarrito;
     private AdapterMedida adapterMedida;
     private LinearLayoutManager linearLayout;
-
     public Button mas, menos;
     public TextView cantidad;
     public int contadorStock = 1;
-
-
-    BottomNavigationView bottomNavigationView;
-
-
     Sesion sesion;
     Context context;
     Usuario usuarioRecuperado;
-
     Medida MedidaSeleccionada;
-
     Button btnReservar, btnAgregar;
     AlertDialog alerta;
 
+    public fragmentItem() {
+        // Required empty public constructor
+    }
+
+    /*public static fragmentItem newInstance(Bundle arguments){
+        fragmentItem f = new fragmentItem();
+        if(arguments != null){
+            f.setArguments(arguments);
+        }
+        return f;
+    }*/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item);
 
-        context = getApplicationContext();
-
-
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.fragment_item_producto, container, false);
+        context = getActivity();
         MedidaSeleccionada = new Medida();
+        scroll = v.findViewById(R.id.scroll_Item);
+        scroll.scrollTo(0, 0);
+        nombreProducto = v.findViewById(R.id.txtNombreProducto);
+        verificadoProducto = v.findViewById(R.id.txtVerificadoPor);
+        carruselProducto = v.findViewById(R.id.pictureplay);
+        precioProducto = v.findViewById(R.id.txtPrecioProducto);
+        descripcioProducto = v.findViewById(R.id.txtDescripcionProducto);
+        recycler_similares1 = v.findViewById(R.id.recycler_similares1);
+        recycler_similares2 = v.findViewById(R.id.recycler_similares2);
+        recycler_medidas = v.findViewById(R.id.recycler_medidas);
+        tituloTalla = v.findViewById(R.id.tituloTalla);
+        mas = v.findViewById(R.id.mas);
+        menos = v.findViewById(R.id.menos);
+        cantidad = v.findViewById(R.id.cantidad);
+        btnReservar = v.findViewById(R.id.btnReservar);
+        btnAgregar = v.findViewById(R.id.btnAgregarReserva);
 
-        scroll = findViewById(R.id.scroll_Item);
-        nombreProducto = findViewById(R.id.txtNombreProducto);
-        verificadoProducto = findViewById(R.id.txtVerificadoPor);
-        carruselProducto = findViewById(R.id.pictureplay);
-        precioProducto = findViewById(R.id.txtPrecioProducto);
-        descripcioProducto = findViewById(R.id.txtDescripcionProducto);
-        recycler_similares1 = findViewById(R.id.recycler_similares1);
-        recycler_similares2 = findViewById(R.id.recycler_similares2);
-        recycler_medidas = findViewById(R.id.recycler_medidas);
-
-        tituloTalla = findViewById(R.id.tituloTalla);
-        mas = findViewById(R.id.mas);
-        menos = findViewById(R.id.menos);
-        cantidad = findViewById(R.id.cantidad);
-        btnReservar = findViewById(R.id.btnReservar);
-        btnAgregar = findViewById(R.id.btnAgregarReserva);
-
-
-        Bundle extras = getIntent().getExtras();
-        idProductoRecuperado = extras.getInt("idProducto");
-
+        Bundle Recuperado=this.getArguments();
+        idProductoRecuperado=Recuperado.getInt("idProducto");
         ProductoSeleccionado = BuscarProductoSeleccionado(idProductoRecuperado);
 
         GenerarCarrusel(ProductoSeleccionado);
@@ -148,8 +134,8 @@ public class Item extends AppCompatActivity {
         MostrarProductosSimilares(ProductoSeleccionado);
         MostrarProductosSimilares2(ProductoSeleccionado);
 
-        RecuperarCategoria(ProductoSeleccionado);
-        RecuperarSubCategoria(ProductoSeleccionado);
+        RecuperarCategoria(v,ProductoSeleccionado);
+        RecuperarSubCategoria(v,ProductoSeleccionado);
 
         accionesBotones();
 
@@ -161,8 +147,8 @@ public class Item extends AppCompatActivity {
                 if (tem < Constantes.CANTIDAD_MAX_STOCK) {
                     contadorStock = contadorStock + 1;
                     cantidad.setText(String.valueOf(contadorStock));
-                } else { 
-                    Toast.makeText(Item.this, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Stock no Disponible.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,12 +163,10 @@ public class Item extends AppCompatActivity {
             }
         });
 
-        MenuAcciones();
-
+        return v;
     }
-
-    private void RecuperarSubCategoria(Producto productoSeleccionado) {
-        subcategoriaSimilar = findViewById(R.id.txtNombreSubCategoria);
+    private void RecuperarSubCategoria(View v, Producto productoSeleccionado) {
+        subcategoriaSimilar = v.findViewById(R.id.txtNombreSubCategoria);
         String Temp = "";
         for (int i = 0; i < Constantes.Base_SubCategorias_Todo.size(); i++) {
             if (Constantes.Base_SubCategorias_Todo.get(i).getIdSubCategoria() == productoSeleccionado.getSubCategoriaProducto().getIdSubCategoria()) {
@@ -192,9 +176,9 @@ public class Item extends AppCompatActivity {
         subcategoriaSimilar.setText("Más de " + Temp);
     }
 
-    private void RecuperarCategoria(Producto productoSeleccionado) {
+    private void RecuperarCategoria(View v, Producto productoSeleccionado) {
 
-        categoriaSimiliar = findViewById(R.id.txtNombreCategoria);
+        categoriaSimiliar = v.findViewById(R.id.txtNombreCategoria);
         String Temp = "";
         for (int i = 0; i < Constantes.Base_Categorias_Todo.size(); i++) {
             if (Constantes.Base_Categorias_Todo.get(i).getIdCategoria() == productoSeleccionado.getCategoriaProducto().getIdCategoria()) {
@@ -204,47 +188,13 @@ public class Item extends AppCompatActivity {
         categoriaSimiliar.setText("Más de " + Temp);
     }
 
-    private void MenuAcciones() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_1:
-                                Intent intent = new Intent(Item.this, ActivityPrincipal.class);
-                                intent.putExtra("o", "o1");
-                                startActivity(intent);
-                                return true;
-                            case R.id.action_2:
-                                Intent intent2 = new Intent(Item.this, ActivityPrincipal.class);
-                                intent2.putExtra("o", "o2");
-                                startActivity(intent2);
-                                return true;
-                            case R.id.action_4:
-                                Intent intent4 = new Intent(Item.this, ActivityPrincipal.class);
-                                intent4.putExtra("o", "o4");
-                                startActivity(intent4);
-                                return true;
-                            case R.id.action_5:
-                                Intent intent5 = new Intent(Item.this, ActivityPrincipal.class);
-                                intent5.putExtra("o", "o5");
-                                startActivity(intent5);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-    }
-
     private void MostrarProductosSimilares(Producto productoSeleccionado) {
 
         List<Producto> ProductosSimilares = RecuperarSimilares(productoSeleccionado);
 
         if (ProductosSimilares != null) {
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
-            adapterProductosSimilares = new AdapterItemProductos(Item.this, ProductosSimilares, new RecyclerViewOnItemClickListener2() {
+            linearLayout = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            adapterProductosSimilares = new AdapterItemProductosMini(context, ProductosSimilares, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
                 }
@@ -263,8 +213,8 @@ public class Item extends AppCompatActivity {
         List<Producto> ProductosSimilares2 = RecuperarSimilares2(productoSeleccionado);
 
         if (ProductosSimilares2 != null) {
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
-            adapterProductosSimilares2 = new AdapterItemProductos(Item.this, ProductosSimilares2, new RecyclerViewOnItemClickListener2() {
+            linearLayout = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            adapterProductosSimilares2 = new AdapterItemProductosMini(context, ProductosSimilares2, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
                 }
@@ -307,8 +257,8 @@ public class Item extends AppCompatActivity {
         if (Medidas != null) {
             tituloTalla.setText("Tallas Disponibles:");
             //Recylcer de TAMAÑOS
-            linearLayout = new LinearLayoutManager(Item.this, LinearLayoutManager.HORIZONTAL, false);
-            adapterMedida = new AdapterMedida(Item.this, Medidas, new RecyclerViewOnItemClickListener2() {
+            linearLayout = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            adapterMedida = new AdapterMedida(context, Medidas, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
                 }
@@ -343,7 +293,7 @@ public class Item extends AppCompatActivity {
             carruselProducto.setOnPageClickListener(new CarouselView.OnPageClickListener() {
                 @Override
                 public void onPageClick(int position) {
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
                     final ImageView ImagenVista = dialoglayout4.findViewById(R.id.iv_imagen_zoom);
 
@@ -361,7 +311,7 @@ public class Item extends AppCompatActivity {
                         }
                     });
 
-                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
                 }
@@ -380,7 +330,7 @@ public class Item extends AppCompatActivity {
                 @Override
                 public void onPageClick(int position) {
 
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.alert_imagen, null);
                     final ImageView ImagenVista = dialoglayout4.findViewById(R.id.iv_imagen_zoom);
 
@@ -398,7 +348,7 @@ public class Item extends AppCompatActivity {
                         }
                     });
 
-                    AlertDialog.Builder builder4 = new AlertDialog.Builder(Item.this);
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
                 }
@@ -438,15 +388,13 @@ public class Item extends AppCompatActivity {
                         item.setMedidaReservaItem(MedidaRecuperada);
                         item.setProductoItem(ProductoRecuperado);
                         Constantes.RESERVA_ITEMS.add(item);
-
+                        ((ActivityPrincipal)context).opcionReserva();
                         Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
                     }
-
-
                 } else {
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
                     final Button seguirNavegandoAccion = dialoglayout4.findViewById(R.id.btnSeguirNavegando);
                     final Button completarRegistroAccion = dialoglayout4.findViewById(R.id.btnCompletarRegistro);
@@ -460,13 +408,14 @@ public class Item extends AppCompatActivity {
                     completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(Item.this, ActivityPrincipal.class);
+                            /*Intent intent = new Intent(context, ActivityPrincipal.class);
                             intent.putExtra("o", "o5");
-                            startActivity(intent);
+                            startActivity(intent);*/
+                            ((ActivityPrincipal)context).opcionSesion();
                         }
                     });
 
-                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(Item.this);
+                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
                 }
@@ -491,16 +440,17 @@ public class Item extends AppCompatActivity {
                         item.setMedidaReservaItem(MedidaRecuperada);
                         item.setProductoItem(ProductoRecuperado);
                         Constantes.RESERVA_ITEMS.add(item);
-                        Intent intent = new Intent(Item.this, CompraActivity.class);
+                        /*Intent intent = new Intent(context, CompraActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         //intent.putExtra("o", "o4");
-                        startActivity(intent);
+                        startActivity(intent);*/
+                        ((ActivityPrincipal)context).opcionReserva();
                         Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    final LayoutInflater inflater = (LayoutInflater) Item.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
                     final Button seguirNavegandoAccion = dialoglayout4.findViewById(R.id.btnSeguirNavegando);
                     final Button completarRegistroAccion = dialoglayout4.findViewById(R.id.btnCompletarRegistro);
@@ -514,33 +464,24 @@ public class Item extends AppCompatActivity {
                     completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(Item.this, ActivityPrincipal.class);
+                            /*Intent intent = new Intent(context, ActivityPrincipal.class);
                             intent.putExtra("o", "o5");
-                            startActivity(intent);
+                            startActivity(intent);*/
+                            ((ActivityPrincipal)context).opcionSesion();
                         }
                     });
 
-                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(Item.this);
+                    androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
                 }
             }
         });
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        scroll.scrollTo(0, 0);
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         scroll.scrollTo(0, 0);
-
     }
 }
-

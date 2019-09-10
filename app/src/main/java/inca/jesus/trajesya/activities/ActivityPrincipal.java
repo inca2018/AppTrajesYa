@@ -19,12 +19,18 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -38,21 +44,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import inca.jesus.trajesya.clases.CarouselView;
 
 
+import inca.jesus.trajesya.clases.Perfil;
+import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
-import inca.jesus.trajesya.fragmentos.Fragment1;
-import inca.jesus.trajesya.fragmentos.Fragment2;
+import inca.jesus.trajesya.fragmentos.fragmentInicio;
+import inca.jesus.trajesya.fragmentos.fragmentCategorias;
 import inca.jesus.trajesya.fragmentos.Fragment3;
-import inca.jesus.trajesya.fragmentos.Fragment4;
+import inca.jesus.trajesya.fragmentos.fragmentReserva;
 import inca.jesus.trajesya.fragmentos.FragmentBuscando;
-import inca.jesus.trajesya.fragmentos.SesionFragment;
+import inca.jesus.trajesya.fragmentos.fragmentItem;
+import inca.jesus.trajesya.fragmentos.fragmentSesion;
 import inca.jesus.trajesya.R;
 
 public class ActivityPrincipal extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -60,7 +71,6 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     private FragmentManager fragmentManager;
     private Fragment fragment = null;
     private SearchView search;
-    public Constantes P;
     private CardView linear_search;
     public ProfileTracker profileTracker;
     BottomNavigationView bottomNavigationView;
@@ -110,37 +120,48 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_1:
-                                opcion1();
+                                opcionInicio();
                                 return true;
                             case R.id.action_2:
-                                opcion2();
+                                opcionCategorias();
                                 return true;
                             case R.id.action_4:
-                                opcion4();
+                                opcionReserva();
                                 return true;
                             case R.id.action_5:
-                                opcion5();
+                                opcionSesion();
                                 return true;
                         }
                         return false;
                     }
                 });
     }
-
+    public void SelectMenu(int actionId){
+        Menu menu=bottomNavigationView.getMenu();
+        for (int i = 0, size = menu.size(); i < size; i++) {
+            MenuItem item = menu.getItem(i);
+            if(item.getItemId() == actionId){
+                item.setChecked(true);
+            }
+        }
+    }
     private void verificacionMostrarVista() {
         if (getIntent().getStringExtra("o") == null) {
-            fragment = new Fragment1();
+            fragment = new fragmentInicio();
             fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o1")) {
-            opcion1();
+            opcionInicio();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o2")) {
-            opcion2();
+            opcionCategorias();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o3")) {
             opcion3();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o4")) {
-            opcion4();
+            opcionReserva();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o5")) {
-            opcion5();
+            opcionSesion();
+        }else if(getIntent().getStringExtra("o").equalsIgnoreCase("Item")){
+            int idProducto=Integer.parseInt(getIntent().getStringExtra("idProducto"));
+            opcionItem(idProducto);
         }
     }
 
@@ -228,9 +249,9 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         }
     }
 
-    public void opcion1() {
-
-        fragment = new Fragment1();
+    public void opcionInicio() {
+        SelectMenu(R.id.action_1);
+        fragment = new fragmentInicio();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -242,7 +263,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText == null || newText.trim().isEmpty()) {
-                    fragment = new Fragment1();
+                    fragment = new fragmentInicio();
                     fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
                     return false;
                 }
@@ -264,10 +285,10 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
 
-    public void opcion2() {
+    public void opcionCategorias() {
 
-
-        fragment = new Fragment2();
+        SelectMenu(R.id.action_2);
+        fragment = new fragmentCategorias();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
 
         search.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -279,7 +300,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText == null || newText.trim().isEmpty()) {
-                    fragment = new Fragment2();
+                    fragment = new fragmentCategorias();
                     fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
                     return false;
                 }
@@ -339,9 +360,9 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
 
-    public void opcion4() {
-
-        fragment = new Fragment4();
+    public void opcionReserva() {
+        SelectMenu(R.id.action_4);
+        fragment = new fragmentReserva();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -352,7 +373,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText == null || newText.trim().isEmpty()) {
-                    fragment = new Fragment4();
+                    fragment = new fragmentReserva();
                     fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
                     return false;
                 }
@@ -374,9 +395,9 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
 
-    public void opcion5() {
-
-        fragment = new SesionFragment();
+    public void opcionSesion() {
+        SelectMenu(R.id.action_5);
+        fragment = new fragmentSesion();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -388,7 +409,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText == null || newText.trim().isEmpty()) {
-                    fragment = new SesionFragment();
+                    fragment = new fragmentSesion();
                     fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
                     return false;
                 }
@@ -405,6 +426,53 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                 return false;
             }
         });
+    }
+
+    public void opcionItem(int idProducto) {
+        fragment = new fragmentItem();
+        Bundle bundle=new Bundle();
+        bundle.putInt("idProducto",idProducto);
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText == null || newText.trim().isEmpty()) {
+                    Producto temporal=sesion.RecuperarProducto(context);
+                    if(temporal.getIdProducto()>0){
+                        fragment = new fragmentItem();
+                        Bundle bundle=new Bundle();
+                        bundle.putInt("idProducto",temporal.getIdProducto());
+                        fragment.setArguments(bundle);
+                    }else{
+                        fragment = new fragmentInicio();
+                    }
+
+                    fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+                    return false;
+                }
+
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
+                        filteredValues.remove(value);
+                    }
+                }
+                Constantes.PRODUCTOS_BUSCADOS = filteredValues;
+
+                fragment = new FragmentBuscando();
+                fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -433,7 +501,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
 
     private void resetSearch() {
-        fragment = new Fragment1();
+        fragment = new fragmentInicio();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
     }
 
@@ -499,12 +567,71 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
 
     private void displayProfileInfo(Profile profile) {
-        sesion.RegistrarVariable(editor, context, "Sesion", "boolean", "false");
-        sesion.RegistrarVariable(editor, context, "SesionFB", "boolean", "true");
-        sesion.RegistrarVariable(editor, context, "KeyFacebook", "String", profile.getId());
-        sesion.RegistrarVariable(editor, context, "nombres", "String", profile.getFirstName());
-        sesion.RegistrarVariable(editor, context, "apellidos ", "String", profile.getLastName());
-        sesion.RegistrarVariable(editor, context, "imagenProducto", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
-
+        verificarUsuarioFbLogin(context,profile);
     }
+
+    private void verificarUsuarioFbLogin(final Context context,final Profile profile) {
+
+        final String KEY_FB=profile.getId();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+                                Usuario Nuevo = new Usuario();
+                                Nuevo.setIdUsuario(jsonResponse.getInt("idUsuario"));
+                                Nuevo.setUsuario(jsonResponse.getString("usuario"));
+                                Nuevo.setNombreUsuario(jsonResponse.getString("nombres"));
+                                Nuevo.setApellidoUsuario(jsonResponse.getString("apellidos"));
+                                Nuevo.setImagenUsuario(jsonResponse.getString("imagen"));
+                                Nuevo.setCorreoUsuario(jsonResponse.getString("correo"));
+                                Nuevo.setSesion(true);
+                                Perfil perfil = new Perfil();
+                                perfil.setIdPerfil(jsonResponse.getInt("idPerfil"));
+                                perfil.setNombrePrefil(jsonResponse.getString("perfil"));
+                                Nuevo.setPerfilUsuario(perfil);
+                                Nuevo.setKeyFacebook(jsonResponse.getString("keyFb"));
+                                Nuevo.setSesion(true);
+                                Nuevo.setSesionFB(true);
+                                sesion.RegistrarSesion(context,Nuevo);
+                                String Mensaje = jsonResponse.getString("mensaje");
+                                Toast.makeText(context, Mensaje, Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                sesion.RegistrarVariable(editor, context, "Sesion", "boolean", "false");
+                                sesion.RegistrarVariable(editor, context, "SesionFB", "boolean", "true");
+                                sesion.RegistrarVariable(editor, context, "KeyFacebook", "String", profile.getId());
+                                sesion.RegistrarVariable(editor, context, "nombres", "String", profile.getFirstName());
+                                sesion.RegistrarVariable(editor, context, "apellidos ", "String", profile.getLastName());
+                                sesion.RegistrarVariable(editor, context, "imagenProducto", "String", String.valueOf(profile.getProfilePictureUri(100, 100)));
+                                //String Mensaje = jsonResponse.getString("mensaje");
+                                //Toast.makeText(context, Mensaje, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "BuscarUsuario");
+                params.put("KeyFb", KEY_FB);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
 }

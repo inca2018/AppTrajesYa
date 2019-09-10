@@ -53,7 +53,7 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
     }
 
     public Adapter1.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card1,parent,false);
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_producto_disponible,parent,false);
         return new Adapter1.ViewHolder(itemView);
     }
     @Override

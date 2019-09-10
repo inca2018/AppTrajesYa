@@ -14,9 +14,9 @@ import java.util.List;
 
 import inca.jesus.trajesya.R;
 
-public class Fragment1 extends Fragment  {
+public class fragmentInicio extends Fragment  {
     ViewPager mViewPager;
-    public Fragment1() {
+    public fragmentInicio() {
         // Required empty public constructor
     }
     @Override
@@ -33,7 +33,7 @@ public class Fragment1 extends Fragment  {
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
         adapter.addFragment(new Promociones(), getString(R.string.lo_mejor));
-        adapter.addFragment(new Recomendaciones(), getString(R.string.Recomendaciones));
+        adapter.addFragment(new fragmentInicioRecomendaciones(), getString(R.string.Recomendaciones));
 
         adapter.addFragment(new Destacados(), getString(R.string.Destacados));
 

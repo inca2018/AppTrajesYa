@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="2dp"
+            >
+            <TextView
+                android:id="@+id/card_nombre_producto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Negritos de Huanuco huanuco"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:textAlignment="center"
+                android:textColor="@color/SinCheck"
+                android:textSize="14sp"
+                 />
+            <ImageView
+                android:id="@+id/card_imagen"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/promo1"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/card_precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="S/ 113.00"
+                android:textAlignment="center"
+                  android:textColor="@color/base2"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/card_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:text="-24%"
+                android:textStyle="bold"
+                android:textColor="@color/sombra"
+                android:textSize="16sp" />
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>

@@ -49,7 +49,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,16 +57,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.activities.LoginActivity;
-import inca.jesus.trajesya.adapters.AdapterItemProductos;
 import inca.jesus.trajesya.adapters.AdapterUbicaciones;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.Perfil;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
-import inca.jesus.trajesya.data.modelo.Categoria;
-import inca.jesus.trajesya.data.modelo.Estado;
-import inca.jesus.trajesya.data.modelo.Grupo;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
@@ -80,7 +74,7 @@ import static inca.jesus.trajesya.data.utils.Constantes.SUCCESS;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SesionFragment extends Fragment {
+public class fragmentSesion extends Fragment {
     public ImageView foto;
     public TextView nombre;
     public Button logout;
@@ -123,7 +117,7 @@ public class SesionFragment extends Fragment {
 
     AlertDialog nuevaUbicacion;
 
-    public SesionFragment() {
+    public fragmentSesion() {
         // Required empty public constructor
     }
 
@@ -1011,12 +1005,12 @@ public class SesionFragment extends Fragment {
                                 Nuevo.setKeyFacebook(jsonResponse.getString("keyFb"));
                                 Nuevo.setSesion(true);
                                 Nuevo.setSesionFB(true);
-                                sesion.RegistrarSesion(SesionFragment.this.context, Nuevo);
+                                sesion.RegistrarSesion(fragmentSesion.this.context, Nuevo);
 
                                 String Mensaje = jsonResponse.getString("mensaje");
                                 progressDialog.dismiss();
 
-                                Toast.makeText(SesionFragment.this.context, Mensaje, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(fragmentSesion.this.context, Mensaje, Toast.LENGTH_SHORT).show();
 
                                 SesionFiltro(3);
                             } else {

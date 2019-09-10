@@ -31,7 +31,7 @@ import inca.jesus.trajesya.data.modelo.SubCategoria;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
 
-public class Fragment2 extends Fragment {
+public class fragmentCategorias extends Fragment {
     private RecyclerView recyclerCategorias;
     private LinearLayoutManager linearLayout;
     private AdapterCategoriasDisponibles adapterCategoria;
@@ -54,7 +54,7 @@ public class Fragment2 extends Fragment {
     TranslateAnimation moveLefttoRight;
     ImageView imagenArrow;
 
-    public Fragment2() {
+    public fragmentCategorias() {
         // Required empty public constructor
     }
     @SuppressLint("WrongConstant")

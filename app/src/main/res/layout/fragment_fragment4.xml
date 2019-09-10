@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="inca.jesus.trajesya.fragmentos.Fragment4">
+    tools:context="inca.jesus.trajesya.fragmentos.fragmentReserva">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

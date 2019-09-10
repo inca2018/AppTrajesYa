@@ -56,7 +56,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
     }
 
     public AdapterItemReserva.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card1,parent,false);
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_producto_disponible,parent,false);
         return new AdapterItemReserva.ViewHolder(itemView);
     }
     @Override
