@@ -1,25 +1,48 @@
-package inca.jesus.trajesya.Fragmentos;
+<?xml version="1.0" encoding="utf-8"?>
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:background="@color/colorPrimary"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="2dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-import java.text.DecimalFormat;
+            <TextView
+                android:id="@+id/subfiltro_nom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/blanco"
+                android:text="ITEM FILTRO"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textSize="10dp"
+                android:layout_gravity="center"
+                />
+
+            <CheckBox
+                android:id="@+id/subfiltro_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CheckBox" />
 
 
-import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.activities.CompraActivity;
-import inca.jesus.trajesya.activities.Item;
-import inca.jesus.trajesya.adapters.AdapterItemReserva;
-import inca.jesus.trajesya.adapters.AdapterItemCarrito;
-import inca.jesus.trajesya.adapters.RecyclerViewO
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
+
