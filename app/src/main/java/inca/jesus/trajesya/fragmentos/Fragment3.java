@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.adapters.AdapterItemFavorito;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.ItemFavorito;
@@ -36,7 +35,7 @@ public class Fragment3 extends Fragment {
 
         if(ItemFavorito.ListaFavoritos.size()!=0){
 
-            linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+          /*  linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
             adapterT = new AdapterItemFavorito(getActivity(),ItemFavorito.ListaFavoritos, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
@@ -59,7 +58,7 @@ public class Fragment3 extends Fragment {
                         recycler1.setVisibility(View.GONE);
                     }
                 }
-            });
+            });*/
         }else{
             mensaje.setVisibility(View.VISIBLE);
         }

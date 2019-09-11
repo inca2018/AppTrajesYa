@@ -49,7 +49,7 @@ public class CategoriaListas extends AppCompatActivity {
 
         temp=ListaTemp();
 
-        linearLayout =  new LinearLayoutManager(CategoriaListas.this, LinearLayoutManager.VERTICAL,false);
+       /* linearLayout =  new LinearLayoutManager(CategoriaListas.this, LinearLayoutManager.VERTICAL,false);
         adapter = new AdapterBaseFiltro(CategoriaListas.this,temp, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
@@ -59,7 +59,7 @@ public class CategoriaListas extends AppCompatActivity {
             }
         });
         recycler.setAdapter(adapter);
-        recycler.setLayoutManager(linearLayout);
+        recycler.setLayoutManager(linearLayout);*/
     }
 
     public List<ProductoX> ListaTemp(){

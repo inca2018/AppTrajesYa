@@ -3,7 +3,6 @@ package inca.jesus.trajesya.adapters;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
 

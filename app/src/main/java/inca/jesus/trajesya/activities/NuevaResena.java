@@ -57,10 +57,10 @@ public class NuevaResena extends AppCompatActivity {
 
                 Toast.makeText(NuevaResena.this, "Reseña Registrado con Exito!", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(NuevaResena.this,Item.class);
+               /* Intent intent = new Intent(NuevaResena.this,Item.class);
                 intent.putExtra("Producto",extras.getParcelable("Producto"));
                 startActivity(intent);
-                finish();
+                finish();*/
 
             }
         });

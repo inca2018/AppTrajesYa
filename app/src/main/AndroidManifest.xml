@@ -19,10 +19,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.Item"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activities.CompraActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".activities.Splash"
             android:screenOrientation="portrait" >
             <intent-filter>

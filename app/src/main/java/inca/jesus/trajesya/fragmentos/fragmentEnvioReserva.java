@@ -1,4 +1,5 @@
-package inca.jesus.trajesya.activities;
+package inca.jesus.trajesya.fragmentos;
+
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -6,14 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,19 +22,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import inca.jesus.trajesya.adapters.AdapterItemCompra;
-import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
-import inca.jesus.trajesya.clases.ListCompra;
 import inca.jesus.trajesya.R;
+import inca.jesus.trajesya.activities.ActivityPrincipal;
+import inca.jesus.trajesya.adapters.AdapterItemCarrito;
+import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
+import inca.jesus.trajesya.data.utils.Constantes;
 
-public class CompraActivity extends AppCompatActivity {
-
+public class fragmentEnvioReserva extends Fragment {
     RecyclerView recycler;
     LinearLayoutManager linear1;
-    AdapterItemCompra adapterXXX;
-    ImageView boton_direc;
-    LinearLayout l1,l2,l3,l4,l5,l6;
-    ImageView b1,b2,b3,b4,b5;
+    AdapterItemCarrito adapterXXX;
+    LinearLayout panelPrincipal, panelSeleccionUbicacion, panelTipoPago, panelBotonesReserva, panelTipoComprobante, panelContacto;
+    ImageView accionSectorUbicacion,b2,b3,b4,b5;
     Button btn_g,btn_tp,btn_g_c,btn_g_r;
     Button op1,op2,op3;
     boolean a1=false,a2=false,a3=false,c1=false,c2=false;
@@ -45,42 +45,53 @@ public class CompraActivity extends AppCompatActivity {
     AlertDialog d,s;
     TextView btn_cupon,text_cupon;
     String codigo="";
+    //Nuevas Variables
+    Context context;
+    public fragmentEnvioReserva() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compra);
-        recycler=(RecyclerView)findViewById(R.id.recycler_compra_pedido);
-        boton_direc=(ImageView)findViewById(R.id.boton_direccion);
-        c_condiciones=(CheckBox)findViewById(R.id.check_condiciones);
-        l1=(LinearLayout)findViewById(R.id.panel_principal);
-        l2=(LinearLayout)findViewById(R.id.panel_nueva_direccion);
-        l3=(LinearLayout)findViewById(R.id.panel_tipo_pago);
-        l4=(LinearLayout)findViewById(R.id.panel_botoness);
-        l5=(LinearLayout)findViewById(R.id.panel_Comprobante);
-        l6=(LinearLayout)findViewById(R.id.panel_receptor_alterno);
-        b1=(ImageView)findViewById(R.id.boton_direccion);
-        btn_g=(Button)findViewById(R.id.guardar_direc_nueva);
-        b2=(ImageView)findViewById(R.id.btn_tipo_pago);
-        btn_tp=(Button)findViewById(R.id.btn_guardar_tipo_pago);
-        b3=(ImageView) findViewById(R.id.btn_comprobante);
-        op1=(Button)findViewById(R.id.btn_tarjetas);
-        op2=(Button)findViewById(R.id.btn_trasnf);
-        op3=(Button)findViewById(R.id.btn_contraentrega);
-        panel1=(CardView)findViewById(R.id.panel_selec_tarjeta);
-        panel2=(CardView)findViewById(R.id.panel_selec_tranf);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.fragment_envio_reserva, container, false);
+        context=getActivity();
+        recycler=v.findViewById(R.id.recycler_compra_pedido);
+        accionSectorUbicacion =v.findViewById(R.id.boton_direccion);
+
+        panelPrincipal =v.findViewById(R.id.panel_principal);
+        panelSeleccionUbicacion =v.findViewById(R.id.panel_nueva_direccion);
+        panelTipoPago =v.findViewById(R.id.panel_tipo_pago);
+        panelBotonesReserva =v.findViewById(R.id.panel_botoness);
+        panelTipoComprobante =v.findViewById(R.id.panel_tipocomprobante_reserva);
+        panelContacto=v.findViewById(R.id.panel_contacto_reserva);
+
+
+
+
+        c_condiciones=v.findViewById(R.id.check_condiciones);
+
+        btn_g=v.findViewById(R.id.guardar_direc_nueva);
+        b2=v.findViewById(R.id.btn_tipo_pago);
+        btn_tp=v.findViewById(R.id.btn_guardar_tipo_pago);
+        b3=v.findViewById(R.id.btn_comprobante);
+        op1=v.findViewById(R.id.btn_tarjetas);
+        op2=v.findViewById(R.id.btn_trasnf);
+        op3=v.findViewById(R.id.btn_contraentrega);
+        panel1=v.findViewById(R.id.panel_selec_tarjeta);
+        panel2=v.findViewById(R.id.panel_selec_tranf);
         panel1.setVisibility(View.GONE);
         panel2.setVisibility(View.GONE);
-        b4=(ImageView)findViewById(R.id.btn_comprobante);
-        btn_g_c=(Button)findViewById(R.id.btn_guardar_comrp);
-        bole=(Button)findViewById(R.id.btn_boleta2);
-        fac=(Button)findViewById(R.id.btn_factura2);
-        card_fac=(CardView)findViewById(R.id.panel_factura);
+        b4=v.findViewById(R.id.btn_comprobante);
+        btn_g_c=v.findViewById(R.id.btn_guardar_comrp);
+        bole=v.findViewById(R.id.btn_boleta2);
+        fac=v.findViewById(R.id.btn_factura2);
+        card_fac=v.findViewById(R.id.panel_factura);
         card_fac.setVisibility(View.GONE);
-        b5=(ImageView)findViewById(R.id.btn_receptor);
-        btn_g_r=(Button)findViewById(R.id.boton_guardar_recep);
-        btn_cupon=(TextView) findViewById(R.id.btn_cupon);
-        text_cupon=(TextView)findViewById(R.id.text_cupon);
+        b5=v.findViewById(R.id.btn_receptor);
+        btn_g_r=v.findViewById(R.id.boton_guardar_recep);
+        btn_cupon=v. findViewById(R.id.btn_cupon);
+        text_cupon=v.findViewById(R.id.text_cupon);
 
         SegundoModulo();
         PrimerModulo();
@@ -101,34 +112,44 @@ public class CompraActivity extends AppCompatActivity {
                 super.onChanged();
 
                 if(adapterXXX.getItemCount()==0){
-                    Intent intent=new Intent(CompraActivity.this,ActivityPrincipal.class);
+                    Intent intent=new Intent(context, ActivityPrincipal.class);
                     startActivity(intent);
                 }
             }
         });
 
-       btn_cupon.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               final LayoutInflater inflater = (LayoutInflater) CompraActivity.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-               final View dialoglayout4 = inflater.inflate(R.layout.cupon, null);
-               final EditText tex_cupon=(EditText)dialoglayout4.findViewById(R.id.codigo_cupon);
-               final Button aceptar_cupon=(Button) dialoglayout4.findViewById(R.id.btn_guardar_cupon);
-               aceptar_cupon.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       codigo=tex_cupon.getText().toString();
-                       text_cupon.setText(codigo);
-                       s.dismiss();
-                   }
-               });
+        btn_cupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                final View dialoglayout4 = inflater.inflate(R.layout.cupon, null);
+                final EditText tex_cupon=(EditText)dialoglayout4.findViewById(R.id.codigo_cupon);
+                final Button aceptar_cupon=(Button) dialoglayout4.findViewById(R.id.btn_guardar_cupon);
+                aceptar_cupon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        codigo=tex_cupon.getText().toString();
+                        text_cupon.setText(codigo);
+                        s.dismiss();
+                    }
+                });
 
-               AlertDialog.Builder builder4 = new AlertDialog.Builder(CompraActivity.this);
-               builder4.setView(dialoglayout4);
-               s=builder4.show();
-           }
-       });
-
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
+                builder4.setView(dialoglayout4);
+                s=builder4.show();
+            }
+        });
+        return v;
+    }
+    public void AccionesSectores(ImageView imagenSeleccion){
+        OcultarTodo();
+        imagenSeleccion.setVisibility(View.VISIBLE);
+    }
+    public void OcultarTodo(){
+        panelSeleccionUbicacion.setVisibility(View.GONE);
+        panelPrincipal.setVisibility(View.GONE);
+        panelBotonesReserva.setVisibility(View.GONE);
+        panelTipoPago.setVisibility(View.GONE);
     }
 
     private void condiciones() {
@@ -137,7 +158,7 @@ public class CompraActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(status==false){
-                    final LayoutInflater inflater = (LayoutInflater) CompraActivity.this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
                     final View dialoglayout4 = inflater.inflate(R.layout.terminos_condiciones, null);
 
                     final Button aceptar=(Button) dialoglayout4.findViewById(R.id.btn_acepto);
@@ -148,7 +169,7 @@ public class CompraActivity extends AppCompatActivity {
                             d.dismiss();
                         }
                     });
-                    AlertDialog.Builder builder4 = new AlertDialog.Builder(CompraActivity.this);
+                    AlertDialog.Builder builder4 = new AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     d=builder4.show();
 
@@ -250,32 +271,29 @@ public class CompraActivity extends AppCompatActivity {
 
     }
     private void movimientos_entre_botones() {
-        b1.setOnClickListener(new View.OnClickListener() {
+        accionSectorUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l2.setVisibility(View.VISIBLE);
-                l1.setVisibility(View.GONE);
-                l4.setVisibility(View.GONE);
-                l3.setVisibility(View.GONE);
+                AccionesSectores(accionSectorUbicacion);
             }
         });
         btn_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l2.setVisibility(View.GONE);
-                l1.setVisibility(View.VISIBLE);
-                l4.setVisibility(View.VISIBLE);
-                l3.setVisibility(View.GONE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelPrincipal.setVisibility(View.VISIBLE);
+                panelBotonesReserva.setVisibility(View.VISIBLE);
+                panelTipoPago.setVisibility(View.GONE);
             }
         });
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l2.setVisibility(View.GONE);
-                l1.setVisibility(View.GONE);
-                l4.setVisibility(View.GONE);
-                l3.setVisibility(View.VISIBLE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelPrincipal.setVisibility(View.GONE);
+                panelBotonesReserva.setVisibility(View.GONE);
+                panelTipoPago.setVisibility(View.VISIBLE);
             }
         });
 
@@ -283,62 +301,62 @@ public class CompraActivity extends AppCompatActivity {
         btn_tp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l2.setVisibility(View.GONE);
-                l1.setVisibility(View.VISIBLE);
-                l4.setVisibility(View.VISIBLE);
-                l3.setVisibility(View.GONE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelPrincipal.setVisibility(View.VISIBLE);
+                panelBotonesReserva.setVisibility(View.VISIBLE);
+                panelTipoPago.setVisibility(View.GONE);
             }
         });
 
         btn_g_c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l5.setVisibility(View.GONE);
-                l1.setVisibility(View.VISIBLE);
-                l2.setVisibility(View.GONE);
-                l3.setVisibility(View.GONE);
-                l4.setVisibility(View.VISIBLE);
+                panelTipoComprobante.setVisibility(View.GONE);
+                panelPrincipal.setVisibility(View.VISIBLE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelTipoPago.setVisibility(View.GONE);
+                panelBotonesReserva.setVisibility(View.VISIBLE);
             }
         });
 
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l5.setVisibility(View.VISIBLE);
-                l1.setVisibility(View.GONE);
-                l2.setVisibility(View.GONE);
-                l3.setVisibility(View.GONE);
-                l4.setVisibility(View.GONE);
+                panelTipoComprobante.setVisibility(View.VISIBLE);
+                panelPrincipal.setVisibility(View.GONE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelTipoPago.setVisibility(View.GONE);
+                panelBotonesReserva.setVisibility(View.GONE);
             }
         });
         b5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                l6.setVisibility(View.VISIBLE);
-                l5.setVisibility(View.GONE);
-                l1.setVisibility(View.GONE);
-                l2.setVisibility(View.GONE);
-                l3.setVisibility(View.GONE);
-                l4.setVisibility(View.GONE);
+                panelContacto.setVisibility(View.VISIBLE);
+                panelTipoComprobante.setVisibility(View.GONE);
+                panelPrincipal.setVisibility(View.GONE);
+                panelSeleccionUbicacion.setVisibility(View.GONE);
+                panelTipoPago.setVisibility(View.GONE);
+                panelBotonesReserva.setVisibility(View.GONE);
             }
         });
 
-         btn_g_r.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 l4.setVisibility(View.VISIBLE);
-                 l1.setVisibility(View.VISIBLE);
-                 l6.setVisibility(View.GONE);
-             }
-         });
+        btn_g_r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                panelBotonesReserva.setVisibility(View.VISIBLE);
+                panelPrincipal.setVisibility(View.VISIBLE);
+                panelContacto.setVisibility(View.GONE);
+            }
+        });
     }
     @SuppressLint("WrongConstant")
     private void recycler_item_compra() {
-        linear1 = new LinearLayoutManager(CompraActivity.this, LinearLayoutManager.VERTICAL,false);
-        adapterXXX = new AdapterItemCompra(CompraActivity.this, ListCompra.CARRITO_COMPRA, new RecyclerViewOnItemClickListener2() {
+        linear1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
+        adapterXXX = new AdapterItemCarrito(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
-
+                //not required
             }
         });
         recycler.setAdapter(adapterXXX);

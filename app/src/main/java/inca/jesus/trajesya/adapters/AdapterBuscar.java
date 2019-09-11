@@ -25,9 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import inca.jesus.trajesya.activities.Item;
+import inca.jesus.trajesya.activities.ActivityPrincipal;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
+import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.R;
 
@@ -39,6 +40,8 @@ public class AdapterBuscar extends RecyclerView.Adapter<AdapterBuscar.ViewHolder
     private Context context;
     private List<Producto> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
+    public Sesion sesion=new Sesion();
+    public Producto producto=new Producto();
 
     public AdapterBuscar(Context context, List<Producto> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
@@ -87,27 +90,27 @@ public class AdapterBuscar extends RecyclerView.Adapter<AdapterBuscar.ViewHolder
             @Override
             public void onClick(View v) {
                 RegistrarVisitaBuscador(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
         holder.nom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegistrarVisitaBuscador(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
         holder.vendedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegistrarVisitaBuscador(my_Data.get(position).getIdProducto(),context);
-                Intent intent = new Intent(context, Item.class);
-                intent.putExtra("idProducto",my_Data.get(position).getIdProducto());
-                context.startActivity(intent);
+                ((ActivityPrincipal)context).opcionItem(my_Data.get(position).getIdProducto());
+                producto.setIdProducto(my_Data.get(position).getIdProducto());
+                sesion.RegistrarProducto(context,producto);
             }
         });
 

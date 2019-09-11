@@ -1,7 +1,6 @@
 package inca.jesus.trajesya.fragmentos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -23,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.activities.CompraActivity;
 import inca.jesus.trajesya.adapters.AdapterItemProductosMini;
 import inca.jesus.trajesya.adapters.AdapterMedida;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
@@ -68,18 +66,12 @@ public class fragmentItem extends Fragment {
     Medida MedidaSeleccionada;
     Button btnReservar, btnAgregar;
     AlertDialog alerta;
-
+    List<Medida> Medidas;
+    TextView txtDescuento;
     public fragmentItem() {
         // Required empty public constructor
     }
 
-    /*public static fragmentItem newInstance(Bundle arguments){
-        fragmentItem f = new fragmentItem();
-        if(arguments != null){
-            f.setArguments(arguments);
-        }
-        return f;
-    }*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +94,7 @@ public class fragmentItem extends Fragment {
         recycler_similares2 = v.findViewById(R.id.recycler_similares2);
         recycler_medidas = v.findViewById(R.id.recycler_medidas);
         tituloTalla = v.findViewById(R.id.tituloTalla);
+        txtDescuento=v.findViewById(R.id.txtDescuento);
         mas = v.findViewById(R.id.mas);
         menos = v.findViewById(R.id.menos);
         cantidad = v.findViewById(R.id.cantidad);
@@ -120,6 +113,13 @@ public class fragmentItem extends Fragment {
 
         DecimalFormat formateador = new DecimalFormat("###,###.00");
         double precioAlquiler=ProductoSeleccionado.getPrecioAlquiler();
+
+        if(ProductoSeleccionado.getPrecioPromocion()>0){
+            txtDescuento.setText("Descuento: -"+(int)ProductoSeleccionado.getPrecioPromocion()+"%");
+            txtDescuento.setVisibility(View.VISIBLE);
+        }else{
+            txtDescuento.setVisibility(View.GONE);
+        }
         if(precioAlquiler!=0){
             precioProducto.setText("Alquiler: S/ " +formateador.format(precioAlquiler));
         }else{
@@ -251,7 +251,6 @@ public class fragmentItem extends Fragment {
 
     private void GenerarTamanos(Producto productoSeleccionado) {
 
-        List<Medida> Medidas;
         Medidas = productoSeleccionado.getMedidaProducto();
 
         if (Medidas != null) {
@@ -380,19 +379,38 @@ public class fragmentItem extends Fragment {
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
 
-
-                    if(CantidadRecuperada>0){
-                        //Agregrando Datos de Items
-                        ReservaItem item=new ReservaItem();
-                        item.setCantidad(CantidadRecuperada);
-                        item.setMedidaReservaItem(MedidaRecuperada);
-                        item.setProductoItem(ProductoRecuperado);
-                        Constantes.RESERVA_ITEMS.add(item);
-                        ((ActivityPrincipal)context).opcionReserva();
-                        Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                    if(Medidas!=null){
+                        if(MedidaRecuperada.getIdMedida()>0){
+                            if(CantidadRecuperada>0){
+                                //Agregrando Datos de Items
+                                ReservaItem item=new ReservaItem();
+                                item.setCantidad(CantidadRecuperada);
+                                item.setMedidaReservaItem(MedidaRecuperada);
+                                item.setProductoItem(ProductoRecuperado);
+                                Constantes.RESERVA_ITEMS.add(item);
+                                //((ActivityPrincipal)context).opcionReserva();
+                                Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(context, "Seleccione una Talla Disponible para continuar.", Toast.LENGTH_SHORT).show();
+                        }
                     }else{
-                        Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                        if(CantidadRecuperada>0){
+                            //Agregrando Datos de Items
+                            ReservaItem item=new ReservaItem();
+                            item.setCantidad(CantidadRecuperada);
+                            item.setMedidaReservaItem(MedidaRecuperada);
+                            item.setProductoItem(ProductoRecuperado);
+                            Constantes.RESERVA_ITEMS.add(item);
+                            ((ActivityPrincipal)context).opcionReserva();
+                            Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
@@ -408,9 +426,6 @@ public class fragmentItem extends Fragment {
                     completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            /*Intent intent = new Intent(context, ActivityPrincipal.class);
-                            intent.putExtra("o", "o5");
-                            startActivity(intent);*/
                             ((ActivityPrincipal)context).opcionSesion();
                         }
                     });
@@ -432,23 +447,38 @@ public class fragmentItem extends Fragment {
                     int CantidadRecuperada = contadorStock;
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
-
-                    if(CantidadRecuperada>0){
-                        //Agregrando Datos de Items
-                        ReservaItem item=new ReservaItem();
-                        item.setCantidad(CantidadRecuperada);
-                        item.setMedidaReservaItem(MedidaRecuperada);
-                        item.setProductoItem(ProductoRecuperado);
-                        Constantes.RESERVA_ITEMS.add(item);
-                        /*Intent intent = new Intent(context, CompraActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //intent.putExtra("o", "o4");
-                        startActivity(intent);*/
-                        ((ActivityPrincipal)context).opcionReserva();
-                        Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                    if(Medidas!=null){
+                        if(MedidaRecuperada.getIdMedida()>0){
+                            if(CantidadRecuperada>0){
+                                //Agregrando Datos de Items
+                                ReservaItem item=new ReservaItem();
+                                item.setCantidad(CantidadRecuperada);
+                                item.setMedidaReservaItem(MedidaRecuperada);
+                                item.setProductoItem(ProductoRecuperado);
+                                Constantes.RESERVA_ITEMS.add(item);
+                                ((ActivityPrincipal)context).opcionReserva();
+                                Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(context, "Seleccione una Talla Disponible para continuar.", Toast.LENGTH_SHORT).show();
+                        }
                     }else{
-                        Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                        if(CantidadRecuperada>0){
+                            //Agregrando Datos de Items
+                            ReservaItem item=new ReservaItem();
+                            item.setCantidad(CantidadRecuperada);
+                            item.setMedidaReservaItem(MedidaRecuperada);
+                            item.setProductoItem(ProductoRecuperado);
+                            Constantes.RESERVA_ITEMS.add(item);
+                            ((ActivityPrincipal)context).opcionReserva();
+                            Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
+                        }
                     }
+
                 } else {
                     final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
@@ -464,9 +494,6 @@ public class fragmentItem extends Fragment {
                     completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            /*Intent intent = new Intent(context, ActivityPrincipal.class);
-                            intent.putExtra("o", "o5");
-                            startActivity(intent);*/
                             ((ActivityPrincipal)context).opcionSesion();
                         }
                     });

@@ -107,29 +107,32 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="15dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="TOTAL"
-                android:textSize="14sp"
-                android:textColor="@color/negro"
-                android:layout_margin="2dp"/>
+                android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/total_precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_margin="2dp"
+                android:layout_weight="2"
+                android:gravity="end"
                 android:text="S/. 1222,00"
-                android:textSize="12sp"
                 android:textColor="@color/colorAccent"
-                android:layout_margin="2dp"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
         <Button
             android:id="@+id/boton_final1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="COMPRAR"
+            android:text="RESERVAR"
             android:background="@color/colorAccent"
             android:textColor="@color/blanco"
             />

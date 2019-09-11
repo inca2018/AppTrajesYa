@@ -187,11 +187,11 @@ public class ItemResenas extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ItemResenas.this,Item.class);
+        /*Intent intent = new Intent(ItemResenas.this,Item.class);
         Bundle extras=getIntent().getExtras();
         intent.putExtra("Producto",extras.getParcelable("Producto"));
         startActivity(intent);
-        finish();
+        finish();*/
     }
     private void toolbar_opciones() {
 

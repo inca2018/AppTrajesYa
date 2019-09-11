@@ -2,7 +2,6 @@ package inca.jesus.trajesya.fragmentos;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,15 +18,10 @@ import java.text.DecimalFormat;
 
 
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.activities.CompraActivity;
-import inca.jesus.trajesya.activities.Item;
-import inca.jesus.trajesya.adapters.AdapterItemProductos;
 import inca.jesus.trajesya.adapters.AdapterItemProductosMini;
-import inca.jesus.trajesya.adapters.AdapterItemReserva;
 import inca.jesus.trajesya.adapters.AdapterItemCarrito;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.ListCarrito;
-import inca.jesus.trajesya.clases.ProductoX;
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.data.utils.Constantes;
 
@@ -48,7 +42,7 @@ public class fragmentReserva extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_fragment4, container, false);
+        View view=inflater.inflate(R.layout.fragment_reserva, container, false);
         context=getActivity();
         recycler1ItemReserva =view.findViewById(R.id.carrito_recycler);
         sectorListaVacia =view.findViewById(R.id.loc1);
@@ -80,9 +74,7 @@ public class fragmentReserva extends Fragment {
             adapterItemReserva = new AdapterItemCarrito(getActivity(), Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
-                    /*Intent intent = new Intent(getActivity(),Item.class);
-                    intent.putExtra("Producto",Constantes.RESERVA_ITEMS.get(position).getP());
-                    startActivity(intent);*/
+                    //not required
                 }
             });
             recycler1ItemReserva.setAdapter(adapterItemReserva);
@@ -98,6 +90,7 @@ public class fragmentReserva extends Fragment {
                 @Override
                 public void onChanged() {
                     super.onChanged();
+                    adapterItemReserva.GenerarTotales();
                     if(adapterItemReserva.getItemCount()==0){
                         accionBotonReservar.setVisibility(View.GONE);
                         recycler1ItemReserva.setVisibility(View.GONE);
@@ -112,17 +105,23 @@ public class fragmentReserva extends Fragment {
 
     }
     public void MostrarTotal(){
-        String total= adapterItemReserva.TotalAcumulado();
-        Double dd=Double.parseDouble(total);
-        DecimalFormat formateador = new DecimalFormat("###,###.##");
-        precio_total.setText("S/."+formateador.format(dd));
+        adapterItemReserva.GenerarTotales();
+        double totalRecuperado= adapterItemReserva.TotalAcumulado();
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        if(totalRecuperado>0){
+            precio_total.setText("S/."+formateador.format(totalRecuperado));
+        }else{
+            precio_total.setText("S/. 0.00");
+        }
+
     }
     private void boton_comprar() {
     btn_compra.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(),CompraActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(getActivity(),CompraActivity.class);
+            startActivity(intent);*/
+            ((ActivityPrincipal)context).opcionEnvioReserva();
         }
     });
     }

@@ -57,6 +57,7 @@ import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
+import inca.jesus.trajesya.fragmentos.fragmentEnvioReserva;
 import inca.jesus.trajesya.fragmentos.fragmentInicio;
 import inca.jesus.trajesya.fragmentos.fragmentCategorias;
 import inca.jesus.trajesya.fragmentos.Fragment3;
@@ -167,7 +168,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     public void verificacionPublicidad() {
         if (!Constantes.CANTIDAD_PUBLICIDAD) {
-            //Mostrar_Publicidad();
+            Mostrar_Publicidad();
             Constantes.CANTIDAD_PUBLICIDAD = true;
         }
     }
@@ -429,6 +430,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
 
     public void opcionItem(int idProducto) {
+        SelectMenu(R.id.action_1);
         fragment = new fragmentItem();
         Bundle bundle=new Bundle();
         bundle.putInt("idProducto",idProducto);
@@ -452,6 +454,53 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                         fragment.setArguments(bundle);
                     }else{
                         fragment = new fragmentInicio();
+                    }
+
+                    fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+                    return false;
+                }
+
+                List<Producto> filteredValues = new ArrayList<>(Constantes.Base_Producto_Todo);
+                for (Producto value : Constantes.Base_Producto_Todo) {
+                    if (!value.getNombreProducto().toLowerCase().startsWith(newText.toLowerCase())) {
+                        filteredValues.remove(value);
+                    }
+                }
+                Constantes.PRODUCTOS_BUSCADOS = filteredValues;
+
+                fragment = new FragmentBuscando();
+                fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+
+                return false;
+            }
+        });
+
+    }
+    public void opcionEnvioReserva() {
+        SelectMenu(R.id.action_4);
+        fragment = new fragmentEnvioReserva();
+       /* Bundle bundle=new Bundle();
+        bundle.putInt("idProducto",idProducto);
+        fragment.setArguments(bundle);*/
+        fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText == null || newText.trim().isEmpty()) {
+                    int tamReserva=Constantes.RESERVA_ITEMS.size();
+                    if(tamReserva>0){
+                        fragment = new fragmentEnvioReserva();
+                      /*  Bundle bundle=new Bundle();
+                        bundle.putInt("idProducto",temporal.getIdProducto());
+                        fragment.setArguments(bundle);*/
+                    }else{
+                        fragment = new fragmentReserva();
                     }
 
                     fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();

@@ -39,7 +39,7 @@
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content"
                            android:text="NOMBRE DEL PRODUCTO"
-                           android:textSize="20sp"
+                           android:textSize="22sp"
                            android:textColor="@color/base2"
                            android:textStyle="bold"
                            android:textAlignment="center"
@@ -174,16 +174,26 @@
                                    android:layout_height="wrap_content"
                                    android:orientation="vertical">
 
-
-
                                    <TextView
                                        android:id="@+id/txtPrecioProducto"
                                        android:layout_width="match_parent"
                                        android:layout_height="match_parent"
                                        android:layout_weight="1"
                                        android:text="Alquiler:"
-                                       android:textSize="20sp"
+                                       android:textSize="18sp"
                                        android:textColor="@color/colorAccent"
+                                       android:layout_margin="2dp"
+                                       android:textAlignment="textStart"
+                                       android:textStyle="bold"
+                                       />
+                                   <TextView
+                                       android:id="@+id/txtDescuento"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:layout_weight="1"
+                                       android:text=""
+                                       android:textSize="16sp"
+                                       android:textColor="@color/sombra"
                                        android:layout_margin="2dp"
                                        android:textAlignment="textStart"
                                        android:textStyle="bold"

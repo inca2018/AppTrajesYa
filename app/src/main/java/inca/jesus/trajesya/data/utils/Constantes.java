@@ -32,7 +32,6 @@ public class Constantes {
     public final static List<Promocion> Base_ListaPromociones = new ArrayList<>();
     public final static List<Publicidad> Base_ListaPublicidad = new ArrayList<>();
 
-
     public final static List<Producto> Base_ListaProductoRecientes= new ArrayList<>();// FALTA
     public final static List<Producto> Base_ListaProductoPromociones=new ArrayList<>();//OK
     public final static List<Producto> Base_ListaProductosTopTradicionales=new ArrayList<>();//OK

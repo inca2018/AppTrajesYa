@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import inca.jesus.trajesya.adapters.AdapterItemReserva;
 import inca.jesus.trajesya.adapters.AdapterItemProductos;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
@@ -48,7 +47,7 @@ public class fragmentInicioRecomendaciones extends Fragment {
 
     private RecyclerView recycler1,recycler2,recycler3,recycler4;
     private LinearLayoutManager linearLayout1,linearLayout2,linearLayout3,linearLayout4;
-    private AdapterItemReserva adapterT;
+
 
     private AdapterItemProductos adapterVistosRecien,adapterPromocion,adapterMasTradicionales,adapterMasOtros,adapterTendencias;
 

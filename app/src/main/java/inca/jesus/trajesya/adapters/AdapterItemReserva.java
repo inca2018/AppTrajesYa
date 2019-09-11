@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import inca.jesus.trajesya.activities.Item;
 import inca.jesus.trajesya.clases.ProductoX;
 import inca.jesus.trajesya.R;
 
@@ -62,7 +61,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
     @Override
     public void onBindViewHolder(AdapterItemReserva.ViewHolder holder, final int position) {
 
-         DecimalFormat formateador = new DecimalFormat("###,###.00");
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
         double precioAlquiler=my_Data.get(position).getPrecio();
         if(my_Data.get(position).getDescuentos()==0){
             holder.desc.setVisibility(View.GONE);
@@ -72,6 +71,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
         }
         holder.precio.setText("S/ "+precioAlquiler);
 
+/*
 
         Picasso.get()
                 .load(my_Data.get(position).getIdDrawable())
@@ -112,6 +112,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
 
             }
         });
+*/
 
     }
     @Override
