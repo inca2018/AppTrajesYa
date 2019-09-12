@@ -168,7 +168,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     public void verificacionPublicidad() {
         if (!Constantes.CANTIDAD_PUBLICIDAD) {
-            Mostrar_Publicidad();
+            //Mostrar_Publicidad();
             Constantes.CANTIDAD_PUBLICIDAD = true;
         }
     }

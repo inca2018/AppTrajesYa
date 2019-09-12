@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +22,43 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
 import inca.jesus.trajesya.adapters.AdapterItemCarrito;
+import inca.jesus.trajesya.adapters.AdapterUbicaciones;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
+import inca.jesus.trajesya.data.conexion.VolleySingleton;
+import inca.jesus.trajesya.data.modelo.Sesion;
+import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
+import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
+import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
+
+import static inca.jesus.trajesya.data.utils.Constantes.SUCCESS;
 
 public class fragmentEnvioReserva extends Fragment {
     RecyclerView recycler;
     LinearLayoutManager linear1;
     AdapterItemCarrito adapterXXX;
-    LinearLayout panelPrincipal, panelSeleccionUbicacion, panelTipoPago, panelBotonesReserva, panelTipoComprobante, panelContacto;
-    ImageView accionSectorUbicacion,b2,b3,b4,b5;
+    LinearLayout panelPrincipal, panelSeleccionUbicacion, panelMetodoPago, panelBotonesReserva, panelTipoComprobante, panelFechaContacto;
+    ImageView accionSectorUbicacion, accionSectorMetodoPago, accionSectorTipoComprobante,b4, accionSectorFechaContacto;
     Button btn_g,btn_tp,btn_g_c,btn_g_r;
     Button op1,op2,op3;
     boolean a1=false,a2=false,a3=false,c1=false,c2=false;
@@ -47,6 +72,11 @@ public class fragmentEnvioReserva extends Fragment {
     String codigo="";
     //Nuevas Variables
     Context context;
+    RecyclerView recyclerUbicacionesRecuperadas;
+    List<UbicacionDireccion> ListaUbicaciones;
+    public AdapterUbicaciones adapterUbicaciones;
+    LinearLayoutManager linearLayoutUbicaciones;
+    Sesion sesion=new Sesion();
     public fragmentEnvioReserva() {
         // Required empty public constructor
     }
@@ -57,14 +87,21 @@ public class fragmentEnvioReserva extends Fragment {
         View v=inflater.inflate(R.layout.fragment_envio_reserva, container, false);
         context=getActivity();
         recycler=v.findViewById(R.id.recycler_compra_pedido);
-        accionSectorUbicacion =v.findViewById(R.id.boton_direccion);
+        accionSectorUbicacion =v.findViewById(R.id.accionSectorUbicacion);
+        accionSectorFechaContacto =v.findViewById(R.id.accionSectorFechaContacto);
+        accionSectorMetodoPago =v.findViewById(R.id.accionSectorMetodoPago);
+        accionSectorTipoComprobante =v.findViewById(R.id.accionSectorTipoComprobante);
 
-        panelPrincipal =v.findViewById(R.id.panel_principal);
-        panelSeleccionUbicacion =v.findViewById(R.id.panel_nueva_direccion);
-        panelTipoPago =v.findViewById(R.id.panel_tipo_pago);
-        panelBotonesReserva =v.findViewById(R.id.panel_botoness);
-        panelTipoComprobante =v.findViewById(R.id.panel_tipocomprobante_reserva);
-        panelContacto=v.findViewById(R.id.panel_contacto_reserva);
+        panelPrincipal =v.findViewById(R.id.panelPrincipal);
+        panelSeleccionUbicacion =v.findViewById(R.id.panelSeleccionUbicacion);
+        panelFechaContacto =v.findViewById(R.id.panelFechaContacto);
+        panelMetodoPago =v.findViewById(R.id.panelMetodoPago);
+        panelTipoComprobante =v.findViewById(R.id.panelTipoComprobante);
+        panelBotonesReserva =v.findViewById(R.id.panelBotonesReserva);
+
+        recyclerUbicacionesRecuperadas=v.findViewById(R.id.recyclerUbicacionesRecuperadas);
+        ListaUbicaciones=new ArrayList<>();
+
 
 
 
@@ -72,9 +109,9 @@ public class fragmentEnvioReserva extends Fragment {
         c_condiciones=v.findViewById(R.id.check_condiciones);
 
         btn_g=v.findViewById(R.id.guardar_direc_nueva);
-        b2=v.findViewById(R.id.btn_tipo_pago);
+
         btn_tp=v.findViewById(R.id.btn_guardar_tipo_pago);
-        b3=v.findViewById(R.id.btn_comprobante);
+
         op1=v.findViewById(R.id.btn_tarjetas);
         op2=v.findViewById(R.id.btn_trasnf);
         op3=v.findViewById(R.id.btn_contraentrega);
@@ -82,20 +119,19 @@ public class fragmentEnvioReserva extends Fragment {
         panel2=v.findViewById(R.id.panel_selec_tranf);
         panel1.setVisibility(View.GONE);
         panel2.setVisibility(View.GONE);
-        b4=v.findViewById(R.id.btn_comprobante);
+
         btn_g_c=v.findViewById(R.id.btn_guardar_comrp);
         bole=v.findViewById(R.id.btn_boleta2);
         fac=v.findViewById(R.id.btn_factura2);
         card_fac=v.findViewById(R.id.panel_factura);
         card_fac.setVisibility(View.GONE);
-        b5=v.findViewById(R.id.btn_receptor);
-        btn_g_r=v.findViewById(R.id.boton_guardar_recep);
+
         btn_cupon=v. findViewById(R.id.btn_cupon);
         text_cupon=v.findViewById(R.id.text_cupon);
 
         SegundoModulo();
         PrimerModulo();
-        movimientos_entre_botones();
+        //movimientos_entre_botones();
         recycler_item_compra();
 
         condiciones();
@@ -139,19 +175,61 @@ public class fragmentEnvioReserva extends Fragment {
                 s=builder4.show();
             }
         });
+
+        listadoUbicaciones();
+        accionesMovimientoPaneles();
         return v;
     }
-    public void AccionesSectores(ImageView imagenSeleccion){
-        OcultarTodo();
-        imagenSeleccion.setVisibility(View.VISIBLE);
+
+    private void listadoUbicaciones() {
+        linearLayoutUbicaciones= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterUbicaciones = new AdapterUbicaciones(context, ListaUbicaciones, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+            }
+        });
+        recyclerUbicacionesRecuperadas.setAdapter(adapterUbicaciones);
+        recyclerUbicacionesRecuperadas.setLayoutManager(linearLayoutUbicaciones);
     }
-    public void OcultarTodo(){
+
+    private void accionesMovimientoPaneles() {
+        accionSectorUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Usuario usuarioTemporal=sesion.RecuperarSesion(context);
+                RecuperarUbicacionesUsuario(context,usuarioTemporal.getIdUsuario());
+                AccionesSectores(panelSeleccionUbicacion);
+            }
+        });
+        accionSectorFechaContacto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccionesSectores(panelFechaContacto);
+            }
+        });
+        accionSectorMetodoPago.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccionesSectores(panelMetodoPago);
+            }
+        });
+        accionSectorTipoComprobante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccionesSectores(panelTipoComprobante);
+            }
+        });
+
+    }
+
+
+    public void AccionesSectores(LinearLayout areaSeleccion){
         panelSeleccionUbicacion.setVisibility(View.GONE);
         panelPrincipal.setVisibility(View.GONE);
         panelBotonesReserva.setVisibility(View.GONE);
-        panelTipoPago.setVisibility(View.GONE);
+        panelMetodoPago.setVisibility(View.GONE);
+        areaSeleccion.setVisibility(View.VISIBLE);
     }
-
     private void condiciones() {
         c_condiciones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,32 +349,16 @@ public class fragmentEnvioReserva extends Fragment {
 
     }
     private void movimientos_entre_botones() {
-        accionSectorUbicacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccionesSectores(accionSectorUbicacion);
-            }
-        });
+
         btn_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 panelSeleccionUbicacion.setVisibility(View.GONE);
                 panelPrincipal.setVisibility(View.VISIBLE);
                 panelBotonesReserva.setVisibility(View.VISIBLE);
-                panelTipoPago.setVisibility(View.GONE);
+                panelMetodoPago.setVisibility(View.GONE);
             }
         });
-
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelPrincipal.setVisibility(View.GONE);
-                panelBotonesReserva.setVisibility(View.GONE);
-                panelTipoPago.setVisibility(View.VISIBLE);
-            }
-        });
-
 
         btn_tp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,7 +366,7 @@ public class fragmentEnvioReserva extends Fragment {
                 panelSeleccionUbicacion.setVisibility(View.GONE);
                 panelPrincipal.setVisibility(View.VISIBLE);
                 panelBotonesReserva.setVisibility(View.VISIBLE);
-                panelTipoPago.setVisibility(View.GONE);
+                panelMetodoPago.setVisibility(View.GONE);
             }
         });
 
@@ -314,7 +376,7 @@ public class fragmentEnvioReserva extends Fragment {
                 panelTipoComprobante.setVisibility(View.GONE);
                 panelPrincipal.setVisibility(View.VISIBLE);
                 panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelTipoPago.setVisibility(View.GONE);
+                panelMetodoPago.setVisibility(View.GONE);
                 panelBotonesReserva.setVisibility(View.VISIBLE);
             }
         });
@@ -325,18 +387,18 @@ public class fragmentEnvioReserva extends Fragment {
                 panelTipoComprobante.setVisibility(View.VISIBLE);
                 panelPrincipal.setVisibility(View.GONE);
                 panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelTipoPago.setVisibility(View.GONE);
+                panelMetodoPago.setVisibility(View.GONE);
                 panelBotonesReserva.setVisibility(View.GONE);
             }
         });
-        b5.setOnClickListener(new View.OnClickListener() {
+        accionSectorFechaContacto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                panelContacto.setVisibility(View.VISIBLE);
+
                 panelTipoComprobante.setVisibility(View.GONE);
                 panelPrincipal.setVisibility(View.GONE);
                 panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelTipoPago.setVisibility(View.GONE);
+                panelMetodoPago.setVisibility(View.GONE);
                 panelBotonesReserva.setVisibility(View.GONE);
             }
         });
@@ -346,7 +408,7 @@ public class fragmentEnvioReserva extends Fragment {
             public void onClick(View v) {
                 panelBotonesReserva.setVisibility(View.VISIBLE);
                 panelPrincipal.setVisibility(View.VISIBLE);
-                panelContacto.setVisibility(View.GONE);
+
             }
         });
     }
@@ -362,6 +424,65 @@ public class fragmentEnvioReserva extends Fragment {
         recycler.setAdapter(adapterXXX);
         recycler.setLayoutManager(linear1);
 
+    }
+    private void RecuperarUbicacionesUsuario(final Context context, final int idUsu) {
+        final String idUsuario=String.valueOf(idUsu);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                if (!jsonResponse.isNull("ubicaciones")) {
+                                    JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");
+
+                                    for (int i = 0; i < categorias.length(); i++) {
+                                        JSONObject objeto = categorias.getJSONObject(i);
+                                        UbicacionDireccion ubicacion=new UbicacionDireccion();
+                                        ubicacion.setIdUbicacionDireccion(objeto.getInt("idReservaUbicaciones"));
+                                        ubicacion.setDireccionEntrega(objeto.getString("DireccionEntrega"));
+                                        ubicacion.setReferenciaDireccion(objeto.getString("ReferenciaDireccion"));
+                                        UnidadTerritorial distrito=new UnidadTerritorial();
+                                        distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
+                                        distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                        ubicacion.setDistrito(distrito);
+                                        ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                        ListaUbicaciones.add(ubicacion);
+                                        adapterUbicaciones.notifyDataSetChanged();
+                                    }
+                                }else{
+                                    Log.e("Inca", "No se encuentran Ubicaciones Registradas.");
+                                }
+
+
+                            } else {
+                                Toast.makeText(context, "No se encuentran Ubicaciones Registradas.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca", "Error JSON EN Ubicaciones:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Constantes.OPERACION, "RecuperarUbicaciones");
+                params.put("idUsuario", idUsuario);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
 }
