@@ -8,6 +8,7 @@ public class UbicacionDireccion {
     Usuario usuarioUbicacionDireccion;
     String fechaRegistro;
     String fechaUpdate;
+    boolean Select;
 
     public UbicacionDireccion(){
     }
@@ -68,4 +69,11 @@ public class UbicacionDireccion {
         this.fechaUpdate = fechaUpdate;
     }
 
+    public boolean isSelect() {
+        return Select;
+    }
+
+    public void setSelect(boolean select) {
+        Select = select;
+    }
 }

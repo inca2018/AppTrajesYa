@@ -2,11 +2,13 @@ package inca.jesus.trajesya.fragmentos;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,8 +21,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +45,10 @@ import java.util.Map;
 
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.adapters.AdapterItemCarrito;
+import inca.jesus.trajesya.adapters.AdapterItemReserva;
+import inca.jesus.trajesya.adapters.AdapterItemReservaEnvio;
 import inca.jesus.trajesya.adapters.AdapterUbicaciones;
+import inca.jesus.trajesya.adapters.AdapterUbicacionesEnvio;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Sesion;
@@ -56,7 +62,7 @@ import static inca.jesus.trajesya.data.utils.Constantes.SUCCESS;
 public class fragmentEnvioReserva extends Fragment {
     RecyclerView recycler;
     LinearLayoutManager linear1;
-    AdapterItemCarrito adapterXXX;
+    AdapterItemReservaEnvio adapterXXX;
     LinearLayout panelPrincipal, panelSeleccionUbicacion, panelMetodoPago, panelBotonesReserva, panelTipoComprobante, panelFechaContacto;
     ImageView accionSectorUbicacion, accionSectorMetodoPago, accionSectorTipoComprobante,b4, accionSectorFechaContacto;
     Button btn_g,btn_tp,btn_g_c,btn_g_r;
@@ -74,9 +80,19 @@ public class fragmentEnvioReserva extends Fragment {
     Context context;
     RecyclerView recyclerUbicacionesRecuperadas;
     List<UbicacionDireccion> ListaUbicaciones;
-    public AdapterUbicaciones adapterUbicaciones;
+    public AdapterUbicacionesEnvio adapterUbicaciones;
     LinearLayoutManager linearLayoutUbicaciones;
     Sesion sesion=new Sesion();
+    Button btnVolverReserva;
+    Button btnSectorUbicacionVolver;
+    Button btnSectorUbicacionNuevaUbicacion;
+    Toolbar toolbarReservaEnvio;
+    ScrollView scrollEnvioReserva;
+    TextView txtPrincipalDireccion;
+    TextView txtPrincipalReferencia;
+    TextView txtPrincipalUsuario;
+    TextView txtPrincipalDistrito;
+
     public fragmentEnvioReserva() {
         // Required empty public constructor
     }
@@ -103,8 +119,16 @@ public class fragmentEnvioReserva extends Fragment {
         ListaUbicaciones=new ArrayList<>();
 
 
+        btnVolverReserva=v.findViewById(R.id.btnVolverReserva);
+        btnSectorUbicacionVolver=v.findViewById(R.id.btnSectorUbicacionVolver);
+        btnSectorUbicacionNuevaUbicacion=v.findViewById(R.id.btnSectorUbicacionNuevaUbicacion);
+        toolbarReservaEnvio=v.findViewById(R.id.toolbarReservaEnvio);
+        scrollEnvioReserva=v.findViewById(R.id.scrollEnvioReserva);
 
-
+        txtPrincipalUsuario=v.findViewById(R.id.txtPrincipalUsuario);
+        txtPrincipalDireccion=v.findViewById(R.id.txtPrincipalDireccion);
+        txtPrincipalReferencia=v.findViewById(R.id.txtPrincipalReferencia);
+        txtPrincipalDistrito=v.findViewById(R.id.txtPrincipalDistrito);
 
         c_condiciones=v.findViewById(R.id.check_condiciones);
 
@@ -178,27 +202,100 @@ public class fragmentEnvioReserva extends Fragment {
 
         listadoUbicaciones();
         accionesMovimientoPaneles();
+        accionBotones();
+
+        /*------------Recuperar Ubicaciones----------------------*/
+        Usuario usuarioTemporal=sesion.RecuperarSesion(context);
+        RecuperarUbicacionesUsuario(context,usuarioTemporal.getIdUsuario());
+
+        MostrarValoresPrincipal();
         return v;
     }
 
+    private void MostrarValoresPrincipal() {
+        Usuario usuarioTemporal=sesion.RecuperarSesion(context);
+
+        UbicacionDireccion ubicacionTemporal=Constantes.UBICACION_SELECT;
+        txtPrincipalUsuario.setText(usuarioTemporal.getNombreUsuario()+" "+usuarioTemporal.getApellidoUsuario());
+
+        if(ubicacionTemporal.getDistrito()!=null){
+            if(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial().length()>0){
+                txtPrincipalDistrito.setText(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial());
+            }else{
+                txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
+            }
+            txtPrincipalDistrito.setText(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial());
+        }else{
+            txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
+        }
+
+        if(ubicacionTemporal.getDireccionEntrega()!=null){
+            if(ubicacionTemporal.getDireccionEntrega().length()>0){
+                txtPrincipalDireccion.setText(ubicacionTemporal.getDireccionEntrega());
+            }else{
+                txtPrincipalDireccion.setText("Sin Dirección Seleccionada");
+            }
+        }else{
+            txtPrincipalDireccion.setText("Sin Dirección Seleccionada");
+        }
+        if(ubicacionTemporal.getReferenciaDireccion()!=null){
+            if(ubicacionTemporal.getDireccionEntrega().length()>0){
+                txtPrincipalReferencia.setText(ubicacionTemporal.getDireccionEntrega());
+            }else{
+                txtPrincipalReferencia.setText("");
+            }
+        }else{
+            txtPrincipalReferencia.setText("");
+        }
+    }
+
+    private void accionBotones() {
+        btnVolverReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ActivityPrincipal)context).opcionReserva();
+            }
+        });
+        btnSectorUbicacionVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AccionMostrarPrincipal();
+                scrollEnvioReserva.scrollTo(0,0);
+            }
+        });
+        btnSectorUbicacionNuevaUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ActivityPrincipal)context).opcionSesion();
+            }
+        });
+    }
+
+    @SuppressLint("WrongConstant")
     private void listadoUbicaciones() {
         linearLayoutUbicaciones= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        adapterUbicaciones = new AdapterUbicaciones(context, ListaUbicaciones, new RecyclerViewOnItemClickListener2() {
+        adapterUbicaciones = new AdapterUbicacionesEnvio(context, ListaUbicaciones, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
             }
         });
         recyclerUbicacionesRecuperadas.setAdapter(adapterUbicaciones);
         recyclerUbicacionesRecuperadas.setLayoutManager(linearLayoutUbicaciones);
+        adapterUbicaciones.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                MostrarValoresPrincipal();
+            }
+        });
     }
 
     private void accionesMovimientoPaneles() {
         accionSectorUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Usuario usuarioTemporal=sesion.RecuperarSesion(context);
-                RecuperarUbicacionesUsuario(context,usuarioTemporal.getIdUsuario());
                 AccionesSectores(panelSeleccionUbicacion);
+                MostrarToolbarAccion(false);
             }
         });
         accionSectorFechaContacto.setOnClickListener(new View.OnClickListener() {
@@ -223,11 +320,25 @@ public class fragmentEnvioReserva extends Fragment {
     }
 
 
+    public void MostrarToolbarAccion(boolean re){
+        if(re){
+            panelBotonesReserva.setVisibility(View.VISIBLE);
+            toolbarReservaEnvio.setVisibility(View.VISIBLE);
+        }else{
+            panelBotonesReserva.setVisibility(View.GONE);
+            toolbarReservaEnvio.setVisibility(View.GONE);
+        }
+    }
+    public void AccionMostrarPrincipal(){
+        AccionesSectores(panelPrincipal);
+        MostrarToolbarAccion(true);
+    }
     public void AccionesSectores(LinearLayout areaSeleccion){
         panelSeleccionUbicacion.setVisibility(View.GONE);
+        panelFechaContacto.setVisibility(View.GONE);
         panelPrincipal.setVisibility(View.GONE);
-        panelBotonesReserva.setVisibility(View.GONE);
         panelMetodoPago.setVisibility(View.GONE);
+        panelTipoComprobante.setVisibility(View.GONE);
         areaSeleccion.setVisibility(View.VISIBLE);
     }
     private void condiciones() {
@@ -415,7 +526,7 @@ public class fragmentEnvioReserva extends Fragment {
     @SuppressLint("WrongConstant")
     private void recycler_item_compra() {
         linear1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
-        adapterXXX = new AdapterItemCarrito(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
+        adapterXXX = new AdapterItemReservaEnvio(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 //not required
@@ -434,7 +545,6 @@ public class fragmentEnvioReserva extends Fragment {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean(SUCCESS);
-
                             if (success) {
                                 if (!jsonResponse.isNull("ubicaciones")) {
                                     JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");

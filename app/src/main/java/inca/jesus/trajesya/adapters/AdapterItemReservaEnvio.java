@@ -1,8 +1,6 @@
 package inca.jesus.trajesya.adapters;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -40,14 +40,14 @@ import inca.jesus.trajesya.data.utils.Constantes;
  * Created by Jesus on 01/06/2017.
  */
 
-public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.ViewHolder>  {
+public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemReservaEnvio.ViewHolder>  {
     private Context context;
     private List<ReservaItem> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
     public Sesion sesion=new Sesion();
     public Producto producto=new Producto();
 
-    public AdapterItemCarrito(Context context, List<ReservaItem> my_Data, RecyclerViewOnItemClickListener2
+    public AdapterItemReservaEnvio(Context context, List<ReservaItem> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {
         this.context = context;
         this.my_Data = my_Data;
@@ -59,13 +59,15 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
         public TextView precioProducto;
         public TextView descuentoProducto;
         public TextView talla;
-        public TextView revisadoProducto;
+
         public ImageView imagenProducto;
-        public Button  menos,mas;
+
         public TextView cantidad;
-        public ImageButton eliminar;
+
         public LinearLayout sectorDescuento;
         public LinearLayout sectorTalla;
+        public LinearLayout sectorTotal;
+        public TextView tvItemTotal;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -74,11 +76,8 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
             precioProducto = itemView.findViewById(R.id.tvItemPrecio);
             descuentoProducto = itemView.findViewById(R.id.tvItemDescuento);
             talla= itemView.findViewById(R.id.tvItemTalla);
-            revisadoProducto =  itemView.findViewById(R.id.tvItemRevisado);
             imagenProducto =  itemView.findViewById(R.id.ivItemImagen);
-            menos=itemView.findViewById(R.id.btnItemAccionMenos);
-            mas=itemView.findViewById(R.id.btnItemAccionMas);
-            eliminar=itemView.findViewById(R.id.ibItemEliminar);
+            tvItemTotal= itemView.findViewById(R.id.tvItemTotal);
             cantidad=itemView.findViewById(R.id.tvItemCantidad);
             sectorDescuento=itemView.findViewById(R.id.sectorDescuento);
             sectorTalla=itemView.findViewById(R.id.sectorTalla);
@@ -89,12 +88,12 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
         }
     }
 
-    public AdapterItemCarrito.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_reserva,parent,false);
-        return new AdapterItemCarrito.ViewHolder(itemView);
+    public AdapterItemReservaEnvio.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_reserva_envio,parent,false);
+        return new AdapterItemReservaEnvio.ViewHolder(itemView);
     }
     @Override
-    public void onBindViewHolder(AdapterItemCarrito.ViewHolder holder, final int position) {
+    public void onBindViewHolder(AdapterItemReservaEnvio.ViewHolder holder, final int position) {
         DecimalFormat formateador = new DecimalFormat("###,###.00");
         holder.nombreProducto.setText(my_Data.get(position).getProductoItem().getNombreProducto());
         if(my_Data.get(position).getProductoItem().getPrecioAlquiler()>0){
@@ -102,7 +101,6 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
         }else{
             holder.precioProducto.setText("S./ 0.00");
         }
-
         if(my_Data.get(position).getProductoItem().getPrecioPromocion()>0){
             holder.descuentoProducto.setText("- "+formateador.format(my_Data.get(position).getProductoItem().getPrecioPromocion())+" %");
             holder.sectorDescuento.setVisibility(View.VISIBLE);
@@ -110,7 +108,6 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
             holder.descuentoProducto.setText("- 0%");
             holder.sectorDescuento.setVisibility(View.GONE);
         }
-
         if(my_Data.get(position).getMedidaReservaItem()!=null){
             if(my_Data.get(position).getMedidaReservaItem().getIdMedida()>0){
                 holder.sectorTalla.setVisibility(View.VISIBLE);
@@ -121,15 +118,11 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
         }else{
             holder.sectorTalla.setVisibility(View.GONE);
         }
-
-        holder.revisadoProducto.setText("Autentificado y Revisado por: "+my_Data.get(position).getProductoItem().getVerificadoProducto());
-
         Picasso.get()
                 .load(Constantes.PATH_IMAGEN+my_Data.get(position).getProductoItem().getImagenProducto())
                 .placeholder(R.drawable.default_imagen)
                 .error(R.drawable.default_imagen)
                 .into(holder.imagenProducto);
-
         holder.imagenProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,42 +132,12 @@ public class AdapterItemCarrito extends RecyclerView.Adapter<AdapterItemCarrito.
                 sesion.RegistrarProducto(context,producto);
             }
         });
-
-        holder.eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    my_Data.remove(position);
-                    notifyDataSetChanged();
-              }
-        });
         holder.cantidad.setText(String.valueOf(my_Data.get(position).getCantidad()));
-        holder.mas.setOnClickListener(new View.OnClickListener() {
-            @Override
-             public void onClick(View v) {
-                if(my_Data.get(position).getCantidad()<Constantes.CANTIDAD_MAX_STOCK){
-                    int total=my_Data.get(position).getCantidad()+1;
-                     my_Data.get(position).setCantidad(total);
-                     my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
-                    notifyDataSetChanged();
-                }
-            }
-        });
-        holder.menos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(my_Data.get(position).getCantidad()!=1){
-                    int total=my_Data.get(position).getCantidad()-1;
-                    my_Data.get(position).setCantidad(total);
-                    my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
-                    notifyDataSetChanged();
-                }
-            }
-        });
 
         int total=my_Data.get(position).getCantidad();
         my_Data.get(position).setCantidad(total);
         my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
-
+        holder.tvItemTotal.setText("S/ "+formateador.format(my_Data.get(position).getTotal()));
     }
     @Override
     public int getItemCount() {

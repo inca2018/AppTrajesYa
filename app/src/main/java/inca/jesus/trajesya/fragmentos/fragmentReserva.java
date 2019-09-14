@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 
 import inca.jesus.trajesya.activities.ActivityPrincipal;
 import inca.jesus.trajesya.adapters.AdapterItemProductosMini;
-import inca.jesus.trajesya.adapters.AdapterItemCarrito;
+import inca.jesus.trajesya.adapters.AdapterItemReserva;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.ListCarrito;
 import inca.jesus.trajesya.R;
@@ -28,7 +28,7 @@ import inca.jesus.trajesya.data.utils.Constantes;
 public class fragmentReserva extends Fragment {
     private RecyclerView recycler1ItemReserva,recycler2;
     private LinearLayoutManager linearLayout1,linearLayout2;
-    private AdapterItemCarrito adapterItemReserva;
+    private AdapterItemReserva adapterItemReserva;
     private AdapterItemProductosMini adapterPromocion;
     public LinearLayout sectorListaVacia, accionBotonReservar, sectorAccionSeguirComprando;
     TextView precio_total;
@@ -71,7 +71,7 @@ public class fragmentReserva extends Fragment {
         }else{
 
             linearLayout1 = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
-            adapterItemReserva = new AdapterItemCarrito(getActivity(), Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
+            adapterItemReserva = new AdapterItemReserva(getActivity(), Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
                 @Override
                 public void onClick(View v, int position) {
                     //not required

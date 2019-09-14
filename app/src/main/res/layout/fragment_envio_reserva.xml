@@ -7,6 +7,7 @@
     tools:context=".fragmentos.fragmentEnvioReserva">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarReservaEnvio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blanco"
@@ -39,204 +40,176 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-
     <LinearLayout
-            android:id="@+id/panelPrincipal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="140dp"
-        android:layout_marginTop="50dp"
-            >
-            <ScrollView
+        android:id="@+id/panelPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="140dp"
+        android:orientation="vertical">
 
+        <ScrollView
+            android:id="@+id/scrollEnvioReserva"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="5dp">
 
-                    <androidx.cardview.widget.CardView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:orientation="vertical"
-                                android:layout_gravity="center">
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@mipmap/ic_gps"
-                                    android:layout_margin="4dp"
-                                    />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="2"
-                                android:layout_margin="4dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Ubicación de Entrega"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/negro"
-                                    android:layout_margin="4dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Jesus Inca Cardenas"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/negro"
-                                    android:layout_margin="4dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ahhdhjdwdwdwdwdwdwdwdwdwdwdwdwdwdwdwd"
-                                    android:inputType="textMultiLine"
-                                    android:layout_margin="4dp"
-                                    android:textSize="10sp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Referencia"
-                                    android:layout_margin="4dp"
-                                    android:textSize="12sp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Distrito"
-                                    android:layout_margin="4dp"
-                                    android:textSize="10sp"/>
-
-
-                            </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/accionSectorUbicacion"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="6"
-                                android:src="@mipmap/ic_arrow_right" />
-
-                        </LinearLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:src="@mipmap/ic_fecha_reserva"
-                                android:layout_margin="4dp"
-                                />
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="2"
-                                android:layout_margin="4dp">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Fecha y Contacto"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/negro"
-                                    android:layout_margin="4dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Jose Inca Cardenas"
-                                    android:textSize="10sp"
-                                    android:layout_margin="4dp"/>
-
-                            </LinearLayout>
-                            <ImageView
-                                android:id="@+id/accionSectorFechaContacto"
-                                android:layout_weight="6"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@mipmap/ic_arrow_right"
-                                android:layout_margin="4dp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="6"
                             android:orientation="vertical">
 
-
-                            <LinearLayout
+                            <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:layout_margin="4dp"
+                                android:src="@mipmap/ic_gps" />
+                        </LinearLayout>
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="5"
-                                    android:src="@mipmap/ic_delivery_v2"/>
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="Envió"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/negro"
-                                    android:padding="10dp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
 
-                            </LinearLayout>
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_compra_pedido"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="6dp">
+                                android:layout_margin="4dp"
+                                android:text="Ubicación de Entrega"
+                                android:textColor="@color/negro"
+                                android:textSize="10sp" />
 
+                            <TextView
+                                android:id="@+id/txtPrincipalUsuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Jesus Inca Cardenas"
+                                android:textColor="@color/negro"
+                                android:textSize="12sp" />
 
-                            </androidx.recyclerview.widget.RecyclerView>
+                            <TextView
+                                android:id="@+id/txtPrincipalDireccion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:inputType="textMultiLine"
+                                android:text="ahhdhjdwdwdwdwdwdwdwdwdwdwdwdwdwdwdwd"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/txtPrincipalReferencia"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Referencia"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtPrincipalDistrito"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Distrito"
+                                android:textSize="10sp" />
+
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
+                        <ImageView
+                            android:id="@+id/accionSectorUbicacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_arrow_right" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_fecha_reserva" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Fecha y Contacto"
+                                android:textColor="@color/negro"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Jose Inca Cardenas"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/accionSectorFechaContacto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_arrow_right" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
 
                         <LinearLayout
@@ -246,99 +219,147 @@
 
                             <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:src="@mipmap/ic_card_credit_v2"
-                                android:layout_margin="4dp"
-                                />
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="2"
-                                android:layout_margin="4dp">
+                                android:layout_height="match_parent"
+                                android:layout_weight="5"
+                                android:src="@mipmap/ic_delivery_v2" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Método de Pago"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/negro"
-                                    android:layout_margin="4dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Tarjeta de Crédito o débito"
-                                    android:textSize="10sp"
-                                    android:layout_margin="4dp"/>
-
-
-                            </LinearLayout>
-                            <ImageView
-                                android:id="@+id/accionSectorMetodoPago"
-
-                                android:layout_weight="6"
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@mipmap/ic_arrow_right"
-                                android:layout_margin="4dp"/>
+                                android:layout_weight="1"
+                                android:padding="10dp"
+                                android:text="Envió"
+                                android:textColor="@color/negro"
+                                android:textSize="10sp" />
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_compra_pedido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="6dp">
+
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_card_credit_v2" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="6"
-                                android:src="@mipmap/ic_documento_reserva"
                                 android:layout_margin="4dp"
-                                />
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_weight="2"
-                                android:layout_margin="4dp">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Comprobante de Pago"
-                                    android:textSize="10sp"
-                                    android:textColor="@color/negro"
-                                    android:layout_margin="4dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Boleta"
-                                    android:textSize="10sp"
-                                    android:layout_margin="4dp"/>
+                                android:text="Método de Pago"
+                                android:textColor="@color/negro"
+                                android:textSize="10sp" />
 
-                            </LinearLayout>
-                            <ImageView
-                                android:id="@+id/accionSectorTipoComprobante"
-                                android:layout_weight="6"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@mipmap/ic_arrow_right"
-                                android:layout_margin="4dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Tarjeta de Crédito o débito"
+                                android:textSize="10sp" />
+
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/accionSectorMetodoPago"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_arrow_right" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_documento_reserva" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Comprobante de Pago"
+                                android:textColor="@color/negro"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:text="Boleta"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/accionSectorTipoComprobante"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:layout_weight="6"
+                            android:src="@mipmap/ic_arrow_right" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
 
-                </LinearLayout>
-            </ScrollView>
-        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
 
     <LinearLayout
@@ -346,72 +367,63 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="60dp"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
-        <androidx.cardview.widget.CardView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/blanco"
-            android:backgroundTint="@color/blanco"
-            app:cardCornerRadius="10dp">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="SELECCIONE UNA UBICACIÓN GUARDADA"
+                android:textColor="@color/SinCheck"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="8dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="SELECCIONE UNA UBICACIÓN GUARDADA"
-                    android:textColor="@color/SinCheck"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <RelativeLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerUbicacionesRecuperadas"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp">
+                    android:layout_marginBottom="50dp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerUbicacionesRecuperadas"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="50dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/btnSectorUbicacionVolver"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:background="@color/colorAccent"
+                        android:text="VOLVER"
+                        android:textColor="@color/blanco" />
 
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/colorAccent"
-                            android:text="VOLVER"
-                            android:textColor="@color/blanco" />
-
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/deseo"
-                            android:text="NUEVA UBICACIÓN"
-                            android:textColor="@color/blanco" />
-                    </LinearLayout>
-                </RelativeLayout>
+                    <Button
+                        android:id="@+id/btnSectorUbicacionNuevaUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/deseo"
+                        android:text="NUEVA UBICACIÓN"
+                        android:textColor="@color/blanco" />
+                </LinearLayout>
+            </RelativeLayout>
 
 
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -427,29 +439,30 @@
             android:id="@+id/btn_tarjetas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tarjeta de crédito o débito"
+            android:layout_margin="10dp"
             android:background="@color/colorPrimary"
+            android:text="Tarjeta de crédito o débito"
             android:textColor="@color/blanco"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/panel_selec_tarjeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blanco"
+            android:layout_margin="10dp"
             android:background="@color/blanco"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="10dp">
+            android:backgroundTint="@color/blanco"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Numero de Tarjeta"/>
+                    android:hint="Numero de Tarjeta" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -459,26 +472,23 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_margin="10dp"
-                        android:hint="Mes"
-                        />
+                        android:layout_weight="1"
+                        android:hint="Mes" />
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_margin="10dp"
-                        android:hint="Año"
-                        />
+                        android:layout_weight="1"
+                        android:hint="Año" />
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
                         android:layout_weight="2"
-                        android:layout_margin="10dp"
-                        android:hint="CVV"
-                        />
+                        android:hint="CVV" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -491,20 +501,21 @@
             android:id="@+id/btn_trasnf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Transferencia Bancaria"
+            android:layout_margin="10dp"
             android:background="@color/colorPrimary"
+            android:text="Transferencia Bancaria"
             android:textColor="@color/blanco"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/panel_selec_tranf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blanco"
+            android:layout_margin="10dp"
             android:background="@color/blanco"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="10dp">
+            android:backgroundTint="@color/blanco"
+            app:cardCornerRadius="10dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -513,35 +524,36 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ingrese Numero de Cuenta"
-                    android:layout_margin="10dp"/>
+                    android:layout_margin="10dp"
+                    android:text="Ingrese Numero de Cuenta" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    />
+                    android:layout_margin="10dp" />
 
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
         <Button
             android:id="@+id/btn_contraentrega"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contraentrega"
+            android:layout_margin="10dp"
             android:background="@color/colorPrimary"
+            android:text="Contraentrega"
             android:textColor="@color/blanco"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btn_guardar_tipo_pago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/deseo"
             android:text="GUARDAR"
-            android:textColor="@color/blanco"
-            android:background="@color/deseo"/>
+            android:textColor="@color/blanco" />
     </LinearLayout>
 
     <LinearLayout
@@ -723,6 +735,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnVolverReserva"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

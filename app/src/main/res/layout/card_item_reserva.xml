@@ -162,7 +162,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif-condensed"
-                                android:gravity="start|center_vertical"
+                                android:gravity="center|center_vertical"
                                 android:text="Precio Promoción: S/ 1200.00"
                                 android:textColor="@color/base2"
                                 android:textSize="16sp"
@@ -193,7 +193,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif-condensed"
-                                android:gravity="start|center_vertical"
+                                android:gravity="center|center_vertical"
                                 android:text="Precio miCumple: S/ 1000.00"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -221,7 +221,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:fontFamily="sans-serif-condensed"
-                                android:gravity="start|center_vertical"
+                                android:gravity="center|center_vertical"
                                 android:text="Precio miCumple: S/ 1000.00"
                                 android:textColor="@color/sombra"
                                 android:textSize="16sp" />
