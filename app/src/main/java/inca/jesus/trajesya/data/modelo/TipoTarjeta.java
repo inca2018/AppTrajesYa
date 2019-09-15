@@ -6,6 +6,7 @@ public class TipoTarjeta {
     String fechaRegistro;
     String fechaUpdate;
     Estado estadoTipoTarjeta;
+    boolean select ;
 
     public TipoTarjeta(){
 
@@ -49,5 +50,13 @@ public class TipoTarjeta {
 
     public void setEstadoTipoTarjeta(Estado estadoTipoTarjeta) {
         this.estadoTipoTarjeta = estadoTipoTarjeta;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
     }
 }

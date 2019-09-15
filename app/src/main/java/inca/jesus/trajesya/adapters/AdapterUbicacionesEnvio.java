@@ -89,6 +89,18 @@ public class AdapterUbicacionesEnvio extends RecyclerView.Adapter<AdapterUbicaci
         }else{
             holder.ivCheckSelected.setVisibility(View.GONE);
         }
+        holder.AreaCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(my_Data.get(position).isSelect()){
+                    my_Data.get(position).setSelect(false);
+                }else{
+                    QuitarSeleccion();
+                    MarcarSeleccion(position);
+                }
+                notifyDataSetChanged();
+            }
+        });
         holder.nombreUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +144,6 @@ public class AdapterUbicacionesEnvio extends RecyclerView.Adapter<AdapterUbicaci
     private void MarcarSeleccion(int position) {
         my_Data.get(position).setSelect(true);
         Constantes.UBICACION_SELECT=my_Data.get(position);
-
     }
 
     private void QuitarSeleccion() {

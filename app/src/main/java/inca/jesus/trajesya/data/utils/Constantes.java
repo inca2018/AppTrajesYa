@@ -10,6 +10,9 @@ import inca.jesus.trajesya.data.modelo.Publicidad;
 import inca.jesus.trajesya.data.modelo.Reserva;
 import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.SubCategoria;
+import inca.jesus.trajesya.data.modelo.TipoComprobante;
+import inca.jesus.trajesya.data.modelo.TipoPago;
+import inca.jesus.trajesya.data.modelo.TipoTarjeta;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 
 public class Constantes {
@@ -19,6 +22,10 @@ public class Constantes {
     public final static String GESTION=PATH+"/App/Gestion/CGestion.php";
     public final static String PATH_IMAGEN="http://admin.trajesya.com/assets/images/";
 
+
+    public final static String TEXT_CONDICION_RESERVA="* La entrega de los pedidos estan sujetos a un plazo de 24 Horas realizada la reserva, sin embargo aceptando la Reserva URGENTE se realiza un recargo por la gestión de entrega dentro de las 24 Horas realizada la Reserva,y según lo coordinado con el counter.";
+    public final static int INICIO_HORARIO=9;
+    public final static int FIN_HORARIO=21;
 
     public final static int TIEMPO_PUBLICIDAD=20000;
     public static boolean CANTIDAD_PUBLICIDAD=false;
@@ -32,6 +39,9 @@ public class Constantes {
 
     public final static List<Promocion> Base_ListaPromociones = new ArrayList<>();
     public final static List<Publicidad> Base_ListaPublicidad = new ArrayList<>();
+    public final static List<TipoPago> Base_ListaTipoPago =new ArrayList<>();
+    public final static List<TipoTarjeta> Base_ListaTipoTarjeta =new ArrayList<>();
+    public final static List<TipoComprobante> Base_ListaTipoComprobante =new ArrayList<>();
 
     public final static List<Producto> Base_ListaProductoRecientes= new ArrayList<>();// FALTA
     public final static List<Producto> Base_ListaProductoPromociones=new ArrayList<>();//OK
@@ -58,6 +68,9 @@ public class Constantes {
     public static Reserva RESERVA_LOCAL=new Reserva();
     public static List<ReservaItem> RESERVA_ITEMS=new ArrayList<>();
     public static UbicacionDireccion UBICACION_SELECT=new UbicacionDireccion();
+    public static TipoPago TIPO_PAGO_SELECT=new TipoPago();
+    public static TipoTarjeta TIPO_TARJETA_SELECT=new TipoTarjeta();
+    public static TipoComprobante TIPO_COMPROBANTE_SELECT=new TipoComprobante();
 
 
     public static final String SUCCESS ="success";

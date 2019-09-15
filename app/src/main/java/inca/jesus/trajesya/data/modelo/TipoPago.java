@@ -4,6 +4,7 @@ public class TipoPago {
     int idTipoPago;
     String nombreTipoPago;
     String fechaRegistro;
+    boolean select;
 
     public TipoPago(){
 
@@ -31,5 +32,13 @@ public class TipoPago {
 
     public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
     }
 }

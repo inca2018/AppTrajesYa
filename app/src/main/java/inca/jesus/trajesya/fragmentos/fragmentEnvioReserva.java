@@ -2,8 +2,9 @@ package inca.jesus.trajesya.fragmentos;
 
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -39,19 +41,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
-import inca.jesus.trajesya.adapters.AdapterItemReserva;
 import inca.jesus.trajesya.adapters.AdapterItemReservaEnvio;
-import inca.jesus.trajesya.adapters.AdapterUbicaciones;
+import inca.jesus.trajesya.adapters.AdapterTipoComprobante;
+import inca.jesus.trajesya.adapters.AdapterTipoPago;
+import inca.jesus.trajesya.adapters.AdapterTipoTarjeta;
 import inca.jesus.trajesya.adapters.AdapterUbicacionesEnvio;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Sesion;
+import inca.jesus.trajesya.data.modelo.TipoPago;
+import inca.jesus.trajesya.data.modelo.TipoTarjeta;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
 import inca.jesus.trajesya.data.modelo.Usuario;
@@ -65,12 +73,7 @@ public class fragmentEnvioReserva extends Fragment {
     AdapterItemReservaEnvio adapterXXX;
     LinearLayout panelPrincipal, panelSeleccionUbicacion, panelMetodoPago, panelBotonesReserva, panelTipoComprobante, panelFechaContacto;
     ImageView accionSectorUbicacion, accionSectorMetodoPago, accionSectorTipoComprobante,b4, accionSectorFechaContacto;
-    Button btn_g,btn_tp,btn_g_c,btn_g_r;
-    Button op1,op2,op3;
     boolean a1=false,a2=false,a3=false,c1=false,c2=false;
-    CardView panel1,panel2;
-    Button bole,fac;
-    private CardView card_fac;
     CheckBox c_condiciones;
     boolean status=false;
     AlertDialog d,s;
@@ -86,12 +89,58 @@ public class fragmentEnvioReserva extends Fragment {
     Button btnVolverReserva;
     Button btnSectorUbicacionVolver;
     Button btnSectorUbicacionNuevaUbicacion;
+    Button btnSectorContactoVolver;
+    Button btnSectorContactoGuardar;
     Toolbar toolbarReservaEnvio;
     ScrollView scrollEnvioReserva;
     TextView txtPrincipalDireccion;
     TextView txtPrincipalReferencia;
     TextView txtPrincipalUsuario;
     TextView txtPrincipalDistrito;
+
+    ImageView ivAccionFecha;
+    TextView txtAccionFecha;
+    ImageView ivAccionHora;
+    TextView txtAccionHora;
+
+    CheckBox checkUrgencia;
+    boolean URGENCIA=false;
+    boolean SAVE_CONTACTO=false;
+    EditText etContactoTelefono;
+    TextView txtPrincipalMetodoPago;
+    TextView txtPrincipalTipoComprobante;
+
+    Button btnEnviarReserva;
+
+    int DAY;
+    int MONTH;
+    int YEAR;
+    int HOUR;
+    int MINUTE;
+    String AMPM;
+    private static final String CERO = "0";
+    private static final String BARRA = "/";
+
+    TextView txtPrincipalFechaEntrega;
+    TextView txtPrincipalHoraEntrega;
+    TextView txtPrincipalTelefonoEntrega;
+
+    Button btnSectorTipoPagoVolver;
+
+    RecyclerView recyclerTipoPago;
+    LinearLayoutManager linearLayoutTipoPago;
+    public AdapterTipoPago adapterTipoPago;
+
+    RecyclerView recyclerTipoTarjeta;
+    LinearLayoutManager linearLayoutTipoTarjeta;
+    public AdapterTipoTarjeta adapterTipoTarjeta;
+    public Button btnSectorTipoComprobanteVolver;
+
+    RecyclerView recyclerTipoComprobante;
+    LinearLayoutManager linearLayoutTipoComprobante;
+    public AdapterTipoComprobante adapterTipoComprobante;
+
+    TextView sectorTituloTipoTarjeta;
 
     public fragmentEnvioReserva() {
         // Required empty public constructor
@@ -130,31 +179,50 @@ public class fragmentEnvioReserva extends Fragment {
         txtPrincipalReferencia=v.findViewById(R.id.txtPrincipalReferencia);
         txtPrincipalDistrito=v.findViewById(R.id.txtPrincipalDistrito);
 
+        btnSectorContactoVolver=v.findViewById(R.id.btnSectorContactoVolver);
+        btnSectorContactoGuardar=v.findViewById(R.id.btnSectorContactoGuardar);
+
+        /*--------------VARIABLES FECHA Y HORA----------------*/
+        ivAccionFecha=v.findViewById(R.id.ivAccionFecha);
+        txtAccionFecha=v.findViewById(R.id.txtAccionFecha);
+        ivAccionHora=v.findViewById(R.id.ivAccionHora);
+        txtAccionHora=v.findViewById(R.id.txtAccionHora);
+
+        etContactoTelefono=v.findViewById(R.id.etContactoTelefono);
+
+        checkUrgencia=v.findViewById(R.id.checkUrgencia);
+        if(URGENCIA){
+            checkUrgencia.setChecked(true);
+        }else{
+            checkUrgencia.setChecked(false);
+        }
+
+        txtPrincipalFechaEntrega=v.findViewById(R.id.txtPrincipalFechaEntrega);
+        txtPrincipalHoraEntrega=v.findViewById(R.id.txtPrincipalHoraEntrega);
+        txtPrincipalTelefonoEntrega=v.findViewById(R.id.txtPrincipalTelefonoEntrega);
+
+        btnSectorTipoPagoVolver=v.findViewById(R.id.btnSectorTipoPagoVolver);
+
+
+        txtPrincipalMetodoPago=v.findViewById(R.id.txtPrincipalMetodoPago);
+
+        recyclerTipoPago=v.findViewById(R.id.recyclerTipoPago);
+        recyclerTipoTarjeta=v.findViewById(R.id.recyclerTipoTarjeta);
+        recyclerTipoComprobante=v.findViewById(R.id.recyclerTipoComprobante);
+        btnSectorTipoComprobanteVolver=v.findViewById(R.id.btnSectorTipoComprobanteVolver);
+        txtPrincipalTipoComprobante=v.findViewById(R.id.txtPrincipalTipoComprobante);
+        sectorTituloTipoTarjeta=v.findViewById(R.id.sectorTituloTipoTarjeta);
+
+        btnEnviarReserva=v.findViewById(R.id.btnEnviarReserva);
+        /************************************/
+
         c_condiciones=v.findViewById(R.id.check_condiciones);
 
-        btn_g=v.findViewById(R.id.guardar_direc_nueva);
-
-        btn_tp=v.findViewById(R.id.btn_guardar_tipo_pago);
-
-        op1=v.findViewById(R.id.btn_tarjetas);
-        op2=v.findViewById(R.id.btn_trasnf);
-        op3=v.findViewById(R.id.btn_contraentrega);
-        panel1=v.findViewById(R.id.panel_selec_tarjeta);
-        panel2=v.findViewById(R.id.panel_selec_tranf);
-        panel1.setVisibility(View.GONE);
-        panel2.setVisibility(View.GONE);
-
-        btn_g_c=v.findViewById(R.id.btn_guardar_comrp);
-        bole=v.findViewById(R.id.btn_boleta2);
-        fac=v.findViewById(R.id.btn_factura2);
-        card_fac=v.findViewById(R.id.panel_factura);
-        card_fac.setVisibility(View.GONE);
 
         btn_cupon=v. findViewById(R.id.btn_cupon);
         text_cupon=v.findViewById(R.id.text_cupon);
 
-        SegundoModulo();
-        PrimerModulo();
+
         //movimientos_entre_botones();
         recycler_item_compra();
 
@@ -199,20 +267,161 @@ public class fragmentEnvioReserva extends Fragment {
                 s=builder4.show();
             }
         });
-
         listadoUbicaciones();
+        listadoTipoPago();
+        listadoTipoTarjeta();
+        listadoTipoComprobante();
         accionesMovimientoPaneles();
         accionBotones();
-
         /*------------Recuperar Ubicaciones----------------------*/
         Usuario usuarioTemporal=sesion.RecuperarSesion(context);
         RecuperarUbicacionesUsuario(context,usuarioTemporal.getIdUsuario());
-
         MostrarValoresPrincipal();
+        AccionBotonesContacto();
+        VerificacionUrgencia();
+        AccionEnviarReserva();
         return v;
     }
 
-    private void MostrarValoresPrincipal() {
+    private void AccionEnviarReserva() {
+        btnEnviarReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
+    }
+
+    public void VerificacionUrgencia() {
+
+        checkUrgencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(URGENCIA){
+                    checkUrgencia.setChecked(false);
+                    URGENCIA=false;
+                    txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                }else{
+                    checkUrgencia.setChecked(true);
+                    URGENCIA=true;
+                    txtAccionFecha.setText(VerificarDigitos(DAY)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                }
+            }
+        });
+    }
+    public void AccionBotonesContacto() {
+
+
+        ivAccionFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog recogerFecha = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+                        final int mesActual = month + 1;
+                        //Formateo el día obtenido: antepone el 0 si son menores de 10
+                        String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
+                        //Formateo el mes obtenido: antepone el 0 si son menores de 10
+                        String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
+                        //Muestro la fecha con el formato deseado
+                        txtAccionFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+                    }
+                    //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
+                    /**
+                     *También puede cargar los valores que usted desee
+                     */
+                },YEAR, MONTH,DAY);
+
+
+                if(URGENCIA){
+                    Calendar c = Calendar.getInstance();
+                    c.set(YEAR, MONTH, DAY);
+                    recogerFecha.getDatePicker().setMinDate(c.getTimeInMillis());
+                }else{
+                    Calendar c = Calendar.getInstance();
+                    c.set(YEAR, MONTH, DAY+1);
+                    recogerFecha.getDatePicker().setMinDate(c.getTimeInMillis());
+                }
+                recogerFecha.show();
+            }
+        });
+        ivAccionHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TimePickerDialog recogerHora = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        //Formateo el hora obtenido: antepone el 0 si son menores de 10
+                        String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
+                        //Formateo el minuto obtenido: antepone el 0 si son menores de 10
+                        String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
+                        //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
+                        String AM_PM;
+                        if(hourOfDay < 12) {
+                            AM_PM = "a.m.";
+                        } else {
+                            AM_PM = "p.m.";
+                        }
+                        if(hourOfDay>=Constantes.INICIO_HORARIO && hourOfDay<=Constantes.FIN_HORARIO){
+                            //Muestro la hora con el formato deseado
+                            txtAccionHora.setText(horaFormateada + ":" + minutoFormateado + " " + AM_PM);
+                        }else{
+                            Toast.makeText(context, "El Horario de atención para las reservas es de "+Constantes.INICIO_HORARIO+" a.m. a "+Constantes.FIN_HORARIO+" p.m.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    //Estos valores deben ir en ese orden
+                    //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
+                    //Pero el sistema devuelve la hora en formato 24 horas
+                }, HOUR, MINUTE, false);
+                recogerHora.show();
+            }
+        });
+    }
+    public void CalcularFechaHoraActual() {
+
+        Calendar calendarNow = new GregorianCalendar(TimeZone.getTimeZone("America/Lima"));
+        DAY =calendarNow.get(Calendar.DAY_OF_MONTH);
+        MONTH = calendarNow.get(Calendar.MONTH);
+        YEAR = calendarNow.get(Calendar.YEAR);
+        HOUR = calendarNow.get(Calendar.HOUR);
+        MINUTE= calendarNow.get(Calendar.MINUTE);
+        int ampm=calendarNow.get(Calendar.AM_PM);
+        AMPM=VerificarTiempo(ampm);
+
+        Log.i("Inca","Fecha y Hora:"+
+                VerificarDigitos(DAY)+"/"+
+                VerificarDigitos(MONTH+1)+"/"+YEAR+" "+
+                VerificarDigitos(HOUR)+":"+
+                VerificarDigitos(MINUTE)+" "+
+                AMPM);
+        txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+        txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+        etContactoTelefono.setText("");
+    }
+    public String VerificarDigitos(int valor){
+        String re="";
+        if(String.valueOf(valor).length()==1){
+            re="0"+valor;
+        }else{
+            re=String.valueOf(valor);
+        }
+        return re;
+    }
+    public String VerificarTiempo(int valor){
+        String re="";
+        if(valor==1){
+            re="p.m.";
+        }else{
+            re="a.m.";
+        }
+        return re;
+    }
+    public void MostrarValoresPrincipal() {
         Usuario usuarioTemporal=sesion.RecuperarSesion(context);
 
         UbicacionDireccion ubicacionTemporal=Constantes.UBICACION_SELECT;
@@ -224,7 +433,7 @@ public class fragmentEnvioReserva extends Fragment {
             }else{
                 txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
             }
-            txtPrincipalDistrito.setText(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial());
+            //txtPrincipalDistrito.setText(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial());
         }else{
             txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
         }
@@ -248,8 +457,7 @@ public class fragmentEnvioReserva extends Fragment {
             txtPrincipalReferencia.setText("");
         }
     }
-
-    private void accionBotones() {
+    public void accionBotones() {
         btnVolverReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,10 +477,44 @@ public class fragmentEnvioReserva extends Fragment {
                 ((ActivityPrincipal)context).opcionSesion();
             }
         });
+        btnSectorContactoVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AccionMostrarPrincipal();
+                scrollEnvioReserva.scrollTo(0,0);
+            }
+        });
+        btnSectorContactoGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(etContactoTelefono.getText().length()<9){
+                    Toast.makeText(context, "Telefono Celular no es correcto!", Toast.LENGTH_SHORT).show();
+                }else{
+                    AccionMostrarPrincipal();
+                    SAVE_CONTACTO=true;
+                    txtPrincipalFechaEntrega.setText(VerificarDigitos(DAY)+BARRA+VerificarDigitos((MONTH+1))+BARRA+YEAR);
+                    txtPrincipalHoraEntrega.setText(VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                    txtPrincipalTelefonoEntrega.setText(etContactoTelefono.getText().toString());
+                }
+            }
+        });
+        btnSectorTipoPagoVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AccionMostrarPrincipal();
+                scrollEnvioReserva.scrollTo(0,0);
+            }
+        });
+        btnSectorTipoComprobanteVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AccionMostrarPrincipal();
+                scrollEnvioReserva.scrollTo(0,0);
+            }
+        });
     }
-
     @SuppressLint("WrongConstant")
-    private void listadoUbicaciones() {
+    public void listadoUbicaciones() {
         linearLayoutUbicaciones= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         adapterUbicaciones = new AdapterUbicacionesEnvio(context, ListaUbicaciones, new RecyclerViewOnItemClickListener2() {
             @Override
@@ -289,8 +531,110 @@ public class fragmentEnvioReserva extends Fragment {
             }
         });
     }
+    @SuppressLint("WrongConstant")
+    public void listadoTipoPago() {
+        linearLayoutTipoPago= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterTipoPago = new AdapterTipoPago(context, Constantes.Base_ListaTipoPago, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+                //note required
+            }
+        });
+        recyclerTipoPago.setAdapter(adapterTipoPago);
+        recyclerTipoPago.setLayoutManager(linearLayoutTipoPago);
+        adapterTipoPago.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                MostrarMetodoPago();
+                TipoPago tipoPagoSeleccion=adapterTipoPago.RecuperarTipoPagoSeleccionada();
+                if(tipoPagoSeleccion.getIdTipoPago()==2){
+                    sectorTituloTipoTarjeta.setVisibility(View.VISIBLE);
+                    recyclerTipoTarjeta.setVisibility(View.VISIBLE);
+                }else{
+                    sectorTituloTipoTarjeta.setVisibility(View.GONE);
+                    recyclerTipoTarjeta.setVisibility(View.GONE);
+                    adapterTipoTarjeta.QuitarSeleccion();
+                    adapterTipoTarjeta.notifyDataSetChanged();
+                    Constantes.TIPO_TARJETA_SELECT.setIdTipoTarjeta(0);
+                    MostrarMetodoPago();
+                }
+            }
+        });
+    }
+    public void MostrarMetodoPago() {
+        String tipoPagoTemporal="";
+        String tipoTarjetaTemporal="";
 
-    private void accionesMovimientoPaneles() {
+
+        if(Constantes.TIPO_PAGO_SELECT.getIdTipoPago()>0){
+            if(Constantes.TIPO_PAGO_SELECT.getNombreTipoPago().length()>0){
+                tipoPagoTemporal=Constantes.TIPO_PAGO_SELECT.getNombreTipoPago();
+            }
+        }
+        if(Constantes.TIPO_TARJETA_SELECT.getIdTipoTarjeta()>0){
+            if(Constantes.TIPO_TARJETA_SELECT.getNombreTarjeta().length()>0){
+                tipoTarjetaTemporal=Constantes.TIPO_TARJETA_SELECT.getNombreTarjeta();
+            }
+        }
+        if(tipoPagoTemporal.length()==0 && tipoTarjetaTemporal.length()==0){
+            txtPrincipalMetodoPago.setText("Sin Metodo de Pago seleccionado.");
+        }else{
+            if(tipoTarjetaTemporal.length()==0){
+                txtPrincipalMetodoPago.setText(tipoPagoTemporal);
+            }else{
+                txtPrincipalMetodoPago.setText(tipoPagoTemporal+" - "+tipoTarjetaTemporal);
+            }
+        }
+    }
+    @SuppressLint("WrongConstant")
+    public void listadoTipoTarjeta() {
+        linearLayoutTipoTarjeta= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterTipoTarjeta = new AdapterTipoTarjeta(context, Constantes.Base_ListaTipoTarjeta, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+                //note required
+            }
+        });
+        recyclerTipoTarjeta.setAdapter(adapterTipoTarjeta);
+        recyclerTipoTarjeta.setLayoutManager(linearLayoutTipoTarjeta);
+        adapterTipoTarjeta.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                MostrarMetodoPago();
+            }
+        });
+    }
+    @SuppressLint("WrongConstant")
+    public void listadoTipoComprobante() {
+        linearLayoutTipoComprobante= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterTipoComprobante = new AdapterTipoComprobante(context, Constantes.Base_ListaTipoComprobante, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+                //note required
+            }
+        });
+        recyclerTipoComprobante.setAdapter(adapterTipoComprobante);
+        recyclerTipoComprobante.setLayoutManager(linearLayoutTipoComprobante);
+        adapterTipoComprobante.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                MostrarTipoComprobante();
+            }
+        });
+    }
+    private void MostrarTipoComprobante() {
+        String tipoComprobanteTemporal="";
+        if(Constantes.TIPO_COMPROBANTE_SELECT.getIdTipoComprobante()>0){
+            if(Constantes.TIPO_COMPROBANTE_SELECT.getNombreTipoComprobante().length()>0){
+                tipoComprobanteTemporal=Constantes.TIPO_COMPROBANTE_SELECT.getNombreTipoComprobante();
+            }
+        }
+        txtPrincipalTipoComprobante.setText(tipoComprobanteTemporal);
+    }
+    public void accionesMovimientoPaneles() {
         accionSectorUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,24 +646,28 @@ public class fragmentEnvioReserva extends Fragment {
             @Override
             public void onClick(View v) {
                 AccionesSectores(panelFechaContacto);
+                MostrarToolbarAccion(false);
+                if(!SAVE_CONTACTO){
+                    CalcularFechaHoraActual();
+                }
             }
         });
         accionSectorMetodoPago.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AccionesSectores(panelMetodoPago);
+                MostrarToolbarAccion(false);
             }
         });
         accionSectorTipoComprobante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AccionesSectores(panelTipoComprobante);
+                MostrarToolbarAccion(false);
             }
         });
 
     }
-
-
     public void MostrarToolbarAccion(boolean re){
         if(re){
             panelBotonesReserva.setVisibility(View.VISIBLE);
@@ -341,7 +689,7 @@ public class fragmentEnvioReserva extends Fragment {
         panelTipoComprobante.setVisibility(View.GONE);
         areaSeleccion.setVisibility(View.VISIBLE);
     }
-    private void condiciones() {
+    public void condiciones() {
         c_condiciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -371,160 +719,8 @@ public class fragmentEnvioReserva extends Fragment {
 
 
     }
-    private void SegundoModulo() {
-        bole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("click bole");
-
-                if(c1==false){
-                    bole.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    fac.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    card_fac.setVisibility(View.GONE);
-                }else if(c1==true){
-                    bole.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                }
-            }
-        });
-
-        fac.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("click fac");
-                if(c2==false){
-                    fac.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    bole.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    card_fac.setVisibility(View.VISIBLE);
-                }else if(c2==true){
-                    fac.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    card_fac.setVisibility(View.GONE);
-                }
-
-            }
-        });
-
-    }
-    private void PrimerModulo() {
-        op1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(a1==false){
-                    a1=true;
-                    op1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    op2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    op3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    panel2.setVisibility(View.GONE);
-                    panel1.setVisibility(View.VISIBLE);
-                }else if(a1=true){
-                    a1=false;
-                    op1.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    panel1.setVisibility(View.GONE);
-                }
-            }
-        });
-        op2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(a2==false){
-                    a2=true;
-                    op2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    op3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    op1.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    panel2.setVisibility(View.VISIBLE);
-                    panel1.setVisibility(View.GONE);
-                }else if(a2=true){
-                    a2=false;
-                    op2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    panel2.setVisibility(View.GONE);
-                }
-            }
-        });
-        op3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(a3==false){
-                    a3=true;
-                    op3.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    op1.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    op2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    panel2.setVisibility(View.GONE);
-                    panel1.setVisibility(View.GONE);
-                }else if(a3=true){
-                    a3=false;
-                    op3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-                }
-            }
-        });
-
-
-    }
-    private void movimientos_entre_botones() {
-
-        btn_g.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelPrincipal.setVisibility(View.VISIBLE);
-                panelBotonesReserva.setVisibility(View.VISIBLE);
-                panelMetodoPago.setVisibility(View.GONE);
-            }
-        });
-
-        btn_tp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelPrincipal.setVisibility(View.VISIBLE);
-                panelBotonesReserva.setVisibility(View.VISIBLE);
-                panelMetodoPago.setVisibility(View.GONE);
-            }
-        });
-
-        btn_g_c.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelTipoComprobante.setVisibility(View.GONE);
-                panelPrincipal.setVisibility(View.VISIBLE);
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelMetodoPago.setVisibility(View.GONE);
-                panelBotonesReserva.setVisibility(View.VISIBLE);
-            }
-        });
-
-        b4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelTipoComprobante.setVisibility(View.VISIBLE);
-                panelPrincipal.setVisibility(View.GONE);
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelMetodoPago.setVisibility(View.GONE);
-                panelBotonesReserva.setVisibility(View.GONE);
-            }
-        });
-        accionSectorFechaContacto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                panelTipoComprobante.setVisibility(View.GONE);
-                panelPrincipal.setVisibility(View.GONE);
-                panelSeleccionUbicacion.setVisibility(View.GONE);
-                panelMetodoPago.setVisibility(View.GONE);
-                panelBotonesReserva.setVisibility(View.GONE);
-            }
-        });
-
-        btn_g_r.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                panelBotonesReserva.setVisibility(View.VISIBLE);
-                panelPrincipal.setVisibility(View.VISIBLE);
-
-            }
-        });
-    }
     @SuppressLint("WrongConstant")
-    private void recycler_item_compra() {
+    public void recycler_item_compra() {
         linear1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         adapterXXX = new AdapterItemReservaEnvio(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
             @Override
@@ -536,7 +732,7 @@ public class fragmentEnvioReserva extends Fragment {
         recycler.setLayoutManager(linear1);
 
     }
-    private void RecuperarUbicacionesUsuario(final Context context, final int idUsu) {
+    public void RecuperarUbicacionesUsuario(final Context context, final int idUsu) {
         final String idUsuario=String.valueOf(idUsu);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
                 new Response.Listener<String>() {
@@ -594,5 +790,4 @@ public class fragmentEnvioReserva extends Fragment {
         };
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
-
 }

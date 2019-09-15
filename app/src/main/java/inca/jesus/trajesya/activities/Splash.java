@@ -42,6 +42,9 @@ import inca.jesus.trajesya.data.modelo.Promocion;
 import inca.jesus.trajesya.data.modelo.Publicidad;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.SubCategoria;
+import inca.jesus.trajesya.data.modelo.TipoComprobante;
+import inca.jesus.trajesya.data.modelo.TipoPago;
+import inca.jesus.trajesya.data.modelo.TipoTarjeta;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
 import inca.jesus.trajesya.data.modelo.Usuario;
 import inca.jesus.trajesya.data.utils.Constantes;
@@ -78,7 +81,6 @@ public class Splash extends AppCompatActivity {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 p = findViewById(R.id.progress);
                 txtProgress = findViewById(R.id.texxt_progress);
-
                 LimpiarListasGenerales();
                 ListarCategoriasDisponibles(getApplicationContext());
             } else {
@@ -482,7 +484,8 @@ public class Splash extends AppCompatActivity {
                                 }
                                 Log.i("Inca", "Servidor Listar Promociones");
                                 Progreso(28);
-                                ListarPublicidadDisponibles(context);
+                                ListarTipoPago(context);
+
 
 
                             } else {
@@ -512,6 +515,177 @@ public class Splash extends AppCompatActivity {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
+    public void ListarTipoPago(final Context context) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("tipopago");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    TipoPago tipoPago=new TipoPago();
+                                    tipoPago.setIdTipoPago(objeto.getInt("idTipoPago"));
+                                    tipoPago.setNombreTipoPago(objeto.getString("TipoPago"));
+                                    tipoPago.setFechaRegistro(objeto.getString("fechaRegistro"));
+
+
+                                    Log.i("Inca", "TIPO PAGO Recuperada :" + tipoPago.getNombreTipoPago());
+
+                                    Constantes.Base_ListaTipoPago.add(tipoPago);
+                                }
+                                Log.i("Inca", "Servidor Listar Tipo PAGO");
+                                Progreso(35);
+                                ListarTipoTarjeta(context);
+
+
+                            } else {
+
+                                Toast.makeText(context, "TIPO PAGO no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Inca", "Error JSON TIPO PAGO:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Inca Error Response", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(OPERACION, "ListarTipoPago");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+    public void ListarTipoTarjeta(final Context context) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("tipotarjeta");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    TipoTarjeta tipoTarjeta=new TipoTarjeta();
+                                    tipoTarjeta.setIdTipoTarjeta(objeto.getInt("idTipoTarjeta"));
+                                    tipoTarjeta.setNombreTarjeta(objeto.getString("NombreTarjeta"));
+                                    tipoTarjeta.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    tipoTarjeta.setFechaUpdate(objeto.getString("fechaUpdate"));
+                                    Estado estado=new Estado();
+                                    estado.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    tipoTarjeta.setEstadoTipoTarjeta(estado);
+
+                                    Log.i("Inca", "TIPO Tarjeta Recuperada :" + tipoTarjeta.getNombreTarjeta());
+
+                                    Constantes.Base_ListaTipoTarjeta.add(tipoTarjeta);
+                                }
+                                Log.i("Inca", "Servidor Listar Tipo Tarjeta");
+                                Progreso(39);
+                                ListarTipoComprobante(context);
+
+
+                            } else {
+
+                                Toast.makeText(context, "TIPO Tarjeta no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Inca", "Error JSON TIPO Tarjeta:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Inca Error Response", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(OPERACION, "ListarTipoTarjeta");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+    public void ListarTipoComprobante(final Context context) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("tipocomprobante");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    TipoComprobante tipoComprobante=new TipoComprobante();
+                                    tipoComprobante.setIdTipoComprobante(objeto.getInt("idTipoComprobante"));
+                                    tipoComprobante.setNombreTipoComprobante(objeto.getString("NombreComprobante"));
+                                    tipoComprobante.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    tipoComprobante.setFechaUpdate(objeto.getString("fechaUpdate"));
+                                    Estado estado=new Estado();
+                                    estado.setIdEstado(objeto.getInt("Estado_idEstado"));
+                                    tipoComprobante.setEstadoTipoComprobante(estado);
+
+                                    Log.i("Inca", "TIPO COMPROBANTE Recuperada :" + tipoComprobante.getNombreTipoComprobante());
+
+                                    Constantes.Base_ListaTipoComprobante.add(tipoComprobante);
+                                }
+                                Log.i("Inca", "Servidor Listar Tipo COMPROBANTE");
+                                Progreso(44);
+                                ListarPublicidadDisponibles(context);
+
+
+                            } else {
+
+                                Toast.makeText(context, "TIPO COMPROBANTE no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Inca", "Error JSON TIPO COMPROBANTE:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Inca Error Response", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(OPERACION, "ListarComprobantePago");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
     public void ListarPublicidadDisponibles(final Context context) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
