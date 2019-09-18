@@ -31,7 +31,6 @@ public class Producto {
 
 
     public Producto(){
-
     }
 
     public int getIdProducto() {

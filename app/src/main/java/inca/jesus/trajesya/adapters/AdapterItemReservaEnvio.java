@@ -153,10 +153,13 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
         double total=0;
 
         for (int i=0;i<my_Data.size();i++){
+
          total=total+my_Data.get(i).getTotal();
         }
         return total;
     }
+
+
 
     private void RegistrarVisitaProductoSeleccion(final int idProductoE,final Context context) {
 

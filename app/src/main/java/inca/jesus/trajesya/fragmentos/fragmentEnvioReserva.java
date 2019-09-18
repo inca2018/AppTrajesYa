@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,7 +58,6 @@ import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.TipoPago;
-import inca.jesus.trajesya.data.modelo.TipoTarjeta;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
 import inca.jesus.trajesya.data.modelo.Usuario;
@@ -70,7 +68,7 @@ import static inca.jesus.trajesya.data.utils.Constantes.SUCCESS;
 public class fragmentEnvioReserva extends Fragment {
     RecyclerView recycler;
     LinearLayoutManager linear1;
-    AdapterItemReservaEnvio adapterXXX;
+    AdapterItemReservaEnvio adapterItemReservaEnvio;
     LinearLayout panelPrincipal, panelSeleccionUbicacion, panelMetodoPago, panelBotonesReserva, panelTipoComprobante, panelFechaContacto;
     ImageView accionSectorUbicacion, accionSectorMetodoPago, accionSectorTipoComprobante,b4, accionSectorFechaContacto;
     boolean a1=false,a2=false,a3=false,c1=false,c2=false;
@@ -110,7 +108,11 @@ public class fragmentEnvioReserva extends Fragment {
     TextView txtPrincipalMetodoPago;
     TextView txtPrincipalTipoComprobante;
 
+    TextView txtCondiciones;
+
     Button btnEnviarReserva;
+
+    TextView MontoEnvio;
 
     int DAY;
     int MONTH;
@@ -214,6 +216,10 @@ public class fragmentEnvioReserva extends Fragment {
         sectorTituloTipoTarjeta=v.findViewById(R.id.sectorTituloTipoTarjeta);
 
         btnEnviarReserva=v.findViewById(R.id.btnEnviarReserva);
+
+        MontoEnvio=v.findViewById(R.id.MontoEnvio);
+
+
         /************************************/
 
         c_condiciones=v.findViewById(R.id.check_condiciones);
@@ -221,6 +227,8 @@ public class fragmentEnvioReserva extends Fragment {
 
         btn_cupon=v. findViewById(R.id.btn_cupon);
         text_cupon=v.findViewById(R.id.text_cupon);
+
+        txtCondiciones=v.findViewById(R.id.txtCondiciones);
 
 
         //movimientos_entre_botones();
@@ -234,12 +242,12 @@ public class fragmentEnvioReserva extends Fragment {
             c_condiciones.setChecked(false);
         }
 
-        adapterXXX.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapterItemReservaEnvio.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
 
-                if(adapterXXX.getItemCount()==0){
+                if(adapterItemReservaEnvio.getItemCount()==0){
                     Intent intent=new Intent(context, ActivityPrincipal.class);
                     startActivity(intent);
                 }
@@ -280,6 +288,9 @@ public class fragmentEnvioReserva extends Fragment {
         AccionBotonesContacto();
         VerificacionUrgencia();
         AccionEnviarReserva();
+
+
+        txtCondiciones.setText(Constantes.TEXT_CONDICION_RESERVA);
         return v;
     }
 
@@ -287,9 +298,46 @@ public class fragmentEnvioReserva extends Fragment {
         btnEnviarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                VerificacionInformacionEnvio();
             }
         });
+    }
+
+    private void VerificacionInformacionEnvio() {
+        String error="";
+        if(Constantes.UBICACION_SELECT.getIdUbicacionDireccion()==0){
+           error=error+"- Seleccione Ubicación de entrega. \n";
+        }
+
+        if(!SAVE_CONTACTO){
+            error=error+"- Ingrese el número Contacto.\n";
+        }
+
+        if(Constantes.TIPO_COMPROBANTE_SELECT.getIdTipoComprobante()==0){
+            error=error+"- Seleccione Tipo de Comprobante. \n";
+        }
+
+        if(Constantes.TIPO_PAGO_SELECT.getIdTipoPago()==0){
+            error=error+"- Seleccione Método de Pago. \n";
+        }
+        if(Constantes.TIPO_PAGO_SELECT.getIdTipoPago()==2){
+            if(Constantes.TIPO_TARJETA_SELECT.getIdTipoTarjeta()==0){
+                error=error+"- Seleccione Tipo de Tarjeta. \n";
+            }
+        }
+        int TipoUrgencia=0;
+
+        if(URGENCIA){
+            TipoUrgencia=2;
+        }else{
+            TipoUrgencia=1;
+        }
+        if(error.length()==0){
+            Toast.makeText(context, "Envio Reserva", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void VerificacionUrgencia() {
@@ -377,7 +425,7 @@ public class fragmentEnvioReserva extends Fragment {
                     //Estos valores deben ir en ese orden
                     //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
                     //Pero el sistema devuelve la hora en formato 24 horas
-                }, HOUR, MINUTE, false);
+                }, HOUR, MINUTE, true);
                 recogerHora.show();
             }
         });
@@ -722,13 +770,13 @@ public class fragmentEnvioReserva extends Fragment {
     @SuppressLint("WrongConstant")
     public void recycler_item_compra() {
         linear1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
-        adapterXXX = new AdapterItemReservaEnvio(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
+        adapterItemReservaEnvio = new AdapterItemReservaEnvio(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
                 //not required
             }
         });
-        recycler.setAdapter(adapterXXX);
+        recycler.setAdapter(adapterItemReservaEnvio);
         recycler.setLayoutManager(linear1);
 
     }

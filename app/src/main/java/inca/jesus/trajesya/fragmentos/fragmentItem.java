@@ -107,6 +107,7 @@ public class fragmentItem extends Fragment {
 
         GenerarCarrusel(ProductoSeleccionado);
 
+
         /*------------- Seteando Datos-----------*/
         nombreProducto.setText(ProductoSeleccionado.getNombreProducto());
         verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
