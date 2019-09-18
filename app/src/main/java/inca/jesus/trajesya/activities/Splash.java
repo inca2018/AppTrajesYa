@@ -332,10 +332,10 @@ public class Splash extends AppCompatActivity {
         temp.setEstadoProducto(estadoProducto);
 
         temp.setVerificadoProducto(objeto.getString("verificado"));
-        temp.setPrecioAlquiler(objeto.getDouble(VariableprecioAlquiler));
-        temp.setPrecioVenta(objeto.getDouble(Constantes.VariablePrecioVenta));
+        temp.setPrecioBase(objeto.getDouble(VariableprecioAlquiler));
+        temp.setPrecioUrgencia(objeto.getDouble(Constantes.VariablePrecioVenta));
 
-        temp.setPrecioPromocion(objeto.getDouble("DescuentoProducto"));
+        temp.setPorcentajeDescuento(objeto.getDouble("DescuentoProducto"));
         temp.setNumeroVisitas(objeto.getInt("Visitas"));
 
         Grupo grupo = new Grupo();
@@ -382,7 +382,7 @@ public class Splash extends AppCompatActivity {
         }
 
         Constantes.Base_Producto_Todo.add(temp);
-        if ((int) temp.getPrecioPromocion() != 0) {
+        if ((int) temp.getPorcentajeDescuento() != 0) {
             Constantes.Base_ListaProductoPromociones.add(temp);
         }
 
@@ -793,8 +793,8 @@ public class Splash extends AppCompatActivity {
                                     estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoProducto(estadoProducto);
 
-                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
-                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+                                    temp.setPrecioBase(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioUrgencia(Double.parseDouble(objeto.getString("precioVenta")));
 
                                     Constantes.Base_ListaProductoMasAlquilados.add(temp);
 
@@ -879,8 +879,8 @@ public class Splash extends AppCompatActivity {
                                     estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoProducto(estadoProducto);
 
-                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
-                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+                                    temp.setPrecioBase(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioUrgencia(Double.parseDouble(objeto.getString("precioVenta")));
 
                                     Constantes.Base_ListaProductoTendencias.add(temp);
                                     Log.i("Inca", "Recupero Producto Tendencias:" + temp.getNombreProducto());

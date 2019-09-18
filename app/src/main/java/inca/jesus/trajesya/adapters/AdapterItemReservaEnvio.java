@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -96,13 +94,13 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
     public void onBindViewHolder(AdapterItemReservaEnvio.ViewHolder holder, final int position) {
         DecimalFormat formateador = new DecimalFormat("###,###.00");
         holder.nombreProducto.setText(my_Data.get(position).getProductoItem().getNombreProducto());
-        if(my_Data.get(position).getProductoItem().getPrecioAlquiler()>0){
-            holder.precioProducto.setText("S./ "+formateador.format(my_Data.get(position).getProductoItem().getPrecioAlquiler()));
+        if(my_Data.get(position).getProductoItem().getPrecioBase()>0){
+            holder.precioProducto.setText("S./ "+formateador.format(my_Data.get(position).getProductoItem().getPrecioBase()));
         }else{
             holder.precioProducto.setText("S./ 0.00");
         }
-        if(my_Data.get(position).getProductoItem().getPrecioPromocion()>0){
-            holder.descuentoProducto.setText("- "+formateador.format(my_Data.get(position).getProductoItem().getPrecioPromocion())+" %");
+        if(my_Data.get(position).getProductoItem().getPorcentajeDescuento()>0){
+            holder.descuentoProducto.setText("- "+formateador.format(my_Data.get(position).getProductoItem().getPorcentajeDescuento())+" %");
             holder.sectorDescuento.setVisibility(View.VISIBLE);
         }else{
             holder.descuentoProducto.setText("- 0%");
@@ -136,7 +134,7 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
 
         int total=my_Data.get(position).getCantidad();
         my_Data.get(position).setCantidad(total);
-        my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioAlquiler()*my_Data.get(position).getCantidad());
+        my_Data.get(position).setTotal(my_Data.get(position).getProductoItem().getPrecioBase()*my_Data.get(position).getCantidad());
         holder.tvItemTotal.setText("S/ "+formateador.format(my_Data.get(position).getTotal()));
     }
     @Override
@@ -146,15 +144,28 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
 
     public void GenerarTotales(){
         for (int i=0;i<my_Data.size();i++){
-            my_Data.get(i).setTotal(my_Data.get(i).getCantidad()*my_Data.get(i).getProductoItem().getPrecioAlquiler());
+            my_Data.get(i).setTotal(my_Data.get(i).getCantidad()*my_Data.get(i).getProductoItem().getPrecioBase());
         }
     }
-    public double TotalAcumulado(){
+    public double TotalAcumuladoPrecioBase(){
         double total=0;
-
         for (int i=0;i<my_Data.size();i++){
+            double precioBase=my_Data.get(i).getProductoItem().getPrecioBase();
+            int Cantidad=my_Data.get(i).getCantidad();
+            double DescuentoPromocion=my_Data.get(i).getProductoItem().getPorcentajeDescuento();
 
-         total=total+my_Data.get(i).getTotal();
+            total=total+((DescuentoPromocion*100)/(precioBase*Cantidad));
+        }
+        return total;
+    }
+    public double TotalAcumuladoPrecioUrgencia(){
+        double total=0;
+        for (int i=0;i<my_Data.size();i++){
+            double precioBase=my_Data.get(i).getProductoItem().getPrecioUrgencia();
+            int Cantidad=my_Data.get(i).getCantidad();
+            double DescuentoPromocion=my_Data.get(i).getProductoItem().getPorcentajeDescuento();
+
+            total=total+((DescuentoPromocion*100)/(precioBase*Cantidad));
         }
         return total;
     }

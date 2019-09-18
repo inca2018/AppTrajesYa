@@ -39,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -250,6 +251,8 @@ public class fragmentEnvioReserva extends Fragment {
                 if(adapterItemReservaEnvio.getItemCount()==0){
                     Intent intent=new Intent(context, ActivityPrincipal.class);
                     startActivity(intent);
+                }else{
+                    CalcularTotalGeneral();
                 }
             }
         });
@@ -292,6 +295,23 @@ public class fragmentEnvioReserva extends Fragment {
 
         txtCondiciones.setText(Constantes.TEXT_CONDICION_RESERVA);
         return v;
+    }
+
+    private void CalcularTotalGeneral() {
+        double TotalGeneral;
+        if(URGENCIA){
+            TotalGeneral=adapterItemReservaEnvio.TotalAcumuladoPrecioUrgencia();
+        }else{
+            TotalGeneral=adapterItemReservaEnvio.TotalAcumuladoPrecioBase();
+        }
+
+        if(TotalGeneral==0){
+            MontoEnvio.setText("S/ 0.00");
+        }else{
+            DecimalFormat formateador = new DecimalFormat("###,###.00");
+            String valor=formateador.format(TotalGeneral);
+            MontoEnvio.setText("S/ "+valor);
+        }
     }
 
     private void AccionEnviarReserva() {
@@ -350,11 +370,13 @@ public class fragmentEnvioReserva extends Fragment {
                     URGENCIA=false;
                     txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
                     txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                    CalcularTotalGeneral();
                 }else{
                     checkUrgencia.setChecked(true);
                     URGENCIA=true;
                     txtAccionFecha.setText(VerificarDigitos(DAY)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
                     txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                    CalcularTotalGeneral();
                 }
             }
         });

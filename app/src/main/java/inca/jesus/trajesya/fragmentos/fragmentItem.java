@@ -113,10 +113,10 @@ public class fragmentItem extends Fragment {
         verificadoProducto.setText(ProductoSeleccionado.getVerificadoProducto());
 
         DecimalFormat formateador = new DecimalFormat("###,###.00");
-        double precioAlquiler=ProductoSeleccionado.getPrecioAlquiler();
+        double precioAlquiler=ProductoSeleccionado.getPrecioBase();
 
-        if(ProductoSeleccionado.getPrecioPromocion()>0){
-            txtDescuento.setText("Descuento: -"+(int)ProductoSeleccionado.getPrecioPromocion()+"%");
+        if(ProductoSeleccionado.getPorcentajeDescuento()>0){
+            txtDescuento.setText("Descuento: -"+(int)ProductoSeleccionado.getPorcentajeDescuento()+"%");
             txtDescuento.setVisibility(View.VISIBLE);
         }else{
             txtDescuento.setVisibility(View.GONE);

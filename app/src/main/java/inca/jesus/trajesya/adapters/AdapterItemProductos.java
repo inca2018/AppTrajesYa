@@ -82,22 +82,22 @@ public class AdapterItemProductos extends RecyclerView.Adapter<AdapterItemProduc
     public void onBindViewHolder(AdapterItemProductos.ViewHolder holder, final int position) {
 
         DecimalFormat formateador = new DecimalFormat("###,###.00");
-        final double precioAlquiler=my_Data.get(position).getPrecioAlquiler();
+        final double precioAlquiler=my_Data.get(position).getPrecioBase();
         if(precioAlquiler==0){
             holder.precio.setText("S/ 0.00");
         }else{
 
-            String valor=formateador.format(my_Data.get(position).getPrecioAlquiler());
+            String valor=formateador.format(my_Data.get(position).getPrecioBase());
             holder.precio.setText("S/ "+valor);
         }
 
         holder.nombre.setText(my_Data.get(position).getNombreProducto());
 
 
-        if(my_Data.get(position).getPrecioPromocion()==0){
+        if(my_Data.get(position).getPorcentajeDescuento()==0){
             holder.desc.setText(String.valueOf(""));
         }else{
-            holder.desc.setText(String.valueOf("-"+(int)my_Data.get(position).getPrecioPromocion()+"% Desc."));
+            holder.desc.setText(String.valueOf("-"+(int)my_Data.get(position).getPorcentajeDescuento()+"% Desc."));
         }
 
         Picasso.get()

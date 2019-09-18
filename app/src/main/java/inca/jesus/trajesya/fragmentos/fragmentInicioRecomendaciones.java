@@ -175,8 +175,8 @@ public class fragmentInicioRecomendaciones extends Fragment {
                                     estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
                                     temp.setEstadoProducto(estadoProducto);
 
-                                    temp.setPrecioAlquiler(Double.parseDouble(objeto.getString("precioAlquiler")));
-                                    temp.setPrecioVenta(Double.parseDouble(objeto.getString("precioVenta")));
+                                    temp.setPrecioBase(Double.parseDouble(objeto.getString("precioAlquiler")));
+                                    temp.setPrecioUrgencia(Double.parseDouble(objeto.getString("precioVenta")));
 
                                     ListaVistosRecien.add(temp);
 

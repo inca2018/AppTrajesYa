@@ -17,8 +17,8 @@ public class Producto {
     UnidadTerritorial provinciaProducto;
     UnidadTerritorial distritoProducto;
     Estado estadoProducto;
-    double precioAlquiler;
-    double precioVenta;
+    double precioBase;
+    double precioUrgencia;
     String verificadoProducto;
     int NumeroVisitas;
 
@@ -26,8 +26,7 @@ public class Producto {
     List<Medida> MedidaProducto;
     Grupo grupo;
 
-    double precioPromocion;
-
+    double porcentajeDescuento;
 
 
     public Producto(){
@@ -129,20 +128,20 @@ public class Producto {
         this.estadoProducto = estadoProducto;
     }
 
-    public double getPrecioAlquiler() {
-        return precioAlquiler;
+    public double getPrecioBase() {
+        return precioBase;
     }
 
-    public void setPrecioAlquiler(double precioAlquiler) {
-        this.precioAlquiler = precioAlquiler;
+    public void setPrecioBase(double precioBase) {
+        this.precioBase = precioBase;
     }
 
-    public double getPrecioVenta() {
-        return precioVenta;
+    public double getPrecioUrgencia() {
+        return precioUrgencia;
     }
 
-    public void setPrecioVenta(double precioVenta) {
-        this.precioVenta = precioVenta;
+    public void setPrecioUrgencia(double precioUrgencia) {
+        this.precioUrgencia = precioUrgencia;
     }
 
     public List<Galeria> getGaleriaProducto() {
@@ -169,12 +168,12 @@ public class Producto {
         this.verificadoProducto = verificadoProducto;
     }
 
-    public double getPrecioPromocion() {
-        return precioPromocion;
+    public double getPorcentajeDescuento() {
+        return porcentajeDescuento;
     }
 
-    public void setPrecioPromocion(double precioPromocion) {
-        this.precioPromocion = precioPromocion;
+    public void setPorcentajeDescuento(double porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
     }
 
     public int getNumeroVisitas() {
