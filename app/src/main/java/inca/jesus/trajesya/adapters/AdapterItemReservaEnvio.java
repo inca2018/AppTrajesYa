@@ -141,37 +141,35 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
     public int getItemCount() {
         return my_Data.size();
     }
-
-    public void GenerarTotales(){
-        for (int i=0;i<my_Data.size();i++){
-            my_Data.get(i).setTotal(my_Data.get(i).getCantidad()*my_Data.get(i).getProductoItem().getPrecioBase());
+    public double RecuperarTotalesBase(boolean urgencia){
+        double total=0;
+        if(urgencia){
+            for (int i=0;i<my_Data.size();i++){
+                double precio = my_Data.get(i).getProductoItem().getPrecioUrgencia();
+                int    Cantidad   = my_Data.get(i).getCantidad();
+                total=total+(precio*Cantidad);
+            }
+        }else{
+            for (int i=0;i<my_Data.size();i++){
+                double precio = my_Data.get(i).getProductoItem().getPrecioBase();
+                int    Cantidad   = my_Data.get(i).getCantidad();
+                total=total+(precio*Cantidad);
+            }
         }
+
+        return  total;
     }
-    public double TotalAcumuladoPrecioBase(){
+    public double RecuperarDescuentos(){
         double total=0;
         for (int i=0;i<my_Data.size();i++){
             double precioBase=my_Data.get(i).getProductoItem().getPrecioBase();
             int Cantidad=my_Data.get(i).getCantidad();
             double DescuentoPromocion=my_Data.get(i).getProductoItem().getPorcentajeDescuento();
-
-            total=total+((DescuentoPromocion*100)/(precioBase*Cantidad));
+            double Descuento=((precioBase*Cantidad)*DescuentoPromocion)/100;
+            total=total+Descuento;
         }
         return total;
     }
-    public double TotalAcumuladoPrecioUrgencia(){
-        double total=0;
-        for (int i=0;i<my_Data.size();i++){
-            double precioBase=my_Data.get(i).getProductoItem().getPrecioUrgencia();
-            int Cantidad=my_Data.get(i).getCantidad();
-            double DescuentoPromocion=my_Data.get(i).getProductoItem().getPorcentajeDescuento();
-
-            total=total+((DescuentoPromocion*100)/(precioBase*Cantidad));
-        }
-        return total;
-    }
-
-
-
     private void RegistrarVisitaProductoSeleccion(final int idProductoE,final Context context) {
 
         final String idProducto=String.valueOf(idProductoE);

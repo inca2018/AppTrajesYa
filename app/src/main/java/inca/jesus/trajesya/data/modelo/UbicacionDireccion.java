@@ -9,6 +9,7 @@ public class UbicacionDireccion {
     String fechaRegistro;
     String fechaUpdate;
     boolean Select;
+    double precioDelivery;
 
     public UbicacionDireccion(){
     }
@@ -75,5 +76,13 @@ public class UbicacionDireccion {
 
     public void setSelect(boolean select) {
         Select = select;
+    }
+
+    public double getPrecioDelivery() {
+        return precioDelivery;
+    }
+
+    public void setPrecioDelivery(double precioDelivery) {
+        this.precioDelivery = precioDelivery;
     }
 }

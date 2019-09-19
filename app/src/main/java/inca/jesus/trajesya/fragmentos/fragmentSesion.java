@@ -428,13 +428,13 @@ public class fragmentSesion extends Fragment {
                                         distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
                                         ubicacion.setDistrito(distrito);
                                         ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                        ubicacion.setPrecioDelivery(objeto.getDouble("precioDelivery"));
                                         ListaUbicaciones.add(ubicacion);
                                         adapterUbicaciones.notifyDataSetChanged();
                                     }
                                 }else{
                                     Log.e("Inca", "No se encuentran Ubicaciones Registradas.");
                                 }
-
 
                             } else {
                                 Toast.makeText(context, "No se encuentran Ubicaciones Registradas.", Toast.LENGTH_SHORT).show();

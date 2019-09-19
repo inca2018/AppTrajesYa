@@ -35,7 +35,7 @@ public class CarouselView extends RelativeLayout implements View.OnClickListener
     private static final String TAG = "CarouselView";
 
     // 自动播放时间间隔
-    private static final long TIME_GAP = 5000;
+    private static final long TIME_GAP = 3000;
 
     private ViewPager viewPager;
 

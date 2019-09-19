@@ -70,15 +70,22 @@ public class fragmentEnvioReserva extends Fragment {
     RecyclerView recycler;
     LinearLayoutManager linear1;
     AdapterItemReservaEnvio adapterItemReservaEnvio;
-    LinearLayout panelPrincipal, panelSeleccionUbicacion, panelMetodoPago, panelBotonesReserva, panelTipoComprobante, panelFechaContacto;
-    ImageView accionSectorUbicacion, accionSectorMetodoPago, accionSectorTipoComprobante,b4, accionSectorFechaContacto;
-    boolean a1=false,a2=false,a3=false,c1=false,c2=false;
+    LinearLayout panelPrincipal;
+    LinearLayout panelSeleccionUbicacion;
+    LinearLayout panelMetodoPago;
+    LinearLayout panelBotonesReserva;
+    LinearLayout panelTipoComprobante;
+    LinearLayout panelFechaContacto;
+    ImageView accionSectorUbicacion;
+    ImageView accionSectorMetodoPago;
+    ImageView accionSectorTipoComprobante;
+    ImageView accionSectorFechaContacto;
     CheckBox c_condiciones;
     boolean status=false;
     AlertDialog d,s;
-    TextView btn_cupon,text_cupon;
+    TextView btn_cupon;
+    TextView text_cupon;
     String codigo="";
-    //Nuevas Variables
     Context context;
     RecyclerView recyclerUbicacionesRecuperadas;
     List<UbicacionDireccion> ListaUbicaciones;
@@ -96,25 +103,23 @@ public class fragmentEnvioReserva extends Fragment {
     TextView txtPrincipalReferencia;
     TextView txtPrincipalUsuario;
     TextView txtPrincipalDistrito;
-
     ImageView ivAccionFecha;
     TextView txtAccionFecha;
     ImageView ivAccionHora;
     TextView txtAccionHora;
-
     CheckBox checkUrgencia;
     boolean URGENCIA=false;
     boolean SAVE_CONTACTO=false;
     EditText etContactoTelefono;
     TextView txtPrincipalMetodoPago;
     TextView txtPrincipalTipoComprobante;
-
     TextView txtCondiciones;
-
     Button btnEnviarReserva;
-
     TextView MontoEnvio;
-
+    TextView MontoBase;
+    TextView MontoUrgencia;
+    TextView MontoDescuento;
+    TextView MontoDelivery;
     int DAY;
     int MONTH;
     int YEAR;
@@ -123,32 +128,29 @@ public class fragmentEnvioReserva extends Fragment {
     String AMPM;
     private static final String CERO = "0";
     private static final String BARRA = "/";
-
     TextView txtPrincipalFechaEntrega;
     TextView txtPrincipalHoraEntrega;
     TextView txtPrincipalTelefonoEntrega;
-
     Button btnSectorTipoPagoVolver;
-
     RecyclerView recyclerTipoPago;
     LinearLayoutManager linearLayoutTipoPago;
     public AdapterTipoPago adapterTipoPago;
-
     RecyclerView recyclerTipoTarjeta;
     LinearLayoutManager linearLayoutTipoTarjeta;
     public AdapterTipoTarjeta adapterTipoTarjeta;
     public Button btnSectorTipoComprobanteVolver;
-
     RecyclerView recyclerTipoComprobante;
     LinearLayoutManager linearLayoutTipoComprobante;
     public AdapterTipoComprobante adapterTipoComprobante;
-
     TextView sectorTituloTipoTarjeta;
+    LinearLayout linearMontoUrgencia;
+    int TipoUrgencia=0;
+    Usuario usuarioTemporal;
+
 
     public fragmentEnvioReserva() {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -194,6 +196,11 @@ public class fragmentEnvioReserva extends Fragment {
         etContactoTelefono=v.findViewById(R.id.etContactoTelefono);
 
         checkUrgencia=v.findViewById(R.id.checkUrgencia);
+        MontoBase=v.findViewById(R.id.MontoBase);
+        MontoUrgencia=v.findViewById(R.id.MontoUrgencia);
+        MontoDescuento=v.findViewById(R.id.MontoDescuento);
+        linearMontoUrgencia=v.findViewById(R.id.linearMontoUrgencia);
+        linearMontoUrgencia.setVisibility(View.GONE);
         if(URGENCIA){
             checkUrgencia.setChecked(true);
         }else{
@@ -219,6 +226,7 @@ public class fragmentEnvioReserva extends Fragment {
         btnEnviarReserva=v.findViewById(R.id.btnEnviarReserva);
 
         MontoEnvio=v.findViewById(R.id.MontoEnvio);
+        MontoDelivery=v.findViewById(R.id.MontoDelivery);
 
 
         /************************************/
@@ -231,9 +239,7 @@ public class fragmentEnvioReserva extends Fragment {
 
         txtCondiciones=v.findViewById(R.id.txtCondiciones);
 
-
-        //movimientos_entre_botones();
-        recycler_item_compra();
+        listadoItemReservaEnvio();
 
         condiciones();
 
@@ -242,20 +248,6 @@ public class fragmentEnvioReserva extends Fragment {
         }else{
             c_condiciones.setChecked(false);
         }
-
-        adapterItemReservaEnvio.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-
-                if(adapterItemReservaEnvio.getItemCount()==0){
-                    Intent intent=new Intent(context, ActivityPrincipal.class);
-                    startActivity(intent);
-                }else{
-                    CalcularTotalGeneral();
-                }
-            }
-        });
 
         btn_cupon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,7 +277,7 @@ public class fragmentEnvioReserva extends Fragment {
         accionesMovimientoPaneles();
         accionBotones();
         /*------------Recuperar Ubicaciones----------------------*/
-        Usuario usuarioTemporal=sesion.RecuperarSesion(context);
+        usuarioTemporal=sesion.RecuperarSesion(context);
         RecuperarUbicacionesUsuario(context,usuarioTemporal.getIdUsuario());
         MostrarValoresPrincipal();
         AccionBotonesContacto();
@@ -296,25 +288,7 @@ public class fragmentEnvioReserva extends Fragment {
         txtCondiciones.setText(Constantes.TEXT_CONDICION_RESERVA);
         return v;
     }
-
-    private void CalcularTotalGeneral() {
-        double TotalGeneral;
-        if(URGENCIA){
-            TotalGeneral=adapterItemReservaEnvio.TotalAcumuladoPrecioUrgencia();
-        }else{
-            TotalGeneral=adapterItemReservaEnvio.TotalAcumuladoPrecioBase();
-        }
-
-        if(TotalGeneral==0){
-            MontoEnvio.setText("S/ 0.00");
-        }else{
-            DecimalFormat formateador = new DecimalFormat("###,###.00");
-            String valor=formateador.format(TotalGeneral);
-            MontoEnvio.setText("S/ "+valor);
-        }
-    }
-
-    private void AccionEnviarReserva() {
+    public void AccionEnviarReserva() {
         btnEnviarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -322,8 +296,7 @@ public class fragmentEnvioReserva extends Fragment {
             }
         });
     }
-
-    private void VerificacionInformacionEnvio() {
+    public void VerificacionInformacionEnvio() {
         String error="";
         if(Constantes.UBICACION_SELECT.getIdUbicacionDireccion()==0){
            error=error+"- Seleccione Ubicación de entrega. \n";
@@ -345,42 +318,41 @@ public class fragmentEnvioReserva extends Fragment {
                 error=error+"- Seleccione Tipo de Tarjeta. \n";
             }
         }
-        int TipoUrgencia=0;
 
         if(URGENCIA){
             TipoUrgencia=2;
         }else{
             TipoUrgencia=1;
         }
+        if(!status){
+            error=error+"- Acepte Condiciones de Reserva. \n";
+        }
+
         if(error.length()==0){
             Toast.makeText(context, "Envio Reserva", Toast.LENGTH_SHORT).show();
+            EnviarInformacionReservaService(context);
         }else{
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    public void VerificacionUrgencia() {
+    private void EnviarInformacionReservaService(Context context) {
 
-        checkUrgencia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(URGENCIA){
-                    checkUrgencia.setChecked(false);
-                    URGENCIA=false;
-                    txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
-                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
-                    CalcularTotalGeneral();
-                }else{
-                    checkUrgencia.setChecked(true);
-                    URGENCIA=true;
-                    txtAccionFecha.setText(VerificarDigitos(DAY)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
-                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
-                    CalcularTotalGeneral();
-                }
-            }
-        });
+        final String TipoReserva=String.valueOf(TipoUrgencia);
+        final String FechaReserva=Constantes.FECHA_RESERVA+" "+Constantes.HORA_RESERVA;
+        final String TipoPago=String.valueOf(Constantes.TIPO_PAGO_SELECT.getIdTipoPago());
+        final String TipoDocumento=String.valueOf(Constantes.TIPO_COMPROBANTE_SELECT.getIdTipoComprobante());
+        final String TipoTarjeta=String.valueOf(Constantes.TIPO_TARJETA_SELECT.getIdTipoTarjeta());
+        final String Usuario=String.valueOf(usuarioTemporal.getIdUsuario());
+        final String Ubicacion=Constantes.UBICACION_SELECT.getDireccionEntrega();
+        final String Referencia=Constantes.UBICACION_SELECT.getReferenciaDireccion();
+        final String Telefono=etContactoTelefono.getText().toString();
+        final String Distrito=String.valueOf(Constantes.UBICACION_SELECT.getDistrito().getIdUnidadTerritorial());
+        final String Estado="3";
+
     }
+
     public void AccionBotonesContacto() {
 
 
@@ -398,6 +370,7 @@ public class fragmentEnvioReserva extends Fragment {
                         String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
                         //Muestro la fecha con el formato deseado
                         txtAccionFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+                        Constantes.FECHA_RESERVA=year+"-"+mesFormateado+"-"+diaFormateado;
                     }
                     //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
                     /**
@@ -440,6 +413,7 @@ public class fragmentEnvioReserva extends Fragment {
                         if(hourOfDay>=Constantes.INICIO_HORARIO && hourOfDay<=Constantes.FIN_HORARIO){
                             //Muestro la hora con el formato deseado
                             txtAccionHora.setText(horaFormateada + ":" + minutoFormateado + " " + AM_PM);
+                            Constantes.HORA_RESERVA=horaFormateada+":"+minutoFormateado;
                         }else{
                             Toast.makeText(context, "El Horario de atención para las reservas es de "+Constantes.INICIO_HORARIO+" a.m. a "+Constantes.FIN_HORARIO+" p.m.", Toast.LENGTH_SHORT).show();
                         }
@@ -526,6 +500,7 @@ public class fragmentEnvioReserva extends Fragment {
         }else{
             txtPrincipalReferencia.setText("");
         }
+        CalcularTotalGeneral();
     }
     public void accionBotones() {
         btnVolverReserva.setOnClickListener(new View.OnClickListener() {
@@ -695,7 +670,7 @@ public class fragmentEnvioReserva extends Fragment {
             }
         });
     }
-    private void MostrarTipoComprobante() {
+    public void MostrarTipoComprobante() {
         String tipoComprobanteTemporal="";
         if(Constantes.TIPO_COMPROBANTE_SELECT.getIdTipoComprobante()>0){
             if(Constantes.TIPO_COMPROBANTE_SELECT.getNombreTipoComprobante().length()>0){
@@ -764,7 +739,7 @@ public class fragmentEnvioReserva extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(status==false){
+                if(!status){
                     final LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
                     final View dialoglayout4 = inflater.inflate(R.layout.terminos_condiciones, null);
 
@@ -790,7 +765,7 @@ public class fragmentEnvioReserva extends Fragment {
 
     }
     @SuppressLint("WrongConstant")
-    public void recycler_item_compra() {
+    public void listadoItemReservaEnvio() {
         linear1 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         adapterItemReservaEnvio = new AdapterItemReservaEnvio(context, Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
             @Override
@@ -800,7 +775,98 @@ public class fragmentEnvioReserva extends Fragment {
         });
         recycler.setAdapter(adapterItemReservaEnvio);
         recycler.setLayoutManager(linear1);
+        CalcularTotalGeneral();
+        adapterItemReservaEnvio.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
 
+                if(adapterItemReservaEnvio.getItemCount()==0){
+                    Intent intent=new Intent(context, ActivityPrincipal.class);
+                    startActivity(intent);
+                }else{
+                    CalcularTotalGeneral();
+                }
+            }
+        });
+
+    }
+    public void VerificacionUrgencia() {
+
+        checkUrgencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(URGENCIA){
+                    checkUrgencia.setChecked(false);
+                    URGENCIA=false;
+                    txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                    CalcularTotalGeneral();
+                }else{
+                    checkUrgencia.setChecked(true);
+                    URGENCIA=true;
+                    txtAccionFecha.setText(VerificarDigitos(DAY)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+                    txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+                    CalcularTotalGeneral();
+                }
+            }
+        });
+    }
+    private void CalcularTotalGeneral() {
+
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        double totalUrgencia=0;
+        double totalBase=0;
+        double totalDescuentos=0;
+        double totalDelivery=0;
+        if(URGENCIA){
+            linearMontoUrgencia.setVisibility(View.VISIBLE);
+            totalUrgencia=adapterItemReservaEnvio.RecuperarTotalesBase(true)-adapterItemReservaEnvio.RecuperarTotalesBase(false);
+            totalBase=adapterItemReservaEnvio.RecuperarTotalesBase(false);
+            if(totalBase==0){
+                MontoBase.setText("S/ 0,00");
+            }else{
+                String valorBase=formateador.format(totalBase);
+                MontoBase.setText("S/ "+valorBase);
+            }
+
+            if(totalUrgencia==0){
+                MontoUrgencia.setText("S/ 0,00");
+            }else{
+                String valorUrgencia=formateador.format(totalUrgencia);
+                MontoUrgencia.setText("S/ "+valorUrgencia);
+            }
+
+        }else{
+            linearMontoUrgencia.setVisibility(View.GONE);
+            totalBase=adapterItemReservaEnvio.RecuperarTotalesBase(false);
+            if(totalBase==0){
+                MontoBase.setText("S/ 0,00");
+            }else{
+                String valorBase=formateador.format(totalBase);
+                MontoBase.setText("S/ "+valorBase);
+            }
+        }
+
+        totalDescuentos=adapterItemReservaEnvio.RecuperarDescuentos();
+        String valorDescuento=formateador.format(totalDescuentos);
+        MontoDescuento.setText("S/ "+valorDescuento);
+
+        if(Constantes.UBICACION_SELECT.getIdUbicacionDireccion()!=0){
+             totalDelivery=Constantes.UBICACION_SELECT.getPrecioDelivery();
+             String valorDelivery=formateador.format(totalDelivery);
+            MontoDelivery.setText("S/ "+valorDelivery);
+        }else{
+            MontoDelivery.setText("S/ 0.00");
+        }
+
+        double totalReserva=((totalBase+totalUrgencia)-totalDescuentos)+totalDelivery;
+        if(totalReserva==0){
+           MontoEnvio.setText("S/ 0.00");
+        }else{
+            String valorReserva=formateador.format(totalReserva);
+            MontoEnvio.setText("S/ "+valorReserva);
+        }
     }
     public void RecuperarUbicacionesUsuario(final Context context, final int idUsu) {
         final String idUsuario=String.valueOf(idUsu);
@@ -813,10 +879,10 @@ public class fragmentEnvioReserva extends Fragment {
                             boolean success = jsonResponse.getBoolean(SUCCESS);
                             if (success) {
                                 if (!jsonResponse.isNull("ubicaciones")) {
-                                    JSONArray categorias = jsonResponse.getJSONArray("ubicaciones");
+                                    JSONArray ubicaciones = jsonResponse.getJSONArray("ubicaciones");
 
-                                    for (int i = 0; i < categorias.length(); i++) {
-                                        JSONObject objeto = categorias.getJSONObject(i);
+                                    for (int i = 0; i < ubicaciones.length(); i++) {
+                                        JSONObject objeto = ubicaciones.getJSONObject(i);
                                         UbicacionDireccion ubicacion=new UbicacionDireccion();
                                         ubicacion.setIdUbicacionDireccion(objeto.getInt("idReservaUbicaciones"));
                                         ubicacion.setDireccionEntrega(objeto.getString("DireccionEntrega"));
@@ -826,6 +892,7 @@ public class fragmentEnvioReserva extends Fragment {
                                         distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
                                         ubicacion.setDistrito(distrito);
                                         ubicacion.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                        ubicacion.setPrecioDelivery(objeto.getDouble("precioDelivery"));
                                         ListaUbicaciones.add(ubicacion);
                                         adapterUbicaciones.notifyDataSetChanged();
                                     }

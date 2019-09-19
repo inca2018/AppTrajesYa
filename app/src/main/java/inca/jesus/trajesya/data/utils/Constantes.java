@@ -76,6 +76,9 @@ public class Constantes {
     public static final String SUCCESS ="success";
     public static final String OPERACION="operacion";
 
+    public static String FECHA_RESERVA;
+    public static String HORA_RESERVA;
+
 
     public static final String VariableDescripcion="Descripcion";
     public static final String VariableimagenPortada="imagenPortada";
