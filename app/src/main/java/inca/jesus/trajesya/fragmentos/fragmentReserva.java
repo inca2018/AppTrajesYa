@@ -63,44 +63,52 @@ public class fragmentReserva extends Fragment {
     @SuppressLint("WrongConstant")
     private void verificarItemReservas() {
 
-        if(Constantes.RESERVA_ITEMS.size()==0){
+        if(Constantes.RESERVA_ITEMS!=null){
+            if(Constantes.RESERVA_ITEMS.size()==0){
+                accionBotonReservar.setVisibility(View.GONE);
+                recycler1ItemReserva.setVisibility(View.GONE);
+                sectorListaVacia.setVisibility(View.VISIBLE);
+                sectorAccionSeguirComprando.setVisibility(View.VISIBLE);
+            }else{
+
+                linearLayout1 = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
+                adapterItemReserva = new AdapterItemReserva(getActivity(), Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
+                    @Override
+                    public void onClick(View v, int position) {
+                        //not required
+                    }
+                });
+                recycler1ItemReserva.setAdapter(adapterItemReserva);
+                recycler1ItemReserva.setLayoutManager(linearLayout1);
+
+                accionBotonReservar.setVisibility(View.VISIBLE);
+                recycler1ItemReserva.setVisibility(View.VISIBLE);
+                sectorListaVacia.setVisibility(View.GONE);
+                sectorAccionSeguirComprando.setVisibility(View.GONE);
+
+                MostrarTotal();
+                adapterItemReserva.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        adapterItemReserva.GenerarTotales();
+                        if(adapterItemReserva.getItemCount()==0){
+                            accionBotonReservar.setVisibility(View.GONE);
+                            recycler1ItemReserva.setVisibility(View.GONE);
+                            sectorListaVacia.setVisibility(View.VISIBLE);
+                            sectorAccionSeguirComprando.setVisibility(View.VISIBLE);
+                        }else{
+                            MostrarTotal();
+                        }
+                    }
+                });
+            }
+
+        }else{
             accionBotonReservar.setVisibility(View.GONE);
             recycler1ItemReserva.setVisibility(View.GONE);
             sectorListaVacia.setVisibility(View.VISIBLE);
             sectorAccionSeguirComprando.setVisibility(View.VISIBLE);
-        }else{
-
-            linearLayout1 = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
-            adapterItemReserva = new AdapterItemReserva(getActivity(), Constantes.RESERVA_ITEMS, new RecyclerViewOnItemClickListener2() {
-                @Override
-                public void onClick(View v, int position) {
-                    //not required
-                }
-            });
-            recycler1ItemReserva.setAdapter(adapterItemReserva);
-            recycler1ItemReserva.setLayoutManager(linearLayout1);
-
-            accionBotonReservar.setVisibility(View.VISIBLE);
-            recycler1ItemReserva.setVisibility(View.VISIBLE);
-            sectorListaVacia.setVisibility(View.GONE);
-            sectorAccionSeguirComprando.setVisibility(View.GONE);
-
-            MostrarTotal();
-            adapterItemReserva.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    adapterItemReserva.GenerarTotales();
-                    if(adapterItemReserva.getItemCount()==0){
-                        accionBotonReservar.setVisibility(View.GONE);
-                        recycler1ItemReserva.setVisibility(View.GONE);
-                        sectorListaVacia.setVisibility(View.VISIBLE);
-                        sectorAccionSeguirComprando.setVisibility(View.VISIBLE);
-                    }else{
-                        MostrarTotal();
-                    }
-                }
-            });
         }
 
     }

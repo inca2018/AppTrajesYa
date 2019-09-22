@@ -64,8 +64,18 @@ public class ReservaItem {
     public double getTotal() {
         return total;
     }
-
     public void setTotal(double total) {
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        String Objeto=
+                "{\"productoItem\": " +
+                productoItem.getIdProducto()+ ",\"Cantidad\": " +
+                Cantidad+ ",\"medidaReservaItem\":" +
+                medidaReservaItem.getIdMedida()+'}';
+        return Objeto;
+    }
+
 }

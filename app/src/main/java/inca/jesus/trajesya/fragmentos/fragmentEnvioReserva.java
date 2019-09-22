@@ -56,7 +56,9 @@ import inca.jesus.trajesya.adapters.AdapterTipoPago;
 import inca.jesus.trajesya.adapters.AdapterTipoTarjeta;
 import inca.jesus.trajesya.adapters.AdapterUbicacionesEnvio;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
+import inca.jesus.trajesya.clases.Perfil;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
+import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.TipoPago;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
@@ -296,6 +298,7 @@ public class fragmentEnvioReserva extends Fragment {
             }
         });
     }
+
     public void VerificacionInformacionEnvio() {
         String error="";
         if(Constantes.UBICACION_SELECT.getIdUbicacionDireccion()==0){
@@ -329,7 +332,7 @@ public class fragmentEnvioReserva extends Fragment {
         }
 
         if(error.length()==0){
-            Toast.makeText(context, "Envio Reserva", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Envio Reserva", Toast.LENGTH_SHORT).show();
             EnviarInformacionReservaService(context);
         }else{
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -337,7 +340,7 @@ public class fragmentEnvioReserva extends Fragment {
 
     }
 
-    private void EnviarInformacionReservaService(Context context) {
+    private void EnviarInformacionReservaService(final Context context) {
 
         final String TipoReserva=String.valueOf(TipoUrgencia);
         final String FechaReserva=Constantes.FECHA_RESERVA+" "+Constantes.HORA_RESERVA;
@@ -350,7 +353,128 @@ public class fragmentEnvioReserva extends Fragment {
         final String Telefono=etContactoTelefono.getText().toString();
         final String Distrito=String.valueOf(Constantes.UBICACION_SELECT.getDistrito().getIdUnidadTerritorial());
         final String Estado="3";
+        final String Condiciones="1";
+        final String Tiempo=Constantes.TIEMPO;
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                int idReserva = jsonResponse.getInt("idReserva");
+                                 EnviarItemReservaService(idReserva);
+                            } else {
+                                Toast.makeText(context, "Error al Enviar Reserva", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "RegistrarReserva");
+                params.put("TipoReserva", TipoReserva);
+                params.put("FechaReserva",FechaReserva);
+                params.put("TipoPago",TipoPago);
+                params.put("TipoDocumento",TipoDocumento);
+                params.put("TipoTarjeta",TipoTarjeta);
+                params.put("Usuario",Usuario);
+                params.put("Ubicacion",Ubicacion);
+                params.put("Referencia",Referencia);
+                params.put("Telefono",Telefono);
+                params.put("Distrito",Distrito);
+                params.put("Estado",Estado);
+                params.put("Condiciones",Condiciones);
+                params.put("Tiempo",Tiempo);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+    private void EnviarItemReservaService(final int idReservaRecuperado) {
+        final String idReserva=String.valueOf(idReservaRecuperado);
+        String listaProductos="";
+        List<ReservaItem> listaProductosReserva = Constantes.RESERVA_ITEMS;
+
+        for(int i=0;i<listaProductosReserva.size();i++){
+            if(i==listaProductosReserva.size()-1){
+                listaProductos=listaProductos+
+                        listaProductosReserva.get(i).getProductoItem().getIdProducto()+"-"+
+                        listaProductosReserva.get(i).getCantidad()+"-"+
+                        listaProductosReserva.get(i).getMedidaReservaItem().getIdMedida();
+            }else{
+                listaProductos=listaProductos+
+                        listaProductosReserva.get(i).getProductoItem().getIdProducto()+"-"+
+                        listaProductosReserva.get(i).getCantidad()+"-"+
+                        listaProductosReserva.get(i).getMedidaReservaItem().getIdMedida()+"|";
+            }
+        }
+        final String Lista=listaProductos;
+        Log.i("Inca","Listado Productos: " +Lista);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                Toast.makeText(context, "Reserva Enviada Correctamente", Toast.LENGTH_SHORT).show();
+                                LimpiarVariables();
+                            } else {
+                                Toast.makeText(context, "Error al Enviar Reserva", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "RegistrarListaproductos");
+                params.put("idReserva", idReserva);
+                params.put("ListaProductos",Lista);
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+
+    private void LimpiarVariables() {
+     Constantes.TIPO_TARJETA_SELECT=null;
+     Constantes.TIPO_COMPROBANTE_SELECT=null;
+     Constantes.TIPO_PAGO_SELECT=null;
+     Constantes.FECHA_RESERVA=null;
+     Constantes.HORA_RESERVA=null;
+     Constantes.RESERVA_ITEMS=null;
+        ((ActivityPrincipal)context).opcionReserva();
     }
 
     public void AccionBotonesContacto() {
@@ -410,6 +534,7 @@ public class fragmentEnvioReserva extends Fragment {
                         } else {
                             AM_PM = "p.m.";
                         }
+                        Constantes.TIEMPO=AM_PM;
                         if(hourOfDay>=Constantes.INICIO_HORARIO && hourOfDay<=Constantes.FIN_HORARIO){
                             //Muestro la hora con el formato deseado
                             txtAccionHora.setText(horaFormateada + ":" + minutoFormateado + " " + AM_PM);
@@ -443,8 +568,11 @@ public class fragmentEnvioReserva extends Fragment {
                 VerificarDigitos(HOUR)+":"+
                 VerificarDigitos(MINUTE)+" "+
                 AMPM);
+        Constantes.TIEMPO=AMPM;
         txtAccionFecha.setText(VerificarDigitos(DAY+1)+BARRA+VerificarDigitos(MONTH+1)+BARRA+YEAR);
+        Constantes.FECHA_RESERVA=YEAR+"-"+VerificarDigitos(MONTH+1)+"-"+VerificarDigitos(DAY+1);
         txtAccionHora.setText( VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE)+" "+AMPM);
+        Constantes.HORA_RESERVA=VerificarDigitos(HOUR)+":"+VerificarDigitos(MINUTE);
         etContactoTelefono.setText("");
     }
     public String VerificarDigitos(int valor){

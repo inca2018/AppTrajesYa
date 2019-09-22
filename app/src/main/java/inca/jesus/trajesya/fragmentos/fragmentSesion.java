@@ -58,11 +58,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import inca.jesus.trajesya.activities.LoginActivity;
+import inca.jesus.trajesya.adapters.AdapterReservas;
 import inca.jesus.trajesya.adapters.AdapterUbicaciones;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.Perfil;
 import inca.jesus.trajesya.data.conexion.VolleySingleton;
+import inca.jesus.trajesya.data.modelo.Estado;
+import inca.jesus.trajesya.data.modelo.Galeria;
+import inca.jesus.trajesya.data.modelo.Medida;
+import inca.jesus.trajesya.data.modelo.Producto;
+import inca.jesus.trajesya.data.modelo.Reserva;
+import inca.jesus.trajesya.data.modelo.ReservaItem;
 import inca.jesus.trajesya.data.modelo.Sesion;
+import inca.jesus.trajesya.data.modelo.TipoComprobante;
+import inca.jesus.trajesya.data.modelo.TipoPago;
+import inca.jesus.trajesya.data.modelo.TipoTarjeta;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.modelo.UnidadTerritorial;
 import inca.jesus.trajesya.data.modelo.Usuario;
@@ -117,6 +127,17 @@ public class fragmentSesion extends Fragment {
 
     AlertDialog nuevaUbicacion;
 
+    TextView opcionReservas;
+    LinearLayout SectorReservasDisponibles;
+    ImageView ivRegresarPerfil2;
+    RecyclerView recyclerReservasDisponibles;
+
+    RelativeLayout MensajeReservassVacias;
+
+    List<Reserva> ListaReservas;
+    public LinearLayoutManager linearLayoutReservas;
+    public AdapterReservas adapterReservas;
+
     public fragmentSesion() {
         // Required empty public constructor
     }
@@ -165,11 +186,16 @@ public class fragmentSesion extends Fragment {
 
         SectorUbicaciones.setVisibility(View.GONE);
         MensajeUbicacionesVacias=vie.findViewById(R.id.MensajeUbicacionesVacias);
-
+        opcionReservas=vie.findViewById(R.id.opcionReservas);
+        SectorReservasDisponibles=vie.findViewById(R.id.SectorReservasDisponibles);
+        ivRegresarPerfil2=vie.findViewById(R.id.ivRegresarPerfil2);
+        recyclerReservasDisponibles=vie.findViewById(R.id.recyclerReservasDisponibles);
+        MensajeReservassVacias=vie.findViewById(R.id.MensajeReservassVacias);
         menu = false;
 
         ListaUbicaciones=new ArrayList<>();
         ListaDistritos=new ArrayList<>();
+        ListaReservas=new ArrayList<>();
         /*---------------------SETEAR TEXTO SUBRAYADO--------------------------*/
         SpannableString mitextoU = new SpannableString("COMPLETAR INFORMACIÓN");
         mitextoU.setSpan(new UnderlineSpan(), 0, mitextoU.length(), 0);
@@ -194,7 +220,151 @@ public class fragmentSesion extends Fragment {
         opcionAgregarUbicacion();
         GenerarAdapterListadoUbicaciones();
         RecuperarDistritos();
+        opcionReservas();
+        GenerarAdapterListadoReservas();
         return vie;
+    }
+
+    @SuppressLint("WrongConstant")
+    private void GenerarAdapterListadoReservas() {
+        linearLayoutReservas= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        adapterReservas = new AdapterReservas(context, ListaReservas, new RecyclerViewOnItemClickListener2() {
+            @Override
+            public void onClick(View v, int position) {
+
+            }
+        });
+        recyclerReservasDisponibles.setAdapter(adapterReservas);
+        recyclerReservasDisponibles.setLayoutManager(linearLayoutReservas);
+
+        adapterReservas.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                int size=adapterReservas.getItemCount();
+                if(size<0){
+                    recyclerReservasDisponibles.setVisibility(View.GONE);
+                    MensajeUbicacionesVacias.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerReservasDisponibles.setVisibility(View.VISIBLE);
+                    MensajeUbicacionesVacias.setVisibility(View.GONE);
+                }
+            }
+        });
+
+    }
+
+    private void opcionReservas() {
+        opcionReservas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modulo1.setVisibility(View.GONE);
+                SectorReservasDisponibles.setVisibility(View.VISIBLE);
+                recyclerReservasDisponibles.setVisibility(View.VISIBLE);
+                Usuario usuario=sesion.RecuperarSesion(context);
+                RecuperarReservasDisponibles(context,usuario.getIdUsuario());
+            }
+        });
+    }
+
+    private void RecuperarReservasDisponibles(final Context context,int idUser) {
+        final String idUsuario=String.valueOf(idUser);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+                            ListaReservas.clear();
+                            if (success) {
+                                JSONArray reservas = jsonResponse.getJSONArray("reservas");
+                                for (int i = 0; i < reservas.length(); i++) {
+                                    JSONObject objeto = reservas.getJSONObject(i);
+                                    Reserva reserva=new Reserva();
+                                    reserva.setIdReserva(objeto.getInt("idReserva"));
+                                    reserva.setTipoReserva(objeto.getInt("TipoReserva"));
+                                    reserva.setFechaEntrega(objeto.getString("fechaReserva"));
+                                    reserva.setHoraReserva(objeto.getString("horaReserva"));
+                                    TipoTarjeta tipoTarjeta=new TipoTarjeta();
+                                    tipoTarjeta.setNombreTarjeta(objeto.getString("NombreTarjeta"));
+                                    reserva.setTipoTarjetaReserva(tipoTarjeta);
+                                    TipoPago tipoPago=new TipoPago();
+                                    tipoPago.setNombreTipoPago(objeto.getString("TipoPago"));
+                                    reserva.setTipoPagoReserva(tipoPago);
+                                    TipoComprobante tipoComprobante=new TipoComprobante();
+                                    tipoComprobante.setNombreTipoComprobante(objeto.getString("NombreComprobante"));
+                                    Estado estado =new Estado();
+                                    estado.setNombreEstado(objeto.getString("DescripcionEstado"));
+                                    reserva.setEstadoReserva(estado);
+                                    UbicacionDireccion ubicacionDireccion=new UbicacionDireccion();
+                                    UnidadTerritorial distrito = new UnidadTerritorial();
+                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
+                                    ubicacionDireccion.setDistrito(distrito);
+                                    ubicacionDireccion.setDireccionEntrega(objeto.getString("UbicacionDireccion"));
+                                    ubicacionDireccion.setReferenciaDireccion(objeto.getString("UbicacionReferencia"));
+                                    reserva.setUbicacionDireccionReserva(ubicacionDireccion);
+                                    reserva.setTelefono(objeto.getString("TelefonoContacto"));
+                                    reserva.setFechaRegistro(objeto.getString("fechaRegistro"));
+                                    reserva.setTotalBase(objeto.getDouble("TotalBase"));
+                                    reserva.setTotalDelivery(objeto.getDouble("TotalDelivery"));
+                                    reserva.setTotalDescuento(objeto.getDouble("TotalDescuento"));
+                                    reserva.setTotalUrgencia(objeto.getDouble("TotalUrgencia"));
+                                    reserva.setTiempo(objeto.getString("tiempo"));
+
+                                    if (!objeto.isNull("ItemProducto")) {
+                                        JSONArray itemProducto = new JSONArray(objeto.getString("ItemProducto"));
+
+                                        List<ReservaItem> ListareservaItems = new ArrayList<>();
+                                        for (int u = 0; u < itemProducto.length(); u++) {
+                                            JSONObject objetoItem = itemProducto.getJSONObject(u);
+                                            ReservaItem reservaItem=new ReservaItem();
+                                            reservaItem.setCantidad(objetoItem.getInt("Cantidad"));
+                                            Producto producto = new Producto();
+                                            producto.setPrecioBase(objetoItem.getDouble("PrecioAlquiler"));
+                                            producto.setPrecioUrgencia(objetoItem.getDouble("Precioventa"));
+                                            producto.setPorcentajeDescuento(objetoItem.getDouble("PrecioDescuento"));
+                                            reservaItem.setProductoItem(producto);
+                                            Medida medida=new Medida();
+                                            medida.setNombreMedida(objetoItem.getString("NombreMedida"));
+                                            reservaItem.setMedidaReservaItem(medida);
+                                            ListareservaItems.add(reservaItem);
+                                        }
+                                        reserva.setListaItems(ListareservaItems);
+                                    }else{
+                                        Log.e("Inca", "Error de encontrar Items");
+                                    }
+
+                                    ListaReservas.add(reserva);
+                                    adapterReservas.notifyDataSetChanged();
+                                }
+
+                            } else {
+                                //Toast.makeText(context, "No se encuentran Reservas Registradas.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("Inca", "Error JSON EN Reservas:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("INCA", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(Constantes.OPERACION, "RecuperarReservas");
+                params.put("idUsuario",idUsuario);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
     private void RecuperarDistritos() {
@@ -358,6 +528,13 @@ public class fragmentSesion extends Fragment {
                 SectorUbicaciones.setVisibility(View.GONE);
             }
         });
+        ivRegresarPerfil2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modulo1.setVisibility(View.VISIBLE);
+                SectorReservasDisponibles.setVisibility(View.GONE);
+            }
+        });
     }
 
     @SuppressLint("WrongConstant")
@@ -379,10 +556,10 @@ public class fragmentSesion extends Fragment {
                 int size=adapterUbicaciones.getItemCount();
                 if(size<0){
                     recyclerMisUbicaciones.setVisibility(View.GONE);
-                    MensajeUbicacionesVacias.setVisibility(View.VISIBLE);
+                    MensajeReservassVacias.setVisibility(View.VISIBLE);
                     }else{
                     recyclerMisUbicaciones.setVisibility(View.VISIBLE);
-                    MensajeUbicacionesVacias.setVisibility(View.GONE);
+                    MensajeReservassVacias.setVisibility(View.GONE);
                 }
             }
         });

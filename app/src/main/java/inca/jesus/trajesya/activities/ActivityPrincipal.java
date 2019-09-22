@@ -79,7 +79,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     Sesion sesion;
     String[] Rutas;
     SharedPreferences.Editor editor;
-    public int counter = 18;
+    public int counter = 8;
     AlertDialog alerta;
 
     @Override

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/blanco"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txtCodigoReserva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="R-00001"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:textAlignment="textStart"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/txtReservaTipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Urgente"
+                android:textColor="@color/rojo"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_margin="2dp"
+                android:textAlignment="textEnd"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="2dp">
+            <TextView
+                android:id="@+id/txtReservaFecha"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="normal"
+                android:textSize="16dp"
+                android:inputType="textMultiLine"
+                android:text=" "
+                android:layout_weight="1"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtReservaHora"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="normal"
+                android:textSize="16dp"
+                android:inputType="textMultiLine"
+                android:text=" "
+                android:layout_weight="1"
+                android:textAlignment="textStart"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="2dp">
+            <TextView
+                android:id="@+id/txtReservaEstado"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="normal"
+                android:textSize="16dp"
+                android:inputType="textMultiLine"
+                android:text=" "
+                android:layout_weight="1"
+                android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/txtReservaDetalles"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="normal"
+                android:textSize="14dp"
+                android:inputType="textMultiLine"
+                android:text="Detalles"
+                android:textColor="@color/noFocus"
+                android:layout_weight="1"
+                android:textAlignment="textEnd"/>
+        </LinearLayout>
+
+
+    </LinearLayout
+        >
+</androidx.cardview.widget.CardView>

@@ -27,7 +27,7 @@ public class Constantes {
     public final static int INICIO_HORARIO=9;
     public final static int FIN_HORARIO=21;
 
-    public final static int TIEMPO_PUBLICIDAD=20000;
+    public final static int TIEMPO_PUBLICIDAD=10000;
     public static boolean CANTIDAD_PUBLICIDAD=false;
 
     public static boolean SECTOR_VACIO=true;
@@ -63,14 +63,12 @@ public class Constantes {
     public final static String PRIVACIDAD_CONFIDENCIALIDAD="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas \"Letraset\", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.";
     public final static String PREGUNTAS_PRECUENTES="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas \"Letraset\", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.";
 
-
-
-    public static Reserva RESERVA_LOCAL=new Reserva();
     public static List<ReservaItem> RESERVA_ITEMS=new ArrayList<>();
     public static UbicacionDireccion UBICACION_SELECT=new UbicacionDireccion();
     public static TipoPago TIPO_PAGO_SELECT=new TipoPago();
     public static TipoTarjeta TIPO_TARJETA_SELECT=new TipoTarjeta();
     public static TipoComprobante TIPO_COMPROBANTE_SELECT=new TipoComprobante();
+    public static String TIEMPO;
 
 
     public static final String SUCCESS ="success";
