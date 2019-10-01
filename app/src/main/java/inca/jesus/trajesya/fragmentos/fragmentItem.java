@@ -405,7 +405,7 @@ public class fragmentItem extends Fragment {
                             item.setMedidaReservaItem(MedidaRecuperada);
                             item.setProductoItem(ProductoRecuperado);
                             Constantes.RESERVA_ITEMS.add(item);
-                            ((ActivityPrincipal)context).opcionReserva();
+                            ((ActivityPrincipal)context).opcionReserva(false);
                             Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
@@ -457,7 +457,7 @@ public class fragmentItem extends Fragment {
                                 item.setMedidaReservaItem(MedidaRecuperada);
                                 item.setProductoItem(ProductoRecuperado);
                                 Constantes.RESERVA_ITEMS.add(item);
-                                ((ActivityPrincipal)context).opcionReserva();
+                                ((ActivityPrincipal)context).opcionReserva(false);
                                 Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
                             }else{
                                 Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
@@ -473,7 +473,7 @@ public class fragmentItem extends Fragment {
                             item.setMedidaReservaItem(MedidaRecuperada);
                             item.setProductoItem(ProductoRecuperado);
                             Constantes.RESERVA_ITEMS.add(item);
-                            ((ActivityPrincipal)context).opcionReserva();
+                            ((ActivityPrincipal)context).opcionReserva(false);
                             Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(context, "Debe indicar una cantidad para continuar.", Toast.LENGTH_SHORT).show();
@@ -511,5 +511,11 @@ public class fragmentItem extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         scroll.scrollTo(0, 0);
+    }
+
+    public void LimpiarTallas(){
+        if(adapterMedida!=null){
+            adapterMedida.QuitarSeleccion();
+        }
     }
 }

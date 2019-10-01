@@ -70,6 +70,8 @@ public class Constantes {
     public static TipoComprobante TIPO_COMPROBANTE_SELECT=new TipoComprobante();
     public static String TIEMPO;
 
+    public static Reserva RESERVA_DETALLE;
+
 
     public static final String SUCCESS ="success";
     public static final String OPERACION="operacion";

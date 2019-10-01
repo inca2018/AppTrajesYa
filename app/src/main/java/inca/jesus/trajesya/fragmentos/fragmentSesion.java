@@ -50,6 +50,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,27 +117,23 @@ public class fragmentSesion extends Fragment {
     Button btnAgregarUbicacion;
     public List<UnidadTerritorial> ListaDistritos;
     String[] spinnerDistritos;
-
     public List<UbicacionDireccion> ListaUbicaciones;
     public RecyclerView recyclerMisUbicaciones;
     public LinearLayoutManager linearLayoutUbicaciones;
     public AdapterUbicaciones adapterUbicaciones;
-
     RelativeLayout MensajeUbicacionesVacias;
-
-
     AlertDialog nuevaUbicacion;
-
+    AlertDialog detalleReserva;
     TextView opcionReservas;
     LinearLayout SectorReservasDisponibles;
     ImageView ivRegresarPerfil2;
     RecyclerView recyclerReservasDisponibles;
-
     RelativeLayout MensajeReservassVacias;
-
     List<Reserva> ListaReservas;
     public LinearLayoutManager linearLayoutReservas;
     public AdapterReservas adapterReservas;
+    TextView tituloMisReservas;
+    TextView tituloMisUbicaciones;
 
     public fragmentSesion() {
         // Required empty public constructor
@@ -191,6 +188,8 @@ public class fragmentSesion extends Fragment {
         ivRegresarPerfil2=vie.findViewById(R.id.ivRegresarPerfil2);
         recyclerReservasDisponibles=vie.findViewById(R.id.recyclerReservasDisponibles);
         MensajeReservassVacias=vie.findViewById(R.id.MensajeReservassVacias);
+        tituloMisReservas=vie.findViewById(R.id.tituloMisReservas);
+        tituloMisUbicaciones=vie.findViewById(R.id.tituloMisUbicaciones);
         menu = false;
 
         ListaUbicaciones=new ArrayList<>();
@@ -222,6 +221,17 @@ public class fragmentSesion extends Fragment {
         RecuperarDistritos();
         opcionReservas();
         GenerarAdapterListadoReservas();
+
+
+        SpannableString mitextoReserva = new SpannableString("MIS RESERVAS");
+        mitextoReserva.setSpan(new UnderlineSpan(), 0, mitextoReserva.length(), 0);
+        tituloMisReservas.setText(mitextoReserva);
+        SpannableString mitextoUbicaciones = new SpannableString("MIS UBICACIONES GUARDADAS");
+        mitextoUbicaciones.setSpan(new UnderlineSpan(), 0, mitextoUbicaciones.length(), 0);
+        tituloMisUbicaciones.setText(mitextoUbicaciones);
+
+
+
         return vie;
     }
 
@@ -231,7 +241,8 @@ public class fragmentSesion extends Fragment {
         adapterReservas = new AdapterReservas(context, ListaReservas, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
-
+                Constantes.RESERVA_DETALLE=(ListaReservas.get(position));
+                MostrarDetalleReserva(ListaReservas.get(position));
             }
         });
         recyclerReservasDisponibles.setAdapter(adapterReservas);
@@ -251,7 +262,143 @@ public class fragmentSesion extends Fragment {
                 }
             }
         });
+    }
 
+    private void MostrarDetalleReserva(Reserva reserva) {
+
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View dialogDetalleReserva = inflater.inflate(R.layout.dialog_info_reserva, null);
+        final TextView dialogCodigoReserva = dialogDetalleReserva.findViewById(R.id.txtDialogCodigoReserva);
+        final TextView dialogContactoReserva=dialogDetalleReserva.findViewById(R.id.txtDialogContactoReserva);
+        final TextView dialogDireccionReserva=dialogDetalleReserva.findViewById(R.id.txtDialogDireccionReserva);
+        final TextView dialogDistritoReserva=dialogDetalleReserva.findViewById(R.id.txtDialogDistritoReserva);
+        final TextView dialogEstadoReserva=dialogDetalleReserva.findViewById(R.id.txtDialogEstadoReserva);
+        final TextView dialogFechaReserva=dialogDetalleReserva.findViewById(R.id.txtDialogFechaReserva);
+        final TextView dialogHoraReserva=dialogDetalleReserva.findViewById(R.id.txtDialogHoraReserva);
+        final TextView dialogPrecioBase=dialogDetalleReserva.findViewById(R.id.txtDialogPrecioBase);
+        final TextView dialogPrecioDelivery=dialogDetalleReserva.findViewById(R.id.txtDialogPrecioDelivery);
+        final TextView dialogPrecioDescuento=dialogDetalleReserva.findViewById(R.id.txtDialogPrecioDescuento);
+        final TextView dialogPrecioTotal=dialogDetalleReserva.findViewById(R.id.txtDialogPrecioTotal);
+        final TextView dialogReferenciaReserva=dialogDetalleReserva.findViewById(R.id.txtDialogReferenciaReserva);
+        final TextView dialogTipoComprobante=dialogDetalleReserva.findViewById(R.id.txtDialogTipoComprobante);
+        final TextView dialogTipoPago=dialogDetalleReserva.findViewById(R.id.txtDialogTipoPago);
+        final ImageView eliminarDialogReservaDetalles=dialogDetalleReserva.findViewById(R.id.eliminarDialogReservaDetalles);
+        final LinearLayout contenedorReservaItem=dialogDetalleReserva.findViewById(R.id.contenedorReservaItem);
+
+        dialogCodigoReserva.setText(""+Correlativo(reserva.getIdReserva()));
+        dialogContactoReserva.setText(""+reserva.getTelefono());
+        dialogDireccionReserva.setText(""+reserva.getUbicacionDireccionReserva().getDireccionEntrega());
+        dialogDistritoReserva.setText(""+reserva.getUbicacionDireccionReserva().getDistrito().getNombreUnidadTerritorial());
+        dialogReferenciaReserva.setText(""+reserva.getUbicacionDireccionReserva().getReferenciaDireccion());
+        if(reserva.getTipoTarjetaReserva().getNombreTarjeta()==null || reserva.getTipoTarjetaReserva().getNombreTarjeta()=="null"){
+            dialogTipoPago.setText(""+reserva.getTipoPagoReserva().getNombreTipoPago());
+        }else{
+            dialogTipoPago.setText(""+reserva.getTipoPagoReserva().getNombreTipoPago()+" - "+reserva.getTipoTarjetaReserva().getNombreTarjeta());
+        }
+
+        dialogTipoComprobante.setText(""+reserva.getTipoComprobante().getNombreTipoComprobante());
+        String estado=reserva.getEstadoReserva().getNombreEstado();
+        dialogEstadoReserva.setText(estado);
+        switch (estado){
+            case "Nuevo":
+                dialogEstadoReserva.setTextColor(context.getResources().getColor( R.color.nueva));
+                break;
+            case "Atendido":
+                dialogEstadoReserva.setTextColor(context.getResources().getColor( R.color.asignada));
+                break;
+            case "Cerrado":
+                dialogEstadoReserva.setTextColor(context.getResources().getColor( R.color.cerrada));
+                break;
+            case "Anulado":
+                dialogEstadoReserva.setTextColor(context.getResources().getColor( R.color.anulada));
+                break;
+        }
+
+        dialogFechaReserva.setText(reserva.getFechaEntrega());
+        dialogHoraReserva.setText(reserva.getHoraReserva()+" "+reserva.getTiempo());
+
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        int tipoReserva=reserva.getTipoReserva();
+        double total=0;
+        if(tipoReserva==1){
+            dialogPrecioBase.setText(formateador.format(reserva.getTotalBase()));
+
+            total=((reserva.getTotalBase()+
+                            reserva.getTotalDelivery())
+                            -reserva.getTotalDescuento());
+        }else{
+            dialogPrecioBase.setText(formateador.format(reserva.getTotalUrgencia()));
+
+            total=((reserva.getTotalUrgencia()+
+                    reserva.getTotalDelivery())
+                    -reserva.getTotalDescuento());
+        }
+
+        dialogPrecioDelivery.setText(formateador.format(reserva.getTotalDelivery()));
+        dialogPrecioDescuento.setText(formateador.format(reserva.getTotalDescuento()));
+
+
+        if(total==0){
+            dialogPrecioTotal.setText("S/ 0.00");
+        }else{
+
+            String valor=formateador.format(total);
+            dialogPrecioTotal.setText("S/ "+valor);
+        }
+
+
+        RrecuperarListaDetalle(contenedorReservaItem,reserva.getListaItems());
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogDetalleReserva);
+        detalleReserva = builder.show();
+
+        eliminarDialogReservaDetalles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detalleReserva.dismiss();
+            }
+        });
+
+    }
+
+    private void RrecuperarListaDetalle(LinearLayout contenedorReservaItem, List<ReservaItem> listaItems) {
+
+        for(int i=0;i<listaItems.size();i++){
+            contenedorReservaItem.addView(RecuperarElemento((i+1),listaItems.get(i)));
+        }
+
+    }
+
+    private View RecuperarElemento(int i, ReservaItem reservaItem) {
+
+        LinearLayout contenedor = new LinearLayout(context);
+        contenedor.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        contenedor.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView  num= new TextView(context);
+        num.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        num.setText(String.valueOf(i));
+
+        TextView NombreProducto=new TextView(context);
+        NombreProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        NombreProducto.setText(reservaItem.getProductoItem().getNombreProducto());
+
+        TextView CantidadProducto=new TextView(context);
+        CantidadProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        CantidadProducto.setText(String.valueOf(reservaItem.getCantidad()));
+
+        TextView MedidaProducto=new TextView(context);
+        MedidaProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        MedidaProducto.setText(reservaItem.getMedidaReservaItem().getNombreMedida());
+
+        contenedor.addView(num);
+        contenedor.addView(NombreProducto);
+        contenedor.addView(CantidadProducto);
+        contenedor.addView(MedidaProducto);
+
+       return contenedor;
     }
 
     private void opcionReservas() {
@@ -295,6 +442,7 @@ public class fragmentSesion extends Fragment {
                                     reserva.setTipoPagoReserva(tipoPago);
                                     TipoComprobante tipoComprobante=new TipoComprobante();
                                     tipoComprobante.setNombreTipoComprobante(objeto.getString("NombreComprobante"));
+                                    reserva.setTipoComprobante(tipoComprobante);
                                     Estado estado =new Estado();
                                     estado.setNombreEstado(objeto.getString("DescripcionEstado"));
                                     reserva.setEstadoReserva(estado);
@@ -426,8 +574,7 @@ public class fragmentSesion extends Fragment {
                 final EditText etDireccionUbicacion=dialoglayout4.findViewById(R.id.etDireccionUbicacion);
                 final EditText etReferenciaUbicacion=dialoglayout4.findViewById(R.id.etReferenciaUbicacion);
 
-                spinnerDistritos=new String[(ListaDistritos.size()+1)];
-                spinnerDistritos[0]="-- SELECIONE DISTRITO --";
+                spinnerDistritos=new String[(ListaDistritos.size())];
                 for (int i = 0; i < ListaDistritos.size(); i++) {
                     spinnerDistritos[i] = ListaDistritos.get(i).getNombreUnidadTerritorial();
                 }
@@ -1217,6 +1364,22 @@ public class fragmentSesion extends Fragment {
             }
         };
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
+    public String Correlativo(int idReserva){
+        String correlativo="";
+        int len=String.valueOf(idReserva).length();
+        int numCeros=5-len;
+        String cero="0";
+        String ceros=  repeat(cero,numCeros);
+        correlativo="R-"+ceros+idReserva;
+        return correlativo;
+    }
+    public static String repeat(String val, int count){
+        StringBuilder buf = new StringBuilder(val.length() * count);
+        while (count-- > 0) {
+            buf.append(val);
+        }
+        return buf.toString();
     }
 
 }

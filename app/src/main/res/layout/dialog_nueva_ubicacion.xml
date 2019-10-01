@@ -16,24 +16,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="@font/roboto_thin"
             android:text="NUEVA UBICACIÓN"
             android:textColor="@color/SinCheck"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="@font/roboto_mono_thin"
             android:text="Distrito:"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/negro"/>
         <Spinner
             android:id="@+id/spDistrito"
             android:layout_width="match_parent"

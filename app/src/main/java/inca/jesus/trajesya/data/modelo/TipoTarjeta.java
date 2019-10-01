@@ -59,4 +59,13 @@ public class TipoTarjeta {
     public void setSelect(boolean select) {
         this.select = select;
     }
+
+    public void LimpiarValores(TipoTarjeta tipoTarjeta){
+        tipoTarjeta.setNombreTarjeta("");
+        tipoTarjeta.setIdTipoTarjeta(0);
+        tipoTarjeta.setEstadoTipoTarjeta(null);
+        tipoTarjeta.setFechaUpdate("");
+        tipoTarjeta.setFechaRegistro("");
+        tipoTarjeta.setSelect(false);
+    }
 }

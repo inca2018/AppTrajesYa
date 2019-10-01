@@ -146,7 +146,7 @@ public class AdapterUbicacionesEnvio extends RecyclerView.Adapter<AdapterUbicaci
         Constantes.UBICACION_SELECT=my_Data.get(position);
     }
 
-    private void QuitarSeleccion() {
+    public void QuitarSeleccion() {
         for(int i=0;i<my_Data.size();i++){
             my_Data.get(i).setSelect(false);
         }

@@ -32,7 +32,7 @@
                         android:id="@+id/SectorLogo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/sombra_base_light"
+                        android:background="@drawable/gradiente_fondo"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -266,7 +266,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_margin="4dp">
 
 
                     <LinearLayout
@@ -446,7 +447,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:layout_margin="4dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -485,42 +487,49 @@
                     android:id="@+id/SectorUbicaciones"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="4dp"
                     android:orientation="vertical"
-                    android:layout_margin="8dp">
+                    android:visibility="gone">
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_margin="8dp">
+                        android:layout_margin="8dp"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/ivRegresarPerfil"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="10"
-                            android:src="@drawable/arrow_left" />
+                            android:layout_height="match_parent"
+                            android:layout_weight="10">
+
+                            <ImageView
+                                android:id="@+id/ivRegresarPerfil"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:src="@drawable/arrow_left" />
+                        </RelativeLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
-                            android:fontFamily="sans-serif-condensed"
+                            android:fontFamily="@font/roboto_thin"
                             android:gravity="center_vertical"
-                            android:padding="8dp"
-                            android:text="Regresar al Perfil"
-                            android:textAlignment="center"
-                            android:textColor="@color/SinCheck"
+                            android:paddingLeft="10dp"
+                            android:text="VOLVER AL PERFIL"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="8"
                             android:elevation="5dp"
-                            app:cardCornerRadius="2dp"
-                            android:layout_marginTop="10dp">
+                            app:cardCornerRadius="2dp">
 
                             <Button
                                 android:id="@+id/btnAgregarUbicacion"
@@ -536,25 +545,29 @@
                     </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tituloMisUbicaciones"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="2dp"
                         android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text=""
                         android:textColor="@color/SinCheck"
-                        android:textStyle="bold"
-                        android:text="MIS UBICACIONES REGISTRADAS"
-                        android:textSize="16sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerMisUbicaciones"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
                     <RelativeLayout
                         android:id="@+id/MensajeUbicacionesVacias"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:visibility="gone">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -570,65 +583,71 @@
                     </RelativeLayout>
 
 
-
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/SectorReservasDisponibles"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="4dp"
                     android:orientation="vertical"
-                    android:layout_margin="8dp"
                     android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_margin="8dp">
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/ivRegresarPerfil2"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="10"
-                            android:src="@drawable/arrow_left" />
+                            android:layout_height="match_parent"
+                            android:layout_weight="10">
+
+                            <ImageView
+                                android:id="@+id/ivRegresarPerfil2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:src="@drawable/arrow_left" />
+                        </RelativeLayout>
+
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="sans-serif-condensed"
+                            android:fontFamily="@font/roboto_thin"
                             android:gravity="center_vertical"
-                            android:padding="8dp"
-                            android:text="Regresar al Perfil"
-                            android:textAlignment="center"
-                            android:textColor="@color/SinCheck"
+                            android:paddingLeft="10dp"
+                            android:text="VOLVER AL PERFIL"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tituloMisReservas"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="2dp"
                         android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text=""
                         android:textColor="@color/SinCheck"
-                        android:textStyle="bold"
-                        android:text="MIS RESERVAS"
-                        android:textSize="16sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerReservasDisponibles"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
 
                     <RelativeLayout
                         android:id="@+id/MensajeReservassVacias"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:visibility="gone">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

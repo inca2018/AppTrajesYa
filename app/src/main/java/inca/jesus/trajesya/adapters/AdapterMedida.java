@@ -99,5 +99,10 @@ public class AdapterMedida extends RecyclerView.Adapter<AdapterMedida.ViewHolder
         }
         return temp;
     }
+    public void QuitarSeleccion() {
+        for(int i=0;i<my_Data.size();i++){
+            my_Data.get(i).setSelect(false);
+        }
+    }
 
 }

@@ -127,7 +127,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                                 opcionCategorias();
                                 return true;
                             case R.id.action_4:
-                                opcionReserva();
+                                opcionReserva(false);
                                 return true;
                             case R.id.action_5:
                                 opcionSesion();
@@ -157,7 +157,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o3")) {
             opcion3();
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o4")) {
-            opcionReserva();
+            opcionReserva(false);
         } else if (getIntent().getStringExtra("o").equalsIgnoreCase("o5")) {
             opcionSesion();
         }else if(getIntent().getStringExtra("o").equalsIgnoreCase("Item")){
@@ -361,7 +361,12 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
 
     }
 
-    public void opcionReserva() {
+    public void opcionReserva(boolean Limpiar) {
+        if(Limpiar){
+            fragmentItem fragmentItem = new fragmentItem();
+            fragmentItem.LimpiarTallas();
+        }
+
         SelectMenu(R.id.action_4);
         fragment = new fragmentReserva();
         fragmentManager.beginTransaction().replace(R.id.contenedor, fragment).commit();

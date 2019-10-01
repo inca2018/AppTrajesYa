@@ -41,4 +41,10 @@ public class TipoPago {
     public void setSelect(boolean select) {
         this.select = select;
     }
+    public void LimpiarValores(TipoPago tipoPago){
+        tipoPago.setNombreTipoPago("");
+        tipoPago.setFechaRegistro("");
+        tipoPago.setIdTipoPago(0);
+        tipoPago.setSelect(false);
+    }
 }

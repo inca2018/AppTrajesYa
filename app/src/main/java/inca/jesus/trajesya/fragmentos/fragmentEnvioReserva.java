@@ -468,13 +468,24 @@ public class fragmentEnvioReserva extends Fragment {
     }
 
     private void LimpiarVariables() {
-     Constantes.TIPO_TARJETA_SELECT=null;
-     Constantes.TIPO_COMPROBANTE_SELECT=null;
-     Constantes.TIPO_PAGO_SELECT=null;
-     Constantes.FECHA_RESERVA=null;
-     Constantes.HORA_RESERVA=null;
-     Constantes.RESERVA_ITEMS=null;
-        ((ActivityPrincipal)context).opcionReserva();
+        txtPrincipalDireccion.setText("");
+        txtPrincipalReferencia.setText("");
+     //Constantes.TIPO_TARJETA_SELECT.LimpiarValores(Constantes.TIPO_TARJETA_SELECT);
+     //Constantes.TIPO_COMPROBANTE_SELECT.LimpiarValores(Constantes.TIPO_COMPROBANTE_SELECT);
+     //Constantes.TIPO_PAGO_SELECT.LimpiarValores(Constantes.TIPO_PAGO_SELECT);
+        Constantes.UBICACION_SELECT.setReferenciaDireccion("");
+        Constantes.UBICACION_SELECT.setDireccionEntrega("");
+        Constantes.UBICACION_SELECT.getDistrito().setIdUnidadTerritorial(0);
+        Constantes.UBICACION_SELECT.getDistrito().setNombreUnidadTerritorial("");
+        Constantes.FECHA_RESERVA="";
+        Constantes.HORA_RESERVA="";
+        Constantes.RESERVA_ITEMS.clear();
+        adapterTipoComprobante.QuitarSeleccion();
+        adapterTipoTarjeta.QuitarSeleccion();
+        adapterTipoPago.QuitarSeleccion();
+        adapterUbicaciones.QuitarSeleccion();
+
+        ((ActivityPrincipal)context).opcionReserva(true);
     }
 
     public void AccionBotonesContacto() {
@@ -605,7 +616,6 @@ public class fragmentEnvioReserva extends Fragment {
             }else{
                 txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
             }
-            //txtPrincipalDistrito.setText(ubicacionTemporal.getDistrito().getNombreUnidadTerritorial());
         }else{
             txtPrincipalDistrito.setText("Sin Distrito Seleccionado");
         }
@@ -621,7 +631,7 @@ public class fragmentEnvioReserva extends Fragment {
         }
         if(ubicacionTemporal.getReferenciaDireccion()!=null){
             if(ubicacionTemporal.getDireccionEntrega().length()>0){
-                txtPrincipalReferencia.setText(ubicacionTemporal.getDireccionEntrega());
+                txtPrincipalReferencia.setText(ubicacionTemporal.getReferenciaDireccion());
             }else{
                 txtPrincipalReferencia.setText("");
             }
@@ -634,7 +644,7 @@ public class fragmentEnvioReserva extends Fragment {
         btnVolverReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ActivityPrincipal)context).opcionReserva();
+                ((ActivityPrincipal)context).opcionReserva(false);
             }
         });
         btnSectorUbicacionVolver.setOnClickListener(new View.OnClickListener() {

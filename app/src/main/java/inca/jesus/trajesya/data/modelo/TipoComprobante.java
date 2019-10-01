@@ -59,4 +59,12 @@ public class TipoComprobante {
     public void setSelect(boolean select) {
         this.select = select;
     }
+    public void LimpiarValores(TipoComprobante tipoComprobante){
+        tipoComprobante.setNombreTipoComprobante("");
+        tipoComprobante.setIdTipoComprobante(0);
+        tipoComprobante.setEstadoTipoComprobante(null);
+        tipoComprobante.setFechaRegistro("");
+        tipoComprobante.setFechaUpdate("");
+        tipoComprobante.setSelect(false);
+    }
 }

@@ -10,7 +10,6 @@ public class ReservaItem {
     double total;
 
     public ReservaItem(){
-
     }
 
     public int getIdReservaitem() {
