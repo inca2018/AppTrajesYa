@@ -296,6 +296,10 @@ public class Splash extends AppCompatActivity {
         temp.setImagenProducto(objeto.getString(Constantes.VariableimagenPortada));
         temp.setFechaRegistro(objeto.getString(Constantes.VariablefechaRegistro));
         temp.setFechaUpdate(objeto.getString(Constantes.VariablefechaUpdate));
+        /*---Total Vendido--*/
+
+        temp.setTotalVendido(objeto.getInt("totalVendido"));
+
         /*---Formatear Registro--*/
         try {
             Date date = formato.parse(temp.getFechaRegistro());
@@ -416,6 +420,7 @@ public class Splash extends AppCompatActivity {
         for (int i = 0; i < recientes.size(); i++) {
             if (i <= 10) {
                 Constantes.Base_ListaProductoNuevo.add(recientes.get(i));
+
                 Log.i("Inca", "Producto Recientes Agregado: " + recientes.get(i).getNombreProducto());
             } else {
                 Log.i("Inca", "Producto Recientes NO Agregado: " + recientes.get(i).getNombreProducto());

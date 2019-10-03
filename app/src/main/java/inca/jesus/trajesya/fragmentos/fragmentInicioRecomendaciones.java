@@ -68,10 +68,10 @@ public class fragmentInicioRecomendaciones extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_recomendaciones, container, false);
         context=getActivity();
-        recycler1=(RecyclerView)view.findViewById(R.id.recycler1);
-        recycler2=(RecyclerView)view.findViewById(R.id.recycler2);
-        recycler3=(RecyclerView)view.findViewById(R.id.recycler3);
-        recycler4=(RecyclerView)view.findViewById(R.id.recycler4);
+        recycler1=view.findViewById(R.id.recycler1);
+        recycler2=view.findViewById(R.id.recycler2);
+        recycler3=view.findViewById(R.id.recycler3);
+        recycler4=view.findViewById(R.id.recycler4);
 
 
         ListaVistosRecien=new ArrayList<>();

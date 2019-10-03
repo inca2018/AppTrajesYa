@@ -25,6 +25,7 @@ public class Producto {
     List<Galeria> GaleriaProducto;
     List<Medida> MedidaProducto;
     Grupo grupo;
+    int totalVendido;
 
     double porcentajeDescuento;
 
@@ -198,5 +199,13 @@ public class Producto {
 
     public void setFechaRegistroDate(Date fechaRegistroDate) {
         this.fechaRegistroDate = fechaRegistroDate;
+    }
+
+    public int getTotalVendido() {
+        return totalVendido;
+    }
+
+    public void setTotalVendido(int totalVendido) {
+        this.totalVendido = totalVendido;
     }
 }

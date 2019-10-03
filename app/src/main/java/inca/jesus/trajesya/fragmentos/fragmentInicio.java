@@ -34,7 +34,6 @@ public class fragmentInicio extends Fragment  {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
         adapter.addFragment(new Promociones(), getString(R.string.lo_mejor));
         adapter.addFragment(new fragmentInicioRecomendaciones(), getString(R.string.Recomendaciones));
-
         adapter.addFragment(new Destacados(), getString(R.string.Destacados));
 
 

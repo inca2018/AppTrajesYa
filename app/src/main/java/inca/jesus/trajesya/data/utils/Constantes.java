@@ -45,12 +45,12 @@ public class Constantes {
 
     public final static List<Producto> Base_ListaProductoRecientes= new ArrayList<>();// FALTA
     public final static List<Producto> Base_ListaProductoPromociones=new ArrayList<>();//OK
-    public final static List<Producto> Base_ListaProductosTopTradicionales=new ArrayList<>();//OK
-    public final static List<Producto> Base_ListaProductosTopOtros=new ArrayList<>();//OK
+    public final static List<Producto> Base_ListaProductosTopTradicionales=new ArrayList<>();//OK INCAA
+    public final static List<Producto> Base_ListaProductosTopOtros=new ArrayList<>();//OK  INCAA
 
 
     public final static List<Producto> Base_ListaProductoNuevo = new ArrayList<>();//OK
-    public final static List<Producto> Base_ListaProductoMasVisto = new ArrayList<>();//OK
+    public final static List<Producto> Base_ListaProductoMasVisto = new ArrayList<>();//OK INCAA
     public final static List<Producto> Base_ListaProductoMasAlquilados = new ArrayList<>();//FALTA
     public final static List<Producto> Base_ListaProductoTendencias = new ArrayList<>();//FALTA
 

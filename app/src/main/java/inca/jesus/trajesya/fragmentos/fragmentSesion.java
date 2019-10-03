@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -347,7 +349,7 @@ public class fragmentSesion extends Fragment {
         }
 
 
-        RrecuperarListaDetalle(contenedorReservaItem,reserva.getListaItems());
+        RrecuperarListaDetalle(contenedorReservaItem,reserva);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -363,40 +365,84 @@ public class fragmentSesion extends Fragment {
 
     }
 
-    private void RrecuperarListaDetalle(LinearLayout contenedorReservaItem, List<ReservaItem> listaItems) {
+    private void RrecuperarListaDetalle(LinearLayout contenedorReservaItem,Reserva reserva) {
 
-        for(int i=0;i<listaItems.size();i++){
-            contenedorReservaItem.addView(RecuperarElemento((i+1),listaItems.get(i)));
+        for(int i=0;i<reserva.getListaItems().size();i++){
+            contenedorReservaItem.addView(RecuperarElemento(reserva.getTipoReserva(),(i+1),reserva.getListaItems().get(i)));
         }
 
     }
 
-    private View RecuperarElemento(int i, ReservaItem reservaItem) {
+    private View RecuperarElemento(int tipoReserva, int i, ReservaItem reservaItem) {
 
         LinearLayout contenedor = new LinearLayout(context);
         contenedor.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         contenedor.setOrientation(LinearLayout.HORIZONTAL);
 
+        LinearLayout contenedorA = new LinearLayout(context);
+        contenedorA.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        contenedorA.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout contenedorB = new LinearLayout(context);
+        contenedorB.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        contenedorB.setOrientation(LinearLayout.HORIZONTAL);
+
         TextView  num= new TextView(context);
-        num.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
-        num.setText(String.valueOf(i));
+        num.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,6f));
+        num.setGravity(Gravity.CENTER_HORIZONTAL);
+        num.setTextColor(context.getResources().getColor(R.color.SinCheck));
+        num.setTextSize(10f);
+        num.setTypeface(Typeface.MONOSPACE);
+        num.setText(String.valueOf(i)+".- ");
 
         TextView NombreProducto=new TextView(context);
         NombreProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        NombreProducto.setGravity(Gravity.START);
+        NombreProducto.setTextColor(context.getResources().getColor(R.color.SinCheck));
+        NombreProducto.setTextSize(10f);
+        NombreProducto.setTypeface(Typeface.MONOSPACE);
         NombreProducto.setText(reservaItem.getProductoItem().getNombreProducto());
 
+
+
+        contenedorA.addView(num);
+        contenedorA.addView(NombreProducto);
+
         TextView CantidadProducto=new TextView(context);
-        CantidadProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
-        CantidadProducto.setText(String.valueOf(reservaItem.getCantidad()));
+        CantidadProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.2f));
+        CantidadProducto.setGravity(Gravity.CENTER_HORIZONTAL);
+        CantidadProducto.setTextColor(context.getResources().getColor(R.color.SinCheck));
+        CantidadProducto.setTextSize(10f);
+        CantidadProducto.setTypeface(Typeface.MONOSPACE);
+        CantidadProducto.setText(String.valueOf(reservaItem.getCantidad()+" u."));
 
         TextView MedidaProducto=new TextView(context);
-        MedidaProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        MedidaProducto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1.2f));
+        MedidaProducto.setGravity(Gravity.CENTER_HORIZONTAL);
+        MedidaProducto.setTextColor(context.getResources().getColor(R.color.SinCheck));
+        MedidaProducto.setTextSize(10f);
+        MedidaProducto.setTypeface(Typeface.MONOSPACE);
         MedidaProducto.setText(reservaItem.getMedidaReservaItem().getNombreMedida());
 
-        contenedor.addView(num);
-        contenedor.addView(NombreProducto);
-        contenedor.addView(CantidadProducto);
-        contenedor.addView(MedidaProducto);
+        TextView PrecioBase=new TextView(context);
+        PrecioBase.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
+        PrecioBase.setGravity(Gravity.CENTER_HORIZONTAL);
+        PrecioBase.setTextColor(context.getResources().getColor(R.color.SinCheck));
+        PrecioBase.setTextSize(10f);
+        PrecioBase.setTypeface(Typeface.MONOSPACE);
+
+        DecimalFormat formateador = new DecimalFormat("###,###.00");
+        // MONTO PERFIL
+        if(tipoReserva==1){
+            PrecioBase.setText("S/ "+formateador.format((reservaItem.getProductoItem().getPrecioBase()*reservaItem.getCantidad())));
+        }else{
+            PrecioBase.setText("S/ "+formateador.format((reservaItem.getProductoItem().getPrecioUrgencia()*reservaItem.getCantidad())));
+        }
+        contenedorB.addView(CantidadProducto);
+        contenedorB.addView(MedidaProducto);
+        contenedorB.addView(PrecioBase);
+        contenedor.addView(contenedorA);
+        contenedor.addView(contenedorB);
 
        return contenedor;
     }
@@ -470,6 +516,7 @@ public class fragmentSesion extends Fragment {
                                             ReservaItem reservaItem=new ReservaItem();
                                             reservaItem.setCantidad(objetoItem.getInt("Cantidad"));
                                             Producto producto = new Producto();
+                                            producto.setNombreProducto(objetoItem.getString("NombreProducto"));
                                             producto.setPrecioBase(objetoItem.getDouble("PrecioAlquiler"));
                                             producto.setPrecioUrgencia(objetoItem.getDouble("Precioventa"));
                                             producto.setPorcentajeDescuento(objetoItem.getDouble("PrecioDescuento"));
