@@ -81,7 +81,7 @@ public class fragmentInicioRecomendaciones extends Fragment {
 
 
         linearLayout1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
-        adapterVistosRecien = new AdapterItemProductos(getActivity(), ListaVistosRecien, new RecyclerViewOnItemClickListener2() {
+        adapterVistosRecien = new AdapterItemProductos(getActivity(), Constantes.Base_ListaProductoRecientes, new RecyclerViewOnItemClickListener2() {
             @Override
             public void onClick(View v, int position) {
             }
@@ -120,103 +120,7 @@ public class fragmentInicioRecomendaciones extends Fragment {
         recycler4.setAdapter(adapterMasOtros);
         recycler4.setLayoutManager(linearLayout4);
 
-
-
-        ListarProductosNuevos(context);
         return view;
     }
 
-    public void ListarProductosNuevos(final Context context){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray productos=jsonResponse.getJSONArray("productos");
-                                for(int i=0;i<productos.length();i++){
-                                    JSONObject objeto= productos.getJSONObject(i);
-                                    Producto temp=new Producto();
-                                    temp.setIdProducto(objeto.getInt("idProducto"));
-                                    temp.setNombreProducto(objeto.getString("NombreProducto"));
-                                    temp.setDescripcionProducto(objeto.getString("DescripcionProducto"));
-                                    temp.setImagenProducto(objeto.getString("imagenPortada"));
-                                    temp.setFechaRegistro(objeto.getString("fechaRegistro"));
-                                    temp.setFechaUpdate(objeto.getString("fechaUpdate"));
-
-                                    Categoria categoria=new Categoria();
-                                    categoria.setIdCategoria(objeto.getInt("Categoria_idCategoria"));
-                                    temp.setCategoriaProducto(categoria);
-
-                                    SubCategoria subCategoria=new SubCategoria();
-                                    subCategoria.setIdSubCategoria(objeto.getInt("SubCategoria_idSubCategoria"));
-                                    temp.setSubCategoriaProducto(subCategoria);
-
-                                    UnidadTerritorial departamento=new UnidadTerritorial();
-                                    departamento.setIdUnidadTerritorial(objeto.getInt("Departamento_idDepartamento"));
-                                    departamento.setNombreUnidadTerritorial(objeto.getString("departamento"));
-                                    temp.setDepartamentoProducto(departamento);
-
-                                    UnidadTerritorial provincia=new UnidadTerritorial();
-                                    provincia.setIdUnidadTerritorial(objeto.getInt("Provincia_idProvincia"));
-                                    provincia.setNombreUnidadTerritorial(objeto.getString("provincia"));
-                                    temp.setDepartamentoProducto(provincia);
-
-                                    UnidadTerritorial distrito=new UnidadTerritorial();
-                                    distrito.setIdUnidadTerritorial(objeto.getInt("Distrito_idDistrito"));
-                                    distrito.setNombreUnidadTerritorial(objeto.getString("distrito"));
-                                    temp.setDepartamentoProducto(distrito);
-
-                                    Estado estadoProducto=new Estado();
-                                    estadoProducto.setIdEstado(objeto.getInt("Estado_idEstado"));
-                                    temp.setEstadoProducto(estadoProducto);
-
-                                    temp.setPrecioBase(Double.parseDouble(objeto.getString("precioAlquiler")));
-                                    temp.setPrecioUrgencia(Double.parseDouble(objeto.getString("precioVenta")));
-
-                                    ListaVistosRecien.add(temp);
-
-                                    ListaMasTradicionales.add(temp);
-                                    ListaMasOtros.add(temp);
-
-
-                                    Log.i("Inca","Recupero Producto:"+temp.getNombreProducto());
-                                }
-                                Log.e("Inca","Servidor Listar Productos");
-                                adapterVistosRecien.notifyDataSetChanged();
-
-                                adapterMasTradicionales.notifyDataSetChanged();
-                                adapterMasOtros.notifyDataSetChanged();
-
-
-
-                            } else {
-                                Toast.makeText(context, "Productos no Disponibles.", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("Inca","Error JSON:"+e);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("INCA", String.valueOf(error));
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("operacion", "ListarProductosNuevos");
-                return params;
-            }
-        };
-        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-
-    }
 }

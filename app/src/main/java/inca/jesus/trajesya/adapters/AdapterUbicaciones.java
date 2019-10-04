@@ -38,6 +38,7 @@ import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Promocion;
 import inca.jesus.trajesya.data.modelo.UbicacionDireccion;
 import inca.jesus.trajesya.data.modelo.Usuario;
+import inca.jesus.trajesya.data.utils.Conectividad;
 import inca.jesus.trajesya.data.utils.Constantes;
 
 
@@ -49,7 +50,7 @@ public class AdapterUbicaciones extends RecyclerView.Adapter<AdapterUbicaciones.
     private Context context;
     private List<UbicacionDireccion> my_Data;
     private RecyclerViewOnItemClickListener2 recyclerViewOnItemClickListener;
-
+    Conectividad con;
 
     public AdapterUbicaciones(Context context, List<UbicacionDireccion> my_Data, RecyclerViewOnItemClickListener2
             recyclerViewOnItemClickListener) {

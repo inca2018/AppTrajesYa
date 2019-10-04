@@ -56,6 +56,7 @@ import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Sesion;
 import inca.jesus.trajesya.data.modelo.Usuario;
+import inca.jesus.trajesya.data.utils.Conectividad;
 import inca.jesus.trajesya.data.utils.Constantes;
 import inca.jesus.trajesya.fragmentos.fragmentEnvioReserva;
 import inca.jesus.trajesya.fragmentos.fragmentInicio;
@@ -81,12 +82,13 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     SharedPreferences.Editor editor;
     public int counter = 8;
     AlertDialog alerta;
-
+    Conectividad con;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         context = getApplicationContext();
+        con= new Conectividad(context);
         sesion = new Sesion();
         fragmentManager = getSupportFragmentManager();
         linear_search = findViewById(R.id.card_linear_2);
@@ -137,6 +139,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
                     }
                 });
     }
+
     public void SelectMenu(int actionId){
         Menu menu=bottomNavigationView.getMenu();
         for (int i = 0, size = menu.size(); i < size; i++) {
@@ -146,6 +149,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             }
         }
     }
+
     private void verificacionMostrarVista() {
         if (getIntent().getStringExtra("o") == null) {
             fragment = new fragmentInicio();
@@ -481,6 +485,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
         });
 
     }
+
     public void opcionEnvioReserva() {
         SelectMenu(R.id.action_4);
         fragment = new fragmentEnvioReserva();
@@ -625,9 +630,8 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
     }
 
     private void verificarUsuarioFbLogin(final Context context,final Profile profile) {
-
+        if(con.VerificarConexion()){
         final String KEY_FB=profile.getId();
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.LOGIN,
                 new Response.Listener<String>() {
                     @Override
@@ -686,6 +690,7 @@ public class ActivityPrincipal extends AppCompatActivity implements SearchView.O
             }
         };
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+        }
     }
 
 }

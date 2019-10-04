@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Context context;
     Sesion sesion;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

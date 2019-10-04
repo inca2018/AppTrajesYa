@@ -1,8 +1,14 @@
 package inca.jesus.trajesya.data.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.data.modelo.Categoria;
 import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.Promocion;
@@ -49,9 +55,9 @@ public class Constantes {
     public final static List<Producto> Base_ListaProductosTopOtros=new ArrayList<>();//OK  INCAA
 
 
-    public final static List<Producto> Base_ListaProductoNuevo = new ArrayList<>();//OK
+    public final static List<Producto> Base_ListaProductoNuevo = new ArrayList<>();//OK INCAA
     public final static List<Producto> Base_ListaProductoMasVisto = new ArrayList<>();//OK INCAA
-    public final static List<Producto> Base_ListaProductoMasAlquilados = new ArrayList<>();//FALTA
+    public final static List<Producto> Base_ListaProductoMasAlquilados = new ArrayList<>();//FALTA  OK INCA
     public final static List<Producto> Base_ListaProductoTendencias = new ArrayList<>();//FALTA
 
 
@@ -102,6 +108,7 @@ public class Constantes {
     public static  final String VariableidProducto="idProducto";
     public static  final String VariableNombreProducto="NombreProducto";
     public static  final String VariableDescripcionProducto="DescripcionProducto";
+
 
 
 }
