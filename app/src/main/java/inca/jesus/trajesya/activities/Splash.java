@@ -382,18 +382,6 @@ public class Splash extends AppCompatActivity {
                 }
             }
         }
-
-        Producto aux2;
-        for (int i = 0; i < listaOrdenadaAlquileres.size() - 1; i++) {
-            for (int j = 0; j < listaOrdenadaAlquileres.size() - i - 1; j++) {
-                if (listaOrdenadaAlquileres.get(j + 1).getTotalVendido() > listaOrdenadaAlquileres.get(j).getTotalVendido()) {
-                    aux2 = listaOrdenadaAlquileres.get(j + 1);
-                    listaOrdenadaAlquileres.set(j + 1, listaOrdenadaAlquileres.get(j));
-                    listaOrdenadaAlquileres.set(j, aux2);
-                }
-            }
-        }
-
         Producto aux3;
         for (int i = 0; i < listaOrdenRecientes.size() - 1; i++) {
             for (int j = 0; j < listaOrdenRecientes.size() - i - 1; j++) {
@@ -404,7 +392,16 @@ public class Splash extends AppCompatActivity {
                 }
             }
         }
-
+        Producto aux2;
+        for (int i = 0; i < listaOrdenadaAlquileres.size() - 1; i++) {
+            for (int j = 0; j < listaOrdenadaAlquileres.size() - i - 1; j++) {
+                if (listaOrdenadaAlquileres.get(j + 1).getTotalVendido() > listaOrdenadaAlquileres.get(j).getTotalVendido()) {
+                    aux2 = listaOrdenadaAlquileres.get(j + 1);
+                    listaOrdenadaAlquileres.set(j + 1, listaOrdenadaAlquileres.get(j));
+                    listaOrdenadaAlquileres.set(j, aux2);
+                }
+            }
+        }
         for (int i = 0; i < listaOrdenRecientes.size(); i++) {
             if (i <= 10) {
                 Constantes.Base_ListaProductoNuevo.add(listaOrdenRecientes.get(i));
@@ -413,7 +410,6 @@ public class Splash extends AppCompatActivity {
                 Log.i("Inca", "Producto Recientes NO Agregado: " + listaOrdenRecientes.get(i).getNombreProducto());
             }
         }
-
         for (int i = 0; i < listaOrdenadaVisitas.size(); i++) {
             if (i <= 10) {
                 Constantes.Base_ListaProductoMasVisto.add(listaOrdenadaVisitas.get(i));
@@ -422,16 +418,11 @@ public class Splash extends AppCompatActivity {
                 } else {
                     Constantes.Base_ListaProductosTopOtros.add(listaOrdenadaVisitas.get(i));
                 }
-
                 Log.i("Inca", "Producto mas visto Agregado: " + listaOrdenadaVisitas.get(i).getNombreProducto());
             } else {
                 Log.i("Inca", "Producto mas visto NO Agregado: " + listaOrdenadaVisitas.get(i).getNombreProducto());
-
             }
-
         }
-
-
         for (int i = 0; i < listaOrdenadaAlquileres.size(); i++) {
             if (i <= 10) {
                 Constantes.Base_ListaProductoMasAlquilados.add(listaOrdenadaAlquileres.get(i));
@@ -440,8 +431,6 @@ public class Splash extends AppCompatActivity {
                 Log.i("Inca", "Producto mayor Alquiler NO Agregado: " + listaOrdenadaAlquileres.get(i).getNombreProducto());
             }
         }
-
-
     }
     public void ListarTipoPago(final Context context) {
         if(con.VerificarConexion()){
@@ -642,10 +631,8 @@ public class Splash extends AppCompatActivity {
                                 Log.i("Inca", "Servidor Listar Publicidad");
 
                                 Progreso(81);
-                               // ListarProductosMasAlquilados(context);
-                                //ListarProductosTendencias(context);
-                                Progreso(100);
-                                mover();
+                                ListarPromocionesDisponibles(context);
+
                             }
 
                         } catch (JSONException e) {
@@ -670,6 +657,63 @@ public class Splash extends AppCompatActivity {
         VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
         }
     }
+    public void ListarPromocionesDisponibles(final Context context) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.GESTION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean(SUCCESS);
+
+                            if (success) {
+                                JSONArray categorias = jsonResponse.getJSONArray("promociones");
+                                for (int i = 0; i < categorias.length(); i++) {
+                                    JSONObject objeto = categorias.getJSONObject(i);
+                                    Promocion temp = new Promocion();
+                                    temp.setIdPromocion(objeto.getInt("idPromocion"));
+                                    temp.setNombrePromocion(objeto.getString("NombrePromocion"));
+                                    temp.setImagenPromocion(objeto.getString("imagenPromocion"));
+                                    temp.setLinkPromocion(objeto.getString("linkPromocion"));
+                                    temp.setFechaRegistro(objeto.getString(Constantes.VariablefechaRegistro));
+                                    temp.setFechaUpdate(objeto.getString(Constantes.VariablefechaUpdate));
+
+                                    Estado estado = new Estado();
+                                    estado.setIdEstado(objeto.getInt(Constantes.VariableEstado_idEstado));
+                                    temp.setEstadoPromocion(estado);
+                                    Log.i("Inca", "Promocion Recuperada :" + temp.getNombrePromocion());
+
+                                    Constantes.Base_ListaPromociones.add(temp);
+                                }
+                                Log.i("Inca", "Servidor Listar Promociones");
+                                Progreso(100);
+                                mover();
+
+                            } else { Toast.makeText(context, "Categorias no Disponibles.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("Inca", "Error JSON Promociones:" + e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Inca Error Response", String.valueOf(error));
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(OPERACION, "ListarPromociones");
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
     void mover() {
 
         Sesion sesion=new Sesion();
@@ -689,4 +733,8 @@ public class Splash extends AppCompatActivity {
         p.setProgress(tiempo);
         txtProgress.setText("Cargando... " + tiempo + " %");
     }
+
+
+
+
 }
