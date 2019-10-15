@@ -60,9 +60,6 @@ public class Destacados extends Fragment {
         recyclerNuevos.setAdapter(adapterNuevos);
         recyclerNuevos.setLayoutManager(linearLayout1);
 
-        //ListarProductosNuevos(context);
-
-
         linearLayout2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
         adapterMasVistos = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoMasVisto, new RecyclerViewOnItemClickListener2() {
             @Override
@@ -72,8 +69,6 @@ public class Destacados extends Fragment {
         });
         recycler2.setAdapter(adapterMasVistos);
         recycler2.setLayoutManager(linearLayout2);
-
-        //ListarProductosMasVistos(context);
 
         linearLayout3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
         adapterMasAlquilados = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoMasAlquilados, new RecyclerViewOnItemClickListener2() {
@@ -85,7 +80,6 @@ public class Destacados extends Fragment {
         recycler3.setAdapter(adapterMasAlquilados);
         recycler3.setLayoutManager(linearLayout3);
 
-        //ListarProductosMasAlquilados(context);
 
         linearLayout4 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
         adapterTendendecias = new AdapterItemProductos(getActivity(),Constantes.Base_ListaProductoTendencias, new RecyclerViewOnItemClickListener2() {
@@ -97,7 +91,6 @@ public class Destacados extends Fragment {
         recycler4.setAdapter(adapterTendendecias);
         recycler4.setLayoutManager(linearLayout4);
 
-        //ListarProductosTendencias(context);
 
         return view;
 

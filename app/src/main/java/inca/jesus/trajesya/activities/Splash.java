@@ -264,6 +264,7 @@ public class Splash extends AppCompatActivity {
         temp.setImagenProducto(objeto.getString(Constantes.VariableimagenPortada));
         temp.setFechaRegistro(objeto.getString(Constantes.VariablefechaRegistro));
         temp.setFechaUpdate(objeto.getString(Constantes.VariablefechaUpdate));
+        temp.setTendencia(objeto.getInt("Tendencia"));
         /*---Total Vendido--*/
 
         temp.setTotalVendido(objeto.getInt("totalVendido"));
@@ -409,10 +410,14 @@ public class Splash extends AppCompatActivity {
             } else {
                 Log.i("Inca", "Producto Recientes NO Agregado: " + listaOrdenRecientes.get(i).getNombreProducto());
             }
+            if(listaOrdenRecientes.get(i).getTendencia()==1){
+                Constantes.Base_ListaProductoTendencias.add(listaOrdenRecientes.get(i));
+            }
         }
         for (int i = 0; i < listaOrdenadaVisitas.size(); i++) {
             if (i <= 10) {
                 Constantes.Base_ListaProductoMasVisto.add(listaOrdenadaVisitas.get(i));
+                Constantes.Base_ListaProductoRecientes.add(listaOrdenadaVisitas.get(i));
                 if (listaOrdenadaVisitas.get(i).getGrupo().getIdGrupo() == 1) {
                     Constantes.Base_ListaProductosTopTradicionales.add(listaOrdenadaVisitas.get(i));
                 } else {

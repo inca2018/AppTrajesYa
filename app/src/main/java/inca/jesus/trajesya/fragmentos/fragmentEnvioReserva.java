@@ -880,8 +880,9 @@ public class fragmentEnvioReserva extends Fragment {
                 if(!status){
                     final LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
                     final View dialoglayout4 = inflater.inflate(R.layout.terminos_condiciones, null);
-
-                    final Button aceptar=(Button) dialoglayout4.findViewById(R.id.btn_acepto);
+                    final TextView texto=dialoglayout4.findViewById(R.id.TextoCondiciones);
+                    final Button aceptar=dialoglayout4.findViewById(R.id.btn_acepto);
+                    texto.setText(Constantes.TERMINOS_CONDICIONES);
                     aceptar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

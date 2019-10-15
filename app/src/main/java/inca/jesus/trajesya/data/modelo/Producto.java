@@ -26,6 +26,7 @@ public class Producto {
     List<Medida> MedidaProducto;
     Grupo grupo;
     int totalVendido;
+    int Tendencia;
 
     double porcentajeDescuento;
 
@@ -207,5 +208,13 @@ public class Producto {
 
     public void setTotalVendido(int totalVendido) {
         this.totalVendido = totalVendido;
+    }
+
+    public int getTendencia() {
+        return Tendencia;
+    }
+
+    public void setTendencia(int tendencia) {
+        Tendencia = tendencia;
     }
 }
