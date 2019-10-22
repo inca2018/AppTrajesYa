@@ -35,6 +35,7 @@ import inca.jesus.trajesya.data.conexion.VolleySingleton;
 import inca.jesus.trajesya.data.modelo.Categoria;
 import inca.jesus.trajesya.data.modelo.Estado;
 import inca.jesus.trajesya.data.modelo.Galeria;
+import inca.jesus.trajesya.data.modelo.Genero;
 import inca.jesus.trajesya.data.modelo.Grupo;
 import inca.jesus.trajesya.data.modelo.Medida;
 import inca.jesus.trajesya.data.modelo.Producto;
@@ -353,6 +354,26 @@ public class Splash extends AppCompatActivity {
         } else {
             Log.e("Inca", "Error de encontrar medidas");
         }
+        /*------Recuperar Genero-----------*/
+
+        if (!objeto.isNull("genero")) {
+            JSONArray galeriaProducto = new JSONArray(objeto.getString("genero"));
+
+            List<Genero> listaGeneroTemp = new ArrayList<>();
+            for (int u = 0; u < galeriaProducto.length(); u++) {
+                JSONObject objetoGaleria = galeriaProducto.getJSONObject(u);
+
+                Genero genero = new Genero();
+                genero.setIdGenero(objetoGaleria.getInt("idGenero"));
+                genero.setNombreGenero(objetoGaleria.getString("NombreGenero"));
+                genero.setSimboloGenero(objetoGaleria.getString("simbolo"));
+                listaGeneroTemp.add(genero);
+            }
+            temp.setGeneroProducto(listaGeneroTemp);
+        }else{
+            Log.e("Inca", "Error de encontrar galerias");
+        }
+
 
         Constantes.Base_Producto_Todo.add(temp);
         if ((int) temp.getPorcentajeDescuento() != 0) {

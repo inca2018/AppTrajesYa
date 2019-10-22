@@ -100,8 +100,18 @@ public class AdapterReservas extends RecyclerView.Adapter<AdapterReservas.ViewHo
         holder.distritoReserva.setText(my_Data.get(position).getUbicacionDireccionReserva().getDistrito().getNombreUnidadTerritorial());
         holder.direccionReserva.setText(my_Data.get(position).getUbicacionDireccionReserva().getDireccionEntrega());
 
+        int cantidad=0;
+        if(my_Data.get(position)!=null){
+            if(my_Data.get(position).getListaItems()!=null){
+                cantidad=my_Data.get(position).getListaItems().size();
+                holder.cantidadReserva.setText(""+cantidad);
+            }else{
+                holder.cantidadReserva.setText("0");
+            }
+        }else{
+            holder.cantidadReserva.setText("0");
+        }
 
-        holder.cantidadReserva.setText(""+my_Data.get(position).getListaItems().size());
 
         double total=0;
         if(my_Data.get(position).getTipoReserva()==1){

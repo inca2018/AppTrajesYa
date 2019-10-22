@@ -22,11 +22,13 @@ import java.util.Collections;
 import java.util.List;
 import inca.jesus.trajesya.R;
 import inca.jesus.trajesya.activities.ActivityPrincipal;
+import inca.jesus.trajesya.adapters.AdapterGenero;
 import inca.jesus.trajesya.adapters.AdapterItemProductosMini;
 import inca.jesus.trajesya.adapters.AdapterMedida;
 import inca.jesus.trajesya.adapters.RecyclerViewOnItemClickListener2;
 import inca.jesus.trajesya.clases.CarouselView;
 import inca.jesus.trajesya.data.modelo.Galeria;
+import inca.jesus.trajesya.data.modelo.Genero;
 import inca.jesus.trajesya.data.modelo.Medida;
 import inca.jesus.trajesya.data.modelo.Producto;
 import inca.jesus.trajesya.data.modelo.ReservaItem;
@@ -43,6 +45,7 @@ public class fragmentItem extends Fragment {
     public RecyclerView recycler_similares1;
     public RecyclerView recycler_similares2;
     public RecyclerView recycler_medidas;
+    public RecyclerView recycler_generos;
     CarouselView carruselProducto;
     AlertDialog imagenVista;
     String[] Rutas;
@@ -54,8 +57,10 @@ public class fragmentItem extends Fragment {
     TextView categoriaSimiliar;
     TextView subcategoriaSimilar;
     TextView tituloTalla;
+    TextView tituloGenero;
     ScrollView scroll;
     private AdapterMedida adapterMedida;
+    private AdapterGenero adapterGenero;
     private LinearLayoutManager linearLayout;
     public Button mas, menos;
     public TextView cantidad;
@@ -64,9 +69,11 @@ public class fragmentItem extends Fragment {
     Context context;
     Usuario usuarioRecuperado;
     Medida MedidaSeleccionada;
+    Genero GeneroSeleccionada;
     Button btnReservar, btnAgregar;
     AlertDialog alerta;
     List<Medida> Medidas;
+    List<Genero> Generos;
     TextView txtDescuento;
     public fragmentItem() {
         // Required empty public constructor
@@ -93,7 +100,9 @@ public class fragmentItem extends Fragment {
         recycler_similares1 = v.findViewById(R.id.recycler_similares1);
         recycler_similares2 = v.findViewById(R.id.recycler_similares2);
         recycler_medidas = v.findViewById(R.id.recycler_medidas);
+        recycler_generos= v.findViewById(R.id.recycler_generos);
         tituloTalla = v.findViewById(R.id.tituloTalla);
+        tituloGenero = v.findViewById(R.id.tituloGenero);
         txtDescuento=v.findViewById(R.id.txtDescuento);
         mas = v.findViewById(R.id.mas);
         menos = v.findViewById(R.id.menos);
@@ -131,6 +140,7 @@ public class fragmentItem extends Fragment {
         descripcioProducto.setText(ProductoSeleccionado.getDescripcionProducto());
 
         GenerarTamanos(ProductoSeleccionado);
+        GenerarGeneros(ProductoSeleccionado);
 
         MostrarProductosSimilares(ProductoSeleccionado);
         MostrarProductosSimilares2(ProductoSeleccionado);
@@ -282,6 +292,36 @@ public class fragmentItem extends Fragment {
 
     }
 
+    private void GenerarGeneros(Producto productoSeleccionado){
+        Generos = productoSeleccionado.getGeneroProducto();
+
+        if (Generos != null) {
+            tituloGenero.setText("Generos Disponibles:");
+            //Recylcer de Generos
+            linearLayout = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            adapterGenero = new AdapterGenero(context, Generos, new RecyclerViewOnItemClickListener2() {
+                @Override
+                public void onClick(View v, int position) {
+                }
+            });
+            recycler_generos.setAdapter(adapterGenero);
+            recycler_generos.setLayoutManager(linearLayout);
+
+            adapterGenero.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    GeneroSeleccionada = adapterGenero.RecuperarGeneroSeleccion();
+                    Log.i("Inca", "Medida Seleccionada: " + GeneroSeleccionada.getNombreGenero());
+                }
+            });
+
+        } else {
+            tituloGenero.setText("Sin Generos Disponibles");
+            Log.i("Inca", "No se encontraron Generos");
+        }
+    }
+
     private void GenerarCarrusel(Producto productoSeleccionado) {
         /*----------Carrusel----------------*/
 
@@ -379,6 +419,7 @@ public class fragmentItem extends Fragment {
                     int CantidadRecuperada = contadorStock;
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
+                    Genero GeneroRecuperado= GeneroSeleccionada;
 
                     if(Medidas!=null){
                         if(MedidaRecuperada.getIdMedida()>0){

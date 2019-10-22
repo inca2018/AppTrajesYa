@@ -24,6 +24,8 @@ public class Producto {
 
     List<Galeria> GaleriaProducto;
     List<Medida> MedidaProducto;
+    List<Genero> GeneroProducto;
+
     Grupo grupo;
     int totalVendido;
     int Tendencia;
@@ -217,4 +219,13 @@ public class Producto {
     public void setTendencia(int tendencia) {
         Tendencia = tendencia;
     }
+
+    public List<Genero> getGeneroProducto() {
+        return GeneroProducto;
+    }
+
+    public void setGeneroProducto(List<Genero> generoProducto) {
+        GeneroProducto = generoProducto;
+    }
+
 }
