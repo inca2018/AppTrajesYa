@@ -57,6 +57,7 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
         public TextView precioProducto;
         public TextView descuentoProducto;
         public TextView talla;
+        public TextView genero;
 
         public ImageView imagenProducto;
 
@@ -65,6 +66,7 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
         public LinearLayout sectorDescuento;
         public LinearLayout sectorTalla;
         public LinearLayout sectorTotal;
+        public LinearLayout sectorGenero;
         public TextView tvItemTotal;
 
         public ViewHolder(View itemView) {
@@ -74,11 +76,13 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
             precioProducto = itemView.findViewById(R.id.tvItemPrecio);
             descuentoProducto = itemView.findViewById(R.id.tvItemDescuento);
             talla= itemView.findViewById(R.id.tvItemTalla);
+            genero=itemView.findViewById(R.id.tvItemGenero);
             imagenProducto =  itemView.findViewById(R.id.ivItemImagen);
             tvItemTotal= itemView.findViewById(R.id.tvItemTotal);
             cantidad=itemView.findViewById(R.id.tvItemCantidad);
             sectorDescuento=itemView.findViewById(R.id.sectorDescuento);
             sectorTalla=itemView.findViewById(R.id.sectorTalla);
+            sectorGenero=itemView.findViewById(R.id.sectorGenero);
         }
         @Override
         public void onClick(View v) {
@@ -116,6 +120,18 @@ public class AdapterItemReservaEnvio extends RecyclerView.Adapter<AdapterItemRes
         }else{
             holder.sectorTalla.setVisibility(View.GONE);
         }
+
+        if(my_Data.get(position).getGeneroReservaitem()!=null){
+            if(my_Data.get(position).getGeneroReservaitem().getIdGenero()>0){
+                holder.sectorGenero.setVisibility(View.VISIBLE);
+                holder.genero.setText(my_Data.get(position).getGeneroReservaitem().getNombreGenero());
+            }else{
+                holder.sectorGenero.setVisibility(View.GONE);
+            }
+        }else{
+            holder.sectorGenero.setVisibility(View.GONE);
+        }
+
         Picasso.get()
                 .load(Constantes.PATH_IMAGEN+my_Data.get(position).getProductoItem().getImagenProducto())
                 .placeholder(R.drawable.default_imagen)

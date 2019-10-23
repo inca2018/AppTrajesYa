@@ -414,14 +414,32 @@ public class fragmentItem extends Fragment {
             public void onClick(View view) {
                 sesion = new Sesion();
                 usuarioRecuperado = sesion.RecuperarSesion(context);
-                if (usuarioRecuperado.isSesion()) {
-                    /*----------------PROCEDE CON RESERVA----------------------*/
-                    int CantidadRecuperada = contadorStock;
+                LanzarAccion(usuarioRecuperado,1);
+
+                /*if (usuarioRecuperado.isSesion()) {
+
+                    String MensajeValidacion=ValidarElementos();
+
+                    if(MensajeValidacion.length()>0){
+                        Toast.makeText(context, MensajeValidacion, Toast.LENGTH_SHORT).show();
+                    }else{
+                        ReservaItem item=new ReservaItem();
+                        item.setCantidad(contadorStock);
+                        item.setMedidaReservaItem(MedidaSeleccionada);
+                        item.setProductoItem(ProductoSeleccionado);
+                        item.setGeneroReservaitem(GeneroSeleccionada);
+                        Constantes.RESERVA_ITEMS.add(item);
+                        //((ActivityPrincipal)context).opcionReserva();
+                        Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                   int CantidadRecuperada = contadorStock;
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
                     Genero GeneroRecuperado= GeneroSeleccionada;
 
-                    if(Medidas!=null){
+                     if(Medidas!=null){
                         if(MedidaRecuperada.getIdMedida()>0){
                             if(CantidadRecuperada>0){
                                 //Agregrando Datos de Items
@@ -475,7 +493,7 @@ public class fragmentItem extends Fragment {
                     androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
-                }
+                } */
             }
         });
 
@@ -484,8 +502,10 @@ public class fragmentItem extends Fragment {
             public void onClick(View view) {
                 sesion = new Sesion();
                 usuarioRecuperado = sesion.RecuperarSesion(context);
-                if (usuarioRecuperado.isSesion()) {
-                    /*----------------PROCEDE CON RESERVA----------------------*/
+                LanzarAccion(usuarioRecuperado,2);
+
+               /* if (usuarioRecuperado.isSesion()) {
+
                     int CantidadRecuperada = contadorStock;
                     Medida MedidaRecuperada = MedidaSeleccionada;
                     Producto ProductoRecuperado = ProductoSeleccionado;
@@ -543,9 +563,90 @@ public class fragmentItem extends Fragment {
                     androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(context);
                     builder4.setView(dialoglayout4);
                     imagenVista = builder4.show();
-                }
+                }*/
             }
         });
+    }
+
+    private void LanzarAccion(Usuario usuarioRecuperado, int Accion) {
+
+        if (usuarioRecuperado.isSesion()) {
+
+            String MensajeValidacion=ValidarElementos();
+
+            if(MensajeValidacion.length()>0){
+                Toast.makeText(context, MensajeValidacion, Toast.LENGTH_SHORT).show();
+            }else{
+                ReservaItem item=new ReservaItem();
+                item.setCantidad(contadorStock);
+                item.setMedidaReservaItem(MedidaSeleccionada);
+                item.setProductoItem(ProductoSeleccionado);
+                item.setGeneroReservaitem(GeneroSeleccionada);
+                Constantes.RESERVA_ITEMS.add(item);
+
+                if(Accion==1){
+                    //((ActivityPrincipal)context).opcionReserva();
+                    Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                }else{
+                    ((ActivityPrincipal)context).opcionReserva(false);
+                    Toast.makeText(context, "Producto agregado a la Reserva.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else {
+            final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View dialoglayout4 = inflater.inflate(R.layout.dialog_completar_sesion, null);
+            final Button seguirNavegandoAccion = dialoglayout4.findViewById(R.id.btnSeguirNavegando);
+            final Button completarRegistroAccion = dialoglayout4.findViewById(R.id.btnCompletarRegistro);
+
+            seguirNavegandoAccion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    imagenVista.dismiss();
+                }
+            });
+            completarRegistroAccion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((ActivityPrincipal)context).opcionSesion();
+                }
+            });
+
+            androidx.appcompat.app.AlertDialog.Builder builder4 = new androidx.appcompat.app.AlertDialog.Builder(context);
+            builder4.setView(dialoglayout4);
+            imagenVista = builder4.show();
+        }
+    }
+
+    private String ValidarElementos() {
+        String mensaje="";
+
+        int CantidadRecuperada = contadorStock;
+        Medida MedidaRecuperada = MedidaSeleccionada;
+        Producto ProductoRecuperado = ProductoSeleccionado;
+        Genero GeneroRecuperado= GeneroSeleccionada;
+
+        if(CantidadRecuperada==0){
+            mensaje=mensaje+"- Ingrese Cantidad de Reserva.\n";
+        }
+
+        if(GeneroRecuperado==null){
+            mensaje=mensaje+"- Seleccione Genero de Reserva.\n";
+        }else{
+            if(GeneroRecuperado.getIdGenero()<=0){
+                mensaje=mensaje+"- Seleccione Genero de Reserva.\n";
+            }
+        }
+
+        if(MedidaRecuperada==null){
+            mensaje=mensaje+"- Seleccione Medida de Reserva.\n";
+        }else{
+            if(MedidaRecuperada.getIdMedida()<=0){
+                mensaje=mensaje+"- Seleccione Medida de Reserva.\n";
+            }
+        }
+
+        return mensaje;
     }
 
     @Override

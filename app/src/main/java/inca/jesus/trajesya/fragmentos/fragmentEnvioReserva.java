@@ -416,11 +416,13 @@ public class fragmentEnvioReserva extends Fragment {
                 listaProductos=listaProductos+
                         listaProductosReserva.get(i).getProductoItem().getIdProducto()+"-"+
                         listaProductosReserva.get(i).getCantidad()+"-"+
+                        listaProductosReserva.get(i).getGeneroReservaitem().getIdGenero()+"-"+ 
                         listaProductosReserva.get(i).getMedidaReservaItem().getIdMedida();
             }else{
                 listaProductos=listaProductos+
                         listaProductosReserva.get(i).getProductoItem().getIdProducto()+"-"+
                         listaProductosReserva.get(i).getCantidad()+"-"+
+                        listaProductosReserva.get(i).getGeneroReservaitem().getIdGenero()+"-"+
                         listaProductosReserva.get(i).getMedidaReservaItem().getIdMedida()+"|";
             }
         }

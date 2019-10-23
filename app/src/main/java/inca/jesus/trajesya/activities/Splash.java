@@ -361,12 +361,12 @@ public class Splash extends AppCompatActivity {
 
             List<Genero> listaGeneroTemp = new ArrayList<>();
             for (int u = 0; u < galeriaProducto.length(); u++) {
-                JSONObject objetoGaleria = galeriaProducto.getJSONObject(u);
+                JSONObject objetoGenero = galeriaProducto.getJSONObject(u);
 
                 Genero genero = new Genero();
-                genero.setIdGenero(objetoGaleria.getInt("idGenero"));
-                genero.setNombreGenero(objetoGaleria.getString("NombreGenero"));
-                genero.setSimboloGenero(objetoGaleria.getString("simbolo"));
+                genero.setIdGenero(objetoGenero.getInt("idProductoGenero"));
+                genero.setNombreGenero(objetoGenero.getString("NombreGenero"));
+                genero.setSimboloGenero(objetoGenero.getString("simbolo"));
                 listaGeneroTemp.add(genero);
             }
             temp.setGeneroProducto(listaGeneroTemp);

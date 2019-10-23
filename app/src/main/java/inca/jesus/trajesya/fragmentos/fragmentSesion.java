@@ -367,9 +367,14 @@ public class fragmentSesion extends Fragment {
 
     private void RrecuperarListaDetalle(LinearLayout contenedorReservaItem,Reserva reserva) {
 
-        for(int i=0;i<reserva.getListaItems().size();i++){
-            contenedorReservaItem.addView(RecuperarElemento(reserva.getTipoReserva(),(i+1),reserva.getListaItems().get(i)));
+        if (reserva.getListaItems().size()>0){
+            for(int i=0;i<reserva.getListaItems().size();i++){
+                contenedorReservaItem.addView(RecuperarElemento(reserva.getTipoReserva(),(i+1),reserva.getListaItems().get(i)));
+            }
+        }else{
+            Toast.makeText(context, "No tiene Elementos Registrados", Toast.LENGTH_SHORT).show();
         }
+
 
     }
 

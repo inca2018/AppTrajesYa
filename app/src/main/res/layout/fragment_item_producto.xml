@@ -213,13 +213,13 @@
                                        android:textColor="@color/colorPrimary"
                                        android:textStyle="bold"
                                        android:textSize="12sp"
-                                       android:visibility="gone"/>
+                                       />
                                    <androidx.recyclerview.widget.RecyclerView
                                        android:id="@+id/recycler_generos"
                                        android:layout_width="match_parent"
                                        android:layout_height="wrap_content"
                                        android:layout_margin="4dp"
-                                       android:visibility="gone">
+                                        >
 
                                    </androidx.recyclerview.widget.RecyclerView>
                                    <TextView

@@ -6,6 +6,7 @@ public class ReservaItem {
     Producto productoItem;
     int Cantidad;
     Medida medidaReservaItem;
+    Genero generoReservaitem;
     String fechaRegistro;
     double total;
 
@@ -77,4 +78,11 @@ public class ReservaItem {
         return Objeto;
     }
 
+    public Genero getGeneroReservaitem() {
+        return generoReservaitem;
+    }
+
+    public void setGeneroReservaitem(Genero generoReservaitem) {
+        this.generoReservaitem = generoReservaitem;
+    }
 }

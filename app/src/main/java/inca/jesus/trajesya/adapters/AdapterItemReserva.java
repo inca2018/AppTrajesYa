@@ -59,6 +59,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
         public TextView precioProducto;
         public TextView descuentoProducto;
         public TextView talla;
+        public TextView genero;
         public TextView revisadoProducto;
         public ImageView imagenProducto;
         public Button  menos,mas;
@@ -66,6 +67,7 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
         public ImageButton eliminar;
         public LinearLayout sectorDescuento;
         public LinearLayout sectorTalla;
+        public LinearLayout sectorGenero;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -82,6 +84,8 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
             cantidad=itemView.findViewById(R.id.tvItemCantidad);
             sectorDescuento=itemView.findViewById(R.id.sectorDescuento);
             sectorTalla=itemView.findViewById(R.id.sectorTalla);
+            genero= itemView.findViewById(R.id.tvItemGenero);
+            sectorGenero=itemView.findViewById(R.id.sectorGenero);
         }
         @Override
         public void onClick(View v) {
@@ -120,6 +124,18 @@ public class AdapterItemReserva extends RecyclerView.Adapter<AdapterItemReserva.
             }
         }else{
             holder.sectorTalla.setVisibility(View.GONE);
+        }
+
+
+        if(my_Data.get(position).getGeneroReservaitem()!=null){
+            if(my_Data.get(position).getGeneroReservaitem().getIdGenero()>0){
+                holder.sectorGenero.setVisibility(View.VISIBLE);
+                holder.genero.setText(my_Data.get(position).getGeneroReservaitem().getNombreGenero());
+            }else{
+                holder.sectorGenero.setVisibility(View.GONE);
+            }
+        }else{
+            holder.sectorGenero.setVisibility(View.GONE);
         }
 
         holder.revisadoProducto.setText("Autentificado y Revisado por: "+my_Data.get(position).getProductoItem().getVerificadoProducto());
