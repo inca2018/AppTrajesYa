@@ -12,6 +12,7 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/logo_celular"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.ActivityPrincipal"
             android:screenOrientation="portrait"></activity>
